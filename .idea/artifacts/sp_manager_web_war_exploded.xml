@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="sp-manager-web:war exploded">
+    <output-path>$PROJECT_DIR$/sp-manager/sp-manager-web/target/sp-manager-web-1.0-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="sp-manager-web" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/sp-manager/sp-manager-web/target/sp-manager-web-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="sp-manager-web/web/Web" />
+    </root>
+  </artifact>
+</component>
