@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qtec.snmp.dao.LocalNodeCfgMapper" >
+  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.LocalNodeCfg" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="local_ip" property="localIp" jdbcType="VARCHAR" />
+    <result column="local_port" property="localPort" jdbcType="VARCHAR" />
+    <result column="local_node_id" property="localNodeId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, local_ip, local_port, local_node_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.LocalNodeCfgExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from local_node_cfg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from local_node_cfg
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from local_node_cfg
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.LocalNodeCfgExample" >
+    delete from local_node_cfg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.LocalNodeCfg" >
+    insert into local_node_cfg (id, local_ip, local_port, 
+      local_node_id)
+    values (#{id,jdbcType=BIGINT}, #{localIp,jdbcType=VARCHAR}, #{localPort,jdbcType=VARCHAR}, 
+      #{localNodeId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.LocalNodeCfg" >
+    insert into local_node_cfg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="localIp != null" >
+        local_ip,
+      </if>
+      <if test="localPort != null" >
+        local_port,
+      </if>
+      <if test="localNodeId != null" >
+        local_node_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="localIp != null" >
+        #{localIp,jdbcType=VARCHAR},
+      </if>
+      <if test="localPort != null" >
+        #{localPort,jdbcType=VARCHAR},
+      </if>
+      <if test="localNodeId != null" >
+        #{localNodeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.LocalNodeCfgExample" resultType="java.lang.Integer" >
+    select count(*) from local_node_cfg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update local_node_cfg
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.localIp != null" >
+        local_ip = #{record.localIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localPort != null" >
+        local_port = #{record.localPort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localNodeId != null" >
+        local_node_id = #{record.localNodeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update local_node_cfg
+    set id = #{record.id,jdbcType=BIGINT},
+      local_ip = #{record.localIp,jdbcType=VARCHAR},
+      local_port = #{record.localPort,jdbcType=VARCHAR},
+      local_node_id = #{record.localNodeId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qtec.snmp.pojo.po.LocalNodeCfg" >
+    update local_node_cfg
+    <set >
+      <if test="localIp != null" >
+        local_ip = #{localIp,jdbcType=VARCHAR},
+      </if>
+      <if test="localPort != null" >
+        local_port = #{localPort,jdbcType=VARCHAR},
+      </if>
+      <if test="localNodeId != null" >
+        local_node_id = #{localNodeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qtec.snmp.pojo.po.LocalNodeCfg" >
+    update local_node_cfg
+    set local_ip = #{localIp,jdbcType=VARCHAR},
+      local_port = #{localPort,jdbcType=VARCHAR},
+      local_node_id = #{localNodeId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qtec.snmp.dao.AlarmTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.AlarmType" >
+    <id column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="alarm_type" property="alarmType" jdbcType="VARCHAR" />
+    <result column="alarm_severity" property="alarmSeverity" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    type_id, alarm_type, alarm_severity
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.AlarmTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from alarm_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from alarm_type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from alarm_type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.AlarmTypeExample" >
+    delete from alarm_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.AlarmType" >
+    insert into alarm_type (type_id, alarm_type, alarm_severity
+      )
+    values (#{typeId,jdbcType=INTEGER}, #{alarmType,jdbcType=VARCHAR}, #{alarmSeverity,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.AlarmType" >
+    insert into alarm_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="alarmType != null" >
+        alarm_type,
+      </if>
+      <if test="alarmSeverity != null" >
+        alarm_severity,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="alarmType != null" >
+        #{alarmType,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmSeverity != null" >
+        #{alarmSeverity,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.AlarmTypeExample" resultType="java.lang.Integer" >
+    select count(*) from alarm_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update alarm_type
+    <set >
+      <if test="record.typeId != null" >
+        type_id = #{record.typeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.alarmType != null" >
+        alarm_type = #{record.alarmType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmSeverity != null" >
+        alarm_severity = #{record.alarmSeverity,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update alarm_type
+    set type_id = #{record.typeId,jdbcType=INTEGER},
+      alarm_type = #{record.alarmType,jdbcType=VARCHAR},
+      alarm_severity = #{record.alarmSeverity,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qtec.snmp.pojo.po.AlarmType" >
+    update alarm_type
+    <set >
+      <if test="alarmType != null" >
+        alarm_type = #{alarmType,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmSeverity != null" >
+        alarm_severity = #{alarmSeverity,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qtec.snmp.pojo.po.AlarmType" >
+    update alarm_type
+    set alarm_type = #{alarmType,jdbcType=VARCHAR},
+      alarm_severity = #{alarmSeverity,jdbcType=VARCHAR}
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </update>
+</mapper>

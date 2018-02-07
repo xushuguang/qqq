@@ -11,6 +11,8 @@
         <module name="sp-manager-interface" />
         <module name="sp-manager-pojo" />
         <module name="sp-manager-service" />
+        <module name="sp-manager-web" />
+        <module name="sp_snmptrap" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.7">
@@ -20,8 +22,13 @@
       <module name="sp-manager-interface" target="1.8" />
       <module name="sp-manager-pojo" target="1.8" />
       <module name="sp-manager-service" target="1.8" />
+      <module name="sp-manager-trap" target="1.8" />
       <module name="sp-manager-web" target="1.8" />
       <module name="sp-parent" target="1.8" />
+      <module name="sp-snmptrap" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="DEPRECATION" value="false" />
   </component>
 </project>

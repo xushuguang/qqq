@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-interface/sp-manager-interface.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-interface/sp-manager-interface.iml" />
       <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-pojo/sp-manager-pojo.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-pojo/sp-manager-pojo.iml" />
       <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-service/sp-manager-service.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-service/sp-manager-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-web/sp-manager-web.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-web/sp-manager-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/sp-parent/sp-parent.iml" filepath="$PROJECT_DIR$/sp-parent/sp-parent.iml" />
     </modules>
   </component>
