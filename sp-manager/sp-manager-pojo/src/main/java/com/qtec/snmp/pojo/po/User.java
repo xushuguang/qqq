@@ -5,7 +5,7 @@ public class User {
 
     private String username;
 
-    private String userGroup;
+    private Integer groupId;
 
     private String password;
 
@@ -29,12 +29,12 @@ public class User {
         this.username = username == null ? null : username.trim();
     }
 
-    public String getUserGroup() {
-        return userGroup;
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setUserGroup(String userGroup) {
-        this.userGroup = userGroup == null ? null : userGroup.trim();
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public String getPassword() {

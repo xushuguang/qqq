@@ -29,4 +29,22 @@
     <mvc:resources mapping="/css/**" location="/css/"/>
     <!--图片文件-->
     <mvc:resources mapping="/images/**" location="/images/"/>
+    <!--拦截器配置-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 需拦截的地址 -->
+            <!-- 一级目录 -->
+            <mvc:mapping path="/*.do" />
+            <mvc:mapping path="/*.ajax" />
+            <mvc:mapping path="/*.jsp" />
+
+            <!-- 二级目录 -->
+            <mvc:mapping path="/*/*.do" />
+            <mvc:mapping path="/*/*.ajax" />
+            <mvc:mapping path="/*/*.jsp" />
+            <!-- 需排除拦截的地址 -->
+            <mvc:exclude-mapping path="/login.jsp"/>
+            <bean class="com.qtec.snmp.web.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

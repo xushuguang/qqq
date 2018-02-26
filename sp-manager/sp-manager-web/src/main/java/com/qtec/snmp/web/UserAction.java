@@ -3,6 +3,7 @@ package com.qtec.snmp.web;
 import com.qtec.snmp.common.dto.MessageResult;
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.pojo.po.User;
+import com.qtec.snmp.pojo.vo.UserVo;
 import com.qtec.snmp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: james.xu
@@ -65,13 +69,16 @@ public class UserAction {
      */
     @ResponseBody
     @RequestMapping(value = "/loginUser",method = RequestMethod.POST)
-    public MessageResult loginUser(@RequestParam("username")String username, @RequestParam("password")String password){
+    public MessageResult loginUser(@RequestParam("username")String username, @RequestParam("password")String password, HttpServletRequest request){
         MessageResult mr = new MessageResult();
         try {
             //1.根据用户名查询用户是否已经存在
-            boolean flag = userService.loginUser(username,password);
-            if (flag){
+            User user = userService.loginUser(username,password);
+            if (user != null){
                 //存在
+                //存入session中
+                request.getSession().setAttribute("user",user);
+                //封装消息
                 mr.setSuccess(true);
                 mr.setMessage("登录成功!是否进入主页面？");
             }else {
@@ -98,15 +105,28 @@ public class UserAction {
         return flag;
     }
     @ResponseBody
-    @RequestMapping(value = "/listUser",method = RequestMethod.GET)
-    public Result<User> listUser(){
-        Result<User> result = null;
+    @RequestMapping(value = "/listUserVo",method = RequestMethod.GET)
+    public Result<UserVo> listUserVo(){
+        Result<UserVo> result = null;
         try {
+            System.out.println("11111111111111");
             result = userService.listUser();
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
         return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/exitUser",method = RequestMethod.GET)
+    public void exitUser(HttpServletRequest request, HttpServletResponse response){
+        try {
+            //从session中移除当前用户
+            request.getSession().removeAttribute("user");
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
     }
 }

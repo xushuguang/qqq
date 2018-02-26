@@ -13,8 +13,7 @@
             <tr>
                 <td class="label">所属组：</td>
                 <td>
-                    <input class="easyui-textbox" type="text" id="userGroup" name="userGroup"
-                           data-options="required:true" style="width:100%">
+                    <input id="groupId" name="groupId"  data-options="required:true">
                 </td>
             </tr>
             <tr>
@@ -56,6 +55,13 @@
     </form>
 </div>
 <script>
+    //动态生成下拉框userGroup
+    $('#groupId').combobox({
+        url:'listComboNode',
+        method:'get',
+        valueField:'id',
+        textField:'text',
+    });
     //点击保存按钮动作
     function submitForm(){
         $('#userAddForm').form('submit', {

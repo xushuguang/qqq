@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.qtec.snmp.dao.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.User" >
+<mapper namespace="com.qtec.snmp.dao.UserGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.UserGroup" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="group_id" property="groupId" jdbcType="INTEGER" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="psd_validity" property="psdValidity" jdbcType="VARCHAR" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="chose_region" property="choseRegion" jdbcType="VARCHAR" />
+    <result column="discription" property="discription" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, group_id, password, psd_validity, remark
+    id, group_name, chose_region, discription
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.UserExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.UserGroupExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user
+    from user_group
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,96 +85,76 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from user
+    from user_group
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from user
+    delete from user_group
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.UserExample" >
-    delete from user
+  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.UserGroupExample" >
+    delete from user_group
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.User" >
-    insert into user (id, username, group_id, 
-      password, psd_validity, remark
-      )
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, 
-      #{password,jdbcType=VARCHAR}, #{psdValidity,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.UserGroup" >
+    insert into user_group (id, group_name, chose_region, 
+      discription)
+    values (#{id,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{choseRegion,jdbcType=VARCHAR}, 
+      #{discription,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.User" >
-    insert into user
+  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.UserGroup" >
+    insert into user_group
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="username != null" >
-        username,
+      <if test="groupName != null" >
+        group_name,
       </if>
-      <if test="groupId != null" >
-        group_id,
+      <if test="choseRegion != null" >
+        chose_region,
       </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="psdValidity != null" >
-        psd_validity,
-      </if>
-      <if test="remark != null" >
-        remark,
+      <if test="discription != null" >
+        discription,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
       </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=INTEGER},
+      <if test="choseRegion != null" >
+        #{choseRegion,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="psdValidity != null" >
-        #{psdValidity,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
+      <if test="discription != null" >
+        #{discription,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.UserExample" resultType="java.lang.Integer" >
-    select count(*) from user
+  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.UserGroupExample" resultType="java.lang.Integer" >
+    select count(*) from user_group
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update user
+    update user_group
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.username != null" >
-        username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.groupName != null" >
+        group_name = #{record.groupName,jdbcType=VARCHAR},
       </if>
-      <if test="record.groupId != null" >
-        group_id = #{record.groupId,jdbcType=INTEGER},
+      <if test="record.choseRegion != null" >
+        chose_region = #{record.choseRegion,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null" >
-        password = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.psdValidity != null" >
-        psd_validity = #{record.psdValidity,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=VARCHAR},
+      <if test="record.discription != null" >
+        discription = #{record.discription,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -184,45 +162,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update user
+    update user_group
     set id = #{record.id,jdbcType=INTEGER},
-      username = #{record.username,jdbcType=VARCHAR},
-      group_id = #{record.groupId,jdbcType=INTEGER},
-      password = #{record.password,jdbcType=VARCHAR},
-      psd_validity = #{record.psdValidity,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR}
+      group_name = #{record.groupName,jdbcType=VARCHAR},
+      chose_region = #{record.choseRegion,jdbcType=VARCHAR},
+      discription = #{record.discription,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qtec.snmp.pojo.po.User" >
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="com.qtec.snmp.pojo.po.UserGroup" >
+    update user_group
     <set >
-      <if test="username != null" >
-        username = #{username,jdbcType=VARCHAR},
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
       </if>
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=INTEGER},
+      <if test="choseRegion != null" >
+        chose_region = #{choseRegion,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="psdValidity != null" >
-        psd_validity = #{psdValidity,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
+      <if test="discription != null" >
+        discription = #{discription,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.qtec.snmp.pojo.po.User" >
-    update user
-    set username = #{username,jdbcType=VARCHAR},
-      group_id = #{groupId,jdbcType=INTEGER},
-      password = #{password,jdbcType=VARCHAR},
-      psd_validity = #{psdValidity,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.qtec.snmp.pojo.po.UserGroup" >
+    update user_group
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      chose_region = #{choseRegion,jdbcType=VARCHAR},
+      discription = #{discription,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

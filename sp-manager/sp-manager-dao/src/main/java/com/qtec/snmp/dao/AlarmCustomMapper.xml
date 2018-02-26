@@ -65,4 +65,13 @@
     </where>
     limit #{page.offset},#{page.rows}
   </select>
+  <select id="countRTalarmNum" resultType="_int">
+    select count(1) from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack = 'RT'
+      and t.alarm_severity = #{alarmSeverity}
+    </where>
+  </select>
 </mapper>

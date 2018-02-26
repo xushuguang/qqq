@@ -234,73 +234,63 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupIsNull() {
-            addCriterion("user_group is null");
+        public Criteria andGroupIdIsNull() {
+            addCriterion("group_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupIsNotNull() {
-            addCriterion("user_group is not null");
+        public Criteria andGroupIdIsNotNull() {
+            addCriterion("group_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupEqualTo(String value) {
-            addCriterion("user_group =", value, "userGroup");
+        public Criteria andGroupIdEqualTo(Integer value) {
+            addCriterion("group_id =", value, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupNotEqualTo(String value) {
-            addCriterion("user_group <>", value, "userGroup");
+        public Criteria andGroupIdNotEqualTo(Integer value) {
+            addCriterion("group_id <>", value, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupGreaterThan(String value) {
-            addCriterion("user_group >", value, "userGroup");
+        public Criteria andGroupIdGreaterThan(Integer value) {
+            addCriterion("group_id >", value, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupGreaterThanOrEqualTo(String value) {
-            addCriterion("user_group >=", value, "userGroup");
+        public Criteria andGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("group_id >=", value, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupLessThan(String value) {
-            addCriterion("user_group <", value, "userGroup");
+        public Criteria andGroupIdLessThan(Integer value) {
+            addCriterion("group_id <", value, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupLessThanOrEqualTo(String value) {
-            addCriterion("user_group <=", value, "userGroup");
+        public Criteria andGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("group_id <=", value, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupLike(String value) {
-            addCriterion("user_group like", value, "userGroup");
+        public Criteria andGroupIdIn(List<Integer> values) {
+            addCriterion("group_id in", values, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupNotLike(String value) {
-            addCriterion("user_group not like", value, "userGroup");
+        public Criteria andGroupIdNotIn(List<Integer> values) {
+            addCriterion("group_id not in", values, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupIn(List<String> values) {
-            addCriterion("user_group in", values, "userGroup");
+        public Criteria andGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("group_id between", value1, value2, "groupId");
             return (Criteria) this;
         }
 
-        public Criteria andUserGroupNotIn(List<String> values) {
-            addCriterion("user_group not in", values, "userGroup");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserGroupBetween(String value1, String value2) {
-            addCriterion("user_group between", value1, value2, "userGroup");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserGroupNotBetween(String value1, String value2) {
-            addCriterion("user_group not between", value1, value2, "userGroup");
+        public Criteria andGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("group_id not between", value1, value2, "groupId");
             return (Criteria) this;
         }
 

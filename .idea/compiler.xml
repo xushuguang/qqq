@@ -19,6 +19,7 @@
       <module name="sp-common" target="1.8" />
       <module name="sp-manager" target="1.8" />
       <module name="sp-manager-dao" target="1.8" />
+      <module name="sp-manager-interceptor" target="1.8" />
       <module name="sp-manager-interface" target="1.8" />
       <module name="sp-manager-pojo" target="1.8" />
       <module name="sp-manager-service" target="1.8" />

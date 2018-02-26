@@ -9,12 +9,14 @@ import com.qtec.snmp.pojo.po.Alarm;
 import com.qtec.snmp.pojo.po.AlarmExample;
 import com.qtec.snmp.pojo.vo.AlarmQuery;
 import com.qtec.snmp.pojo.vo.AlarmVo;
+import com.qtec.snmp.pojo.vo.EchartsVo;
 import com.qtec.snmp.service.RTAlarmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +72,43 @@ public class RTAlarmServiceImpl implements RTAlarmService{
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public List<EchartsVo> listRTalarmVo() {
+        List<EchartsVo> list = null;
+        try {
+            //查询紧急告警数
+            EchartsVo vo1 = new EchartsVo();
+            int value1 = AlarmCustomDao.countRTalarmNum("Fatal");
+            vo1.setName("紧急告警");
+            vo1.setValue(value1);
+            //查询严重告警数
+            EchartsVo vo2 = new EchartsVo();
+            int value2 = AlarmCustomDao.countRTalarmNum("Error");
+            vo2.setName("严重告警");
+            vo2.setValue(value2);
+            //查询重要告警数
+            EchartsVo vo3 = new EchartsVo();
+            int value3 = AlarmCustomDao.countRTalarmNum("Warning");
+            vo3.setName("重要告警");
+            vo3.setValue(value3);
+            //查询中等告警数
+            EchartsVo vo4 = new EchartsVo();
+            int value4 = AlarmCustomDao.countRTalarmNum("Info");
+            vo4.setName("中等告警");
+            vo4.setValue(value4);
+            //放入list集合
+            list = new ArrayList<EchartsVo>();
+            list.add(vo1);
+            list.add(vo2);
+            list.add(vo3);
+            list.add(vo4);
+
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return list;
     }
 }

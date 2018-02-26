@@ -7,6 +7,7 @@
     <result column="ne_ip" property="neIp" jdbcType="VARCHAR" />
     <result column="corresponding_qnc_ip" property="correspondingQncIp" jdbcType="VARCHAR" />
     <result column="paring_qkd_ip" property="paringQkdIp" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="belong_group" property="belongGroup" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, ne_name, ne_ip, corresponding_qnc_ip, paring_qkd_ip, belong_group
+    id, ne_name, ne_ip, corresponding_qnc_ip, paring_qkd_ip, type, belong_group
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.NetElementExample" >
     select
@@ -102,11 +103,11 @@
   </delete>
   <insert id="insert" parameterType="com.qtec.snmp.pojo.po.NetElement" >
     insert into net_element (id, ne_name, ne_ip, 
-      corresponding_qnc_ip, paring_qkd_ip, belong_group
-      )
+      corresponding_qnc_ip, paring_qkd_ip, type, 
+      belong_group)
     values (#{id,jdbcType=BIGINT}, #{neName,jdbcType=VARCHAR}, #{neIp,jdbcType=VARCHAR}, 
-      #{correspondingQncIp,jdbcType=VARCHAR}, #{paringQkdIp,jdbcType=VARCHAR}, #{belongGroup,jdbcType=VARCHAR}
-      )
+      #{correspondingQncIp,jdbcType=VARCHAR}, #{paringQkdIp,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{belongGroup,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.NetElement" >
     insert into net_element
@@ -125,6 +126,9 @@
       </if>
       <if test="paringQkdIp != null" >
         paring_qkd_ip,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="belongGroup != null" >
         belong_group,
@@ -145,6 +149,9 @@
       </if>
       <if test="paringQkdIp != null" >
         #{paringQkdIp,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="belongGroup != null" >
         #{belongGroup,jdbcType=VARCHAR},
@@ -175,6 +182,9 @@
       <if test="record.paringQkdIp != null" >
         paring_qkd_ip = #{record.paringQkdIp,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
       <if test="record.belongGroup != null" >
         belong_group = #{record.belongGroup,jdbcType=VARCHAR},
       </if>
@@ -190,6 +200,7 @@
       ne_ip = #{record.neIp,jdbcType=VARCHAR},
       corresponding_qnc_ip = #{record.correspondingQncIp,jdbcType=VARCHAR},
       paring_qkd_ip = #{record.paringQkdIp,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
       belong_group = #{record.belongGroup,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -210,6 +221,9 @@
       <if test="paringQkdIp != null" >
         paring_qkd_ip = #{paringQkdIp,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
       <if test="belongGroup != null" >
         belong_group = #{belongGroup,jdbcType=VARCHAR},
       </if>
@@ -222,6 +236,7 @@
       ne_ip = #{neIp,jdbcType=VARCHAR},
       corresponding_qnc_ip = #{correspondingQncIp,jdbcType=VARCHAR},
       paring_qkd_ip = #{paringQkdIp,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
       belong_group = #{belongGroup,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>

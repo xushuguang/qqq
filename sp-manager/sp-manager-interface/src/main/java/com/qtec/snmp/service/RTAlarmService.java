@@ -5,6 +5,9 @@ import com.qtec.snmp.common.dto.Page;
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.pojo.vo.AlarmQuery;
 import com.qtec.snmp.pojo.vo.AlarmVo;
+import com.qtec.snmp.pojo.vo.EchartsVo;
+
+import java.util.List;
 
 /**
  * User: james.xu
@@ -16,4 +19,6 @@ public interface RTAlarmService {
     Result<AlarmVo> listRTAlarm(Page page, Order order, AlarmQuery query);
 
     void removeRTAlarms();
+
+    List<EchartsVo> listRTalarmVo();
 }

@@ -9,6 +9,7 @@ import com.qtec.snmp.pojo.vo.AlarmVo;
 import java.util.List;
 
 /**
+ * 历史告警service接口
  * User: james.xu
  * Date: 2018/1/18
  * Time: 15:24

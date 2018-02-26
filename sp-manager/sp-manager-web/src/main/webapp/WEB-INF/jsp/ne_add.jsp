@@ -30,6 +30,12 @@
                 </td>
             </tr>
             <tr>
+                <td class="label">类型：</td>
+                <td>
+                    <input class="easyui-textbox" type="text" id="type" name="type" data-options="required:true" style="width:100%">
+                </td>
+            </tr>
+            <tr>
                 <td class="label">所属组：</td>
                 <td>
                     <input class="easyui-textbox" type="text" id="belongGroup" name="belongGroup"

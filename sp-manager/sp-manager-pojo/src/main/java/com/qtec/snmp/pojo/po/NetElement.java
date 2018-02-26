@@ -11,6 +11,8 @@ public class NetElement {
 
     private String paringQkdIp;
 
+    private String type;
+
     private String belongGroup;
 
     public Long getId() {
@@ -51,6 +53,14 @@ public class NetElement {
 
     public void setParingQkdIp(String paringQkdIp) {
         this.paringQkdIp = paringQkdIp == null ? null : paringQkdIp.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getBelongGroup() {

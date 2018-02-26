@@ -13,6 +13,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/sp-manager/sp-manager-interceptor/pom.xml" />
         <option value="$PROJECT_DIR$/sp-manager/sp-manager-trap/pom.xml" />
         <option value="$PROJECT_DIR$/sp-snmptrap/pom.xml" />
       </set>

@@ -2,6 +2,7 @@ package com.qtec.snmp.service;
 
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.pojo.po.User;
+import com.qtec.snmp.pojo.vo.UserVo;
 
 /**
  * User: james.xu
@@ -13,9 +14,9 @@ public interface UserService {
     boolean selectUser(String username);
     int insertUser(User user);
 
-    boolean loginUser(String username, String password);
+    User loginUser(String username, String password);
 
     boolean selectTime(String username);
 
-    Result<User> listUser();
+    Result<UserVo> listUser();
 }
