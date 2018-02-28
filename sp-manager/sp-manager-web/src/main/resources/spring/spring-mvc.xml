@@ -29,6 +29,8 @@
     <mvc:resources mapping="/css/**" location="/css/"/>
     <!--图片文件-->
     <mvc:resources mapping="/images/**" location="/images/"/>
+    <!--txt文件-->
+    <mvc:resources mapping="/txt/**" location="/txt/"/>
     <!--拦截器配置-->
     <mvc:interceptors>
         <mvc:interceptor>

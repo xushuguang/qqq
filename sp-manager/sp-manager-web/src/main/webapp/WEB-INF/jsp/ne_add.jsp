@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <div class="easyui-panel" title="添加网元" data-options="fit:true">
     <form class="neForm" id="neAddForm" name="neAddForm" method="post">
-        <table style="width:100%;">
+        <table style="width:600px;">
             <tr>
                 <td class="label">网元名：</td>
                 <td>
@@ -43,7 +43,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="2" align="center">
                     <button onclick="submitForm()" class="easyui-linkbutton" type="button"
                             data-options="iconCls:'icon-ok'">保存
                     </button>
@@ -69,6 +69,7 @@
                 if (data.success) {
                     $.messager.alert('消息', data.message, 'info');
                     snmp.closeTabs('添加网元');
+                    snmp.addTabs("设备管理","ne_list");
                 }
             }
         });

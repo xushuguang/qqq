@@ -13,7 +13,7 @@
             <tr>
                 <td class="label">所属组：</td>
                 <td>
-                    <input id="groupId" name="groupId"  data-options="required:true">
+                    <input id="groupId" name="groupId"  prompt="请选择所属组" data-options="required:true">
                 </td>
             </tr>
             <tr>

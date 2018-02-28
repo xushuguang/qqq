@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <div class="easyui-panel" title="添加用户组" data-options="fit:true">
     <form class="userGrupForm" id="userGrupAddForm" name="userGrupAddForm" method="post">
-        <table style="width:100%;">
+        <table style="width:600px;">
             <tr>
                 <td class="label">用户组名称：</td>
                 <td>
@@ -32,7 +32,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="2" align="center">
                     <button onclick="submitForm()" class="easyui-linkbutton" type="button"
                             data-options="iconCls:'icon-ok'">保存
                     </button>

@@ -37,9 +37,6 @@ public class RTAlarmAction {
         Result<AlarmVo> result = null;
         try {
             result = rtAlarmService.listRTAlarm(page,order,query);
-            System.out.println(query.toString());
-            System.out.println(request.getParameter("alarmSeverity"));
-
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();

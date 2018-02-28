@@ -1,6 +1,7 @@
 package com.qtec.snmp.web;
 
 import com.qtec.snmp.common.dto.MessageResult;
+import com.qtec.snmp.common.dto.TreeNode;
 import com.qtec.snmp.common.utils.JsonUtil;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.vo.EchartsVo;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -71,6 +73,18 @@ public class NetElementAction {
             e.printStackTrace();
         }
         return  jsonStr;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/treeNetElement", method = RequestMethod.GET)
+    public List<TreeNode> treeNetElement(@RequestParam("belongGroup") String belongGroup){
+        List<TreeNode> list = null;
+        try {
+            list = netElementService.treeNetElement(belongGroup);
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return  list;
     }
 }
 

@@ -28,6 +28,7 @@ public interface AlarmCustomMapper {
     * @return
     */
    List<AlarmVo> listHistoryAlarms(Map<String,Object> map);
+
    int countRTalarmNum(String alarmServerity);
 
 }
