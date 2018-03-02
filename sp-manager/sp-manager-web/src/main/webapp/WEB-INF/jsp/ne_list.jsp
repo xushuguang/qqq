@@ -6,7 +6,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <div>
-    <button onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加网元</button>
+    <button onclick="addNE()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加网元</button>
+    <button onclick="addNode()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加节点</button>
 </div>
 <ul class="easyui-tree" type="text" name="tt" id="tt" style="width:100%; height:34px; margin-left:15px;"></ul>
 <%--容器放好--%>
@@ -14,10 +15,14 @@
 <%--通过js代码来渲染容器--%>
 <script>
     //点击添加网元按钮动作
-    function add() {
-        snmp.closeTabs("设备管理");
+    function addNE() {
         snmp.addTabs('添加网元', 'ne_add');
     }
+    //点击添加节点按钮动作
+    function addNode() {
+        snmp.addTabs('添加节点', 'node_add');
+    }
+    /*
     $('#tt').tree({
         //检索远程数据的URL地址
         url: 'treeNetElement?belongGroup='+"null",
@@ -34,4 +39,5 @@
             options.url = 'treeNetElement?belongGroup=' + node.text;
         }
     });
+    */
 </script>

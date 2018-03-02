@@ -1,6 +1,5 @@
 package com.qtec.snmp.service;
 
-import com.qtec.snmp.common.dto.TreeNode;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.vo.EchartsVo;
 
@@ -17,5 +16,5 @@ public interface NetElementService {
 
     List<EchartsVo> listNetElemetVo();
 
-    List<TreeNode> treeNetElement(String belongGroup);
+    List<NetElement> listNetElemet();
 }

@@ -1,8 +1,6 @@
 package com.qtec.snmp.service.impl;
 
-import com.qtec.snmp.common.dto.ComboNode;
-import com.qtec.snmp.common.dto.TreeNode;
-import com.qtec.snmp.dao.NetElementCustomMapper;
+import com.qtec.snmp.common.utils.GetStateUtil;
 import com.qtec.snmp.dao.NetElementMapper;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.po.NetElementExample;
@@ -27,13 +25,11 @@ public class NetElementServiceImpl implements NetElementService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private NetElementMapper netElementDao;
-    @Autowired
-    private NetElementCustomMapper netElementCustomDao;
     @Override
     public int saveNetElement(NetElement netElement) {
         int insert = 0;
         try {
-            //先根据ip查询设备是否已经添加
+            //先根据ip查询设备是否已经存在
             NetElementExample example = new NetElementExample();
             example.createCriteria().andNeIpEqualTo(netElement.getNeIp());
             List<NetElement> netElements = netElementDao.selectByExample(example);
@@ -41,6 +37,9 @@ public class NetElementServiceImpl implements NetElementService {
                 //设备已存在，不可以添加
             }else {
                 //设备不存在，可以添加
+               //给设备添加状态
+                netElement.setState(GetStateUtil.getState(netElement.getNeIp()));
+                //添加设备
                 insert = netElementDao.insert(netElement);
             }
         }catch (Exception e) {
@@ -49,7 +48,17 @@ public class NetElementServiceImpl implements NetElementService {
         }
         return insert;
     }
-
+    @Override
+    public List<NetElement> listNetElemet() {
+        List<NetElement> list = null;
+        try {
+            list = netElementDao.selectByExample( new NetElementExample());
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return list;
+    }
     @Override
     public List<EchartsVo> listNetElemetVo() {
         List<EchartsVo> list = null;
@@ -89,39 +98,6 @@ public class NetElementServiceImpl implements NetElementService {
             list.add(vo3);
             list.add(vo4);
         }catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            e.printStackTrace();
-        }
-        return list;
-    }
-    @Override
-    public List<TreeNode> treeNetElement(String belongGroup) {
-        List<TreeNode> list = null;
-        try {
-            list = new ArrayList<>();
-            //如果belongGroup是null,则是查询父节点
-            if ("null".equals(belongGroup)){
-                List<NetElement> netElements = netElementCustomDao.selectBelongGroup();
-                //数据封装
-                for (NetElement netElement : netElements){
-                    TreeNode treeNode = new TreeNode();
-                    treeNode.setId(netElement.getId().intValue());
-                    treeNode.setText(netElement.getBelongGroup());
-                    treeNode.setState("closed");
-                    list.add(treeNode);
-                }
-            }else {
-                //如果不是null,则是查询子节点
-                List<NetElement> netElements = netElementCustomDao.selectChildren(belongGroup);
-                for (NetElement netElement : netElements){
-                    TreeNode treeNode = new TreeNode();
-                    treeNode.setId(netElement.getId().intValue());
-                    treeNode.setText(netElement.getNeName());
-                    treeNode.setState("open");
-                    list.add(treeNode);
-                }
-            }
-        }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }

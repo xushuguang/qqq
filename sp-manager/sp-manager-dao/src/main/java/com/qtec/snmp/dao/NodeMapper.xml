@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.qtec.snmp.dao.NetElementMapper" >
-  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.NetElement" >
+<mapper namespace="com.qtec.snmp.dao.NodeMapper" >
+  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.Node" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="ne_name" property="neName" jdbcType="VARCHAR" />
-    <result column="ne_ip" property="neIp" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="INTEGER" />
-    <result column="linkage" property="linkage" jdbcType="BIGINT" />
+    <result column="node_name" property="nodeName" jdbcType="VARCHAR" />
+    <result column="node_ip" property="nodeIp" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, ne_name, ne_ip, type, state, linkage
+    id, node_name, node_ip
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.NetElementExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.NodeExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from net_element
+    from node
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,96 +84,67 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from net_element
+    from node
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from net_element
+    delete from node
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.NetElementExample" >
-    delete from net_element
+  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.NodeExample" >
+    delete from node
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.NetElement" >
-    insert into net_element (id, ne_name, ne_ip, 
-      type, state, linkage
+  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.Node" >
+    insert into node (id, node_name, node_ip
       )
-    values (#{id,jdbcType=BIGINT}, #{neName,jdbcType=VARCHAR}, #{neIp,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{linkage,jdbcType=BIGINT}
+    values (#{id,jdbcType=BIGINT}, #{nodeName,jdbcType=VARCHAR}, #{nodeIp,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.NetElement" >
-    insert into net_element
+  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.Node" >
+    insert into node
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="neName != null" >
-        ne_name,
+      <if test="nodeName != null" >
+        node_name,
       </if>
-      <if test="neIp != null" >
-        ne_ip,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="state != null" >
-        state,
-      </if>
-      <if test="linkage != null" >
-        linkage,
+      <if test="nodeIp != null" >
+        node_ip,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="neName != null" >
-        #{neName,jdbcType=VARCHAR},
+      <if test="nodeName != null" >
+        #{nodeName,jdbcType=VARCHAR},
       </if>
-      <if test="neIp != null" >
-        #{neIp,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        #{state,jdbcType=INTEGER},
-      </if>
-      <if test="linkage != null" >
-        #{linkage,jdbcType=BIGINT},
+      <if test="nodeIp != null" >
+        #{nodeIp,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.NetElementExample" resultType="java.lang.Integer" >
-    select count(*) from net_element
+  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.NodeExample" resultType="java.lang.Integer" >
+    select count(*) from node
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update net_element
+    update node
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.neName != null" >
-        ne_name = #{record.neName,jdbcType=VARCHAR},
+      <if test="record.nodeName != null" >
+        node_name = #{record.nodeName,jdbcType=VARCHAR},
       </if>
-      <if test="record.neIp != null" >
-        ne_ip = #{record.neIp,jdbcType=VARCHAR},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
-      </if>
-      <if test="record.state != null" >
-        state = #{record.state,jdbcType=INTEGER},
-      </if>
-      <if test="record.linkage != null" >
-        linkage = #{record.linkage,jdbcType=BIGINT},
+      <if test="record.nodeIp != null" >
+        node_ip = #{record.nodeIp,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -184,45 +152,30 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update net_element
+    update node
     set id = #{record.id,jdbcType=BIGINT},
-      ne_name = #{record.neName,jdbcType=VARCHAR},
-      ne_ip = #{record.neIp,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=INTEGER},
-      linkage = #{record.linkage,jdbcType=BIGINT}
+      node_name = #{record.nodeName,jdbcType=VARCHAR},
+      node_ip = #{record.nodeIp,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qtec.snmp.pojo.po.NetElement" >
-    update net_element
+  <update id="updateByPrimaryKeySelective" parameterType="com.qtec.snmp.pojo.po.Node" >
+    update node
     <set >
-      <if test="neName != null" >
-        ne_name = #{neName,jdbcType=VARCHAR},
+      <if test="nodeName != null" >
+        node_name = #{nodeName,jdbcType=VARCHAR},
       </if>
-      <if test="neIp != null" >
-        ne_ip = #{neIp,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
-      </if>
-      <if test="linkage != null" >
-        linkage = #{linkage,jdbcType=BIGINT},
+      <if test="nodeIp != null" >
+        node_ip = #{nodeIp,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.qtec.snmp.pojo.po.NetElement" >
-    update net_element
-    set ne_name = #{neName,jdbcType=VARCHAR},
-      ne_ip = #{neIp,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      state = #{state,jdbcType=INTEGER},
-      linkage = #{linkage,jdbcType=BIGINT}
+  <update id="updateByPrimaryKey" parameterType="com.qtec.snmp.pojo.po.Node" >
+    update node
+    set node_name = #{nodeName,jdbcType=VARCHAR},
+      node_ip = #{nodeIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

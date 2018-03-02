@@ -7,13 +7,11 @@ public class NetElement {
 
     private String neIp;
 
-    private String correspondingQncIp;
-
-    private String paringQkdIp;
-
     private String type;
 
-    private String belongGroup;
+    private Integer state;
+
+    private Long linkage;
 
     public Long getId() {
         return id;
@@ -39,22 +37,6 @@ public class NetElement {
         this.neIp = neIp == null ? null : neIp.trim();
     }
 
-    public String getCorrespondingQncIp() {
-        return correspondingQncIp;
-    }
-
-    public void setCorrespondingQncIp(String correspondingQncIp) {
-        this.correspondingQncIp = correspondingQncIp == null ? null : correspondingQncIp.trim();
-    }
-
-    public String getParingQkdIp() {
-        return paringQkdIp;
-    }
-
-    public void setParingQkdIp(String paringQkdIp) {
-        this.paringQkdIp = paringQkdIp == null ? null : paringQkdIp.trim();
-    }
-
     public String getType() {
         return type;
     }
@@ -63,11 +45,19 @@ public class NetElement {
         this.type = type == null ? null : type.trim();
     }
 
-    public String getBelongGroup() {
-        return belongGroup;
+    public Integer getState() {
+        return state;
     }
 
-    public void setBelongGroup(String belongGroup) {
-        this.belongGroup = belongGroup == null ? null : belongGroup.trim();
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public Long getLinkage() {
+        return linkage;
+    }
+
+    public void setLinkage(Long linkage) {
+        this.linkage = linkage;
     }
 }

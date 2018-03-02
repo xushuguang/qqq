@@ -304,146 +304,6 @@ public class NetElementExample {
             return (Criteria) this;
         }
 
-        public Criteria andCorrespondingQncIpIsNull() {
-            addCriterion("corresponding_qnc_ip is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpIsNotNull() {
-            addCriterion("corresponding_qnc_ip is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpEqualTo(String value) {
-            addCriterion("corresponding_qnc_ip =", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpNotEqualTo(String value) {
-            addCriterion("corresponding_qnc_ip <>", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpGreaterThan(String value) {
-            addCriterion("corresponding_qnc_ip >", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpGreaterThanOrEqualTo(String value) {
-            addCriterion("corresponding_qnc_ip >=", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpLessThan(String value) {
-            addCriterion("corresponding_qnc_ip <", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpLessThanOrEqualTo(String value) {
-            addCriterion("corresponding_qnc_ip <=", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpLike(String value) {
-            addCriterion("corresponding_qnc_ip like", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpNotLike(String value) {
-            addCriterion("corresponding_qnc_ip not like", value, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpIn(List<String> values) {
-            addCriterion("corresponding_qnc_ip in", values, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpNotIn(List<String> values) {
-            addCriterion("corresponding_qnc_ip not in", values, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpBetween(String value1, String value2) {
-            addCriterion("corresponding_qnc_ip between", value1, value2, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andCorrespondingQncIpNotBetween(String value1, String value2) {
-            addCriterion("corresponding_qnc_ip not between", value1, value2, "correspondingQncIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpIsNull() {
-            addCriterion("paring_qkd_ip is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpIsNotNull() {
-            addCriterion("paring_qkd_ip is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpEqualTo(String value) {
-            addCriterion("paring_qkd_ip =", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpNotEqualTo(String value) {
-            addCriterion("paring_qkd_ip <>", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpGreaterThan(String value) {
-            addCriterion("paring_qkd_ip >", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpGreaterThanOrEqualTo(String value) {
-            addCriterion("paring_qkd_ip >=", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpLessThan(String value) {
-            addCriterion("paring_qkd_ip <", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpLessThanOrEqualTo(String value) {
-            addCriterion("paring_qkd_ip <=", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpLike(String value) {
-            addCriterion("paring_qkd_ip like", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpNotLike(String value) {
-            addCriterion("paring_qkd_ip not like", value, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpIn(List<String> values) {
-            addCriterion("paring_qkd_ip in", values, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpNotIn(List<String> values) {
-            addCriterion("paring_qkd_ip not in", values, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpBetween(String value1, String value2) {
-            addCriterion("paring_qkd_ip between", value1, value2, "paringQkdIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andParingQkdIpNotBetween(String value1, String value2) {
-            addCriterion("paring_qkd_ip not between", value1, value2, "paringQkdIp");
-            return (Criteria) this;
-        }
-
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -514,73 +374,123 @@ public class NetElementExample {
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupIsNull() {
-            addCriterion("belong_group is null");
+        public Criteria andStateIsNull() {
+            addCriterion("state is null");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupIsNotNull() {
-            addCriterion("belong_group is not null");
+        public Criteria andStateIsNotNull() {
+            addCriterion("state is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupEqualTo(String value) {
-            addCriterion("belong_group =", value, "belongGroup");
+        public Criteria andStateEqualTo(Integer value) {
+            addCriterion("state =", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupNotEqualTo(String value) {
-            addCriterion("belong_group <>", value, "belongGroup");
+        public Criteria andStateNotEqualTo(Integer value) {
+            addCriterion("state <>", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupGreaterThan(String value) {
-            addCriterion("belong_group >", value, "belongGroup");
+        public Criteria andStateGreaterThan(Integer value) {
+            addCriterion("state >", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupGreaterThanOrEqualTo(String value) {
-            addCriterion("belong_group >=", value, "belongGroup");
+        public Criteria andStateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("state >=", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupLessThan(String value) {
-            addCriterion("belong_group <", value, "belongGroup");
+        public Criteria andStateLessThan(Integer value) {
+            addCriterion("state <", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupLessThanOrEqualTo(String value) {
-            addCriterion("belong_group <=", value, "belongGroup");
+        public Criteria andStateLessThanOrEqualTo(Integer value) {
+            addCriterion("state <=", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupLike(String value) {
-            addCriterion("belong_group like", value, "belongGroup");
+        public Criteria andStateIn(List<Integer> values) {
+            addCriterion("state in", values, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupNotLike(String value) {
-            addCriterion("belong_group not like", value, "belongGroup");
+        public Criteria andStateNotIn(List<Integer> values) {
+            addCriterion("state not in", values, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupIn(List<String> values) {
-            addCriterion("belong_group in", values, "belongGroup");
+        public Criteria andStateBetween(Integer value1, Integer value2) {
+            addCriterion("state between", value1, value2, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupNotIn(List<String> values) {
-            addCriterion("belong_group not in", values, "belongGroup");
+        public Criteria andStateNotBetween(Integer value1, Integer value2) {
+            addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupBetween(String value1, String value2) {
-            addCriterion("belong_group between", value1, value2, "belongGroup");
+        public Criteria andLinkageIsNull() {
+            addCriterion("linkage is null");
             return (Criteria) this;
         }
 
-        public Criteria andBelongGroupNotBetween(String value1, String value2) {
-            addCriterion("belong_group not between", value1, value2, "belongGroup");
+        public Criteria andLinkageIsNotNull() {
+            addCriterion("linkage is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageEqualTo(Long value) {
+            addCriterion("linkage =", value, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageNotEqualTo(Long value) {
+            addCriterion("linkage <>", value, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageGreaterThan(Long value) {
+            addCriterion("linkage >", value, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageGreaterThanOrEqualTo(Long value) {
+            addCriterion("linkage >=", value, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageLessThan(Long value) {
+            addCriterion("linkage <", value, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageLessThanOrEqualTo(Long value) {
+            addCriterion("linkage <=", value, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageIn(List<Long> values) {
+            addCriterion("linkage in", values, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageNotIn(List<Long> values) {
+            addCriterion("linkage not in", values, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageBetween(Long value1, Long value2) {
+            addCriterion("linkage between", value1, value2, "linkage");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkageNotBetween(Long value1, Long value2) {
+            addCriterion("linkage not between", value1, value2, "linkage");
             return (Criteria) this;
         }
     }
