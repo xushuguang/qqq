@@ -20,11 +20,15 @@ var snmp = {
     },
     addTabs:function (text,href) {
         //新增选项卡
-        $('#tab').tabs('add', {
-            title: text,
-            href: href,
-            closable: true
-        });
+        if($('#tab').tabs('exists',title)){
+            $('#tab').tabs('select',title)
+        }else{
+            $('#tab').tabs('add', {
+                title: title,
+                href: href,
+                closable: true
+            });
+        }
     },
     closeTabs:function (text) {
         $('#tab').tabs('close',text);

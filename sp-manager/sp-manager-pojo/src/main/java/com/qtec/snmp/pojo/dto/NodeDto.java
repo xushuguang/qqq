@@ -9,14 +9,16 @@ import java.util.List;
  * Version:V1.0
  */
 public class NodeDto {
-    private String nodeName;
+    private String name;
     private String nodeIp;
     private List<Long> ids;
-    public String getNodeName() {
-        return nodeName;
+
+    public String getName() {
+        return name;
     }
-    public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getNodeIp() {

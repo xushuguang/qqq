@@ -1,6 +1,11 @@
 package com.qtec.snmp.service;
 
-import com.qtec.snmp.pojo.po.Node;
+import com.qtec.snmp.pojo.dto.NodeDto;
+import com.qtec.snmp.pojo.po.NetElement;
+import com.qtec.snmp.pojo.vo.LinkVo;
+import com.qtec.snmp.pojo.vo.NodeVo;
+
+import java.util.List;
 
 /**
  * User: james.xu
@@ -9,5 +14,11 @@ import com.qtec.snmp.pojo.po.Node;
  * Version:V1.0
  */
 public interface NodeService {
-    int addNode(Node node);
+    boolean addNode(NodeDto nodeDto);
+
+    List<NodeVo> listNodeVo();
+
+    List<LinkVo> listLinkVo();
+
+    List<NetElement> getNodeDetails(String nodeName);
 }

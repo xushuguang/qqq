@@ -433,66 +433,6 @@ public class NetElementExample {
             addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
-
-        public Criteria andLinkageIsNull() {
-            addCriterion("linkage is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageIsNotNull() {
-            addCriterion("linkage is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageEqualTo(Long value) {
-            addCriterion("linkage =", value, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageNotEqualTo(Long value) {
-            addCriterion("linkage <>", value, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageGreaterThan(Long value) {
-            addCriterion("linkage >", value, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageGreaterThanOrEqualTo(Long value) {
-            addCriterion("linkage >=", value, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageLessThan(Long value) {
-            addCriterion("linkage <", value, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageLessThanOrEqualTo(Long value) {
-            addCriterion("linkage <=", value, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageIn(List<Long> values) {
-            addCriterion("linkage in", values, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageNotIn(List<Long> values) {
-            addCriterion("linkage not in", values, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageBetween(Long value1, Long value2) {
-            addCriterion("linkage between", value1, value2, "linkage");
-            return (Criteria) this;
-        }
-
-        public Criteria andLinkageNotBetween(Long value1, Long value2) {
-            addCriterion("linkage not between", value1, value2, "linkage");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

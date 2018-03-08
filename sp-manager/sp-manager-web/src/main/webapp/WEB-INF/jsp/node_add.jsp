@@ -6,7 +6,7 @@
             <tr>
                 <td class="label">node name(节点名)：</td>
                 <td>
-                    <input class="easyui-validatebox" type="text" id="nodeName" name="nodeName"
+                    <input class="easyui-validatebox" type="text" id="name" name="name"
                            data-options="required:true" style="width:100%">
                 </td>
             </tr>
@@ -57,7 +57,7 @@
     //表单提交动作
     function submitForm() {
         //获取选取框选取的网元设备id
-        var ids = $('#ids').combogrid('getValues');
+        //var ids = $('#ids').combogrid('getValues');
         $('#nodeAddForm').form('submit', {
             //表单提交后交给谁处理
             url: 'addNode',
@@ -75,7 +75,6 @@
     }
     //表单重置动作
     function clearForm() {
-        alert($("#ids").val());
         $('#nodeAddForm').form('clear');
     }
 </script>

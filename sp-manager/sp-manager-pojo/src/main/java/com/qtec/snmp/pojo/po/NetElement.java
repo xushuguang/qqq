@@ -11,8 +11,6 @@ public class NetElement {
 
     private Integer state;
 
-    private Long linkage;
-
     public Long getId() {
         return id;
     }
@@ -51,13 +49,5 @@ public class NetElement {
 
     public void setState(Integer state) {
         this.state = state;
-    }
-
-    public Long getLinkage() {
-        return linkage;
-    }
-
-    public void setLinkage(Long linkage) {
-        this.linkage = linkage;
     }
 }
