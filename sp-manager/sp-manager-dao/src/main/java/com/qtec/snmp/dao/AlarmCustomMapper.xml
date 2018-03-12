@@ -42,7 +42,6 @@
       a.alarm_ack = 'RT'
       <include refid="Alarm_Where_Clause"/>
     </where>
-    limit #{page.offset},#{page.rows}
   </select>
   <select id="countHistoryAlarms" resultType="_long">
     select count(1) from alarm a

@@ -32,7 +32,7 @@ public class UserAction {
     /**
      * 添加用户
      * @param user
-     * @return
+     * @return MessageResult
      */
     @ResponseBody
     @RequestMapping(value = "/insertUser",method = RequestMethod.POST)
@@ -65,7 +65,7 @@ public class UserAction {
      * 用户登陆
      * @param username
      * @param password
-     * @return
+     * @return MessageResult
      */
     @ResponseBody
     @RequestMapping(value = "/loginUser",method = RequestMethod.POST)
@@ -91,6 +91,12 @@ public class UserAction {
         }
         return mr;
     }
+
+    /**
+     * 获取当前用户的有效期
+     * @param username
+     * @return boolean
+     */
     @ResponseBody
     @RequestMapping(value = "/selectTime/{username}",method = RequestMethod.GET)
     public boolean selectTime(@RequestParam("username")String username){
@@ -104,12 +110,16 @@ public class UserAction {
         }
         return flag;
     }
+
+    /**
+     * 获取所有用户信息
+     * @return Result
+     */
     @ResponseBody
     @RequestMapping(value = "/listUserVo",method = RequestMethod.GET)
     public Result<UserVo> listUserVo(){
         Result<UserVo> result = null;
         try {
-            System.out.println("11111111111111");
             result = userService.listUser();
         }catch (Exception e){
             logger.error(e.getMessage(), e);
@@ -118,6 +128,11 @@ public class UserAction {
         return result;
     }
 
+    /**
+     * 退出当前登陆用户
+     * @param request
+     * @param response
+     */
     @ResponseBody
     @RequestMapping(value = "/exitUser",method = RequestMethod.GET)
     public void exitUser(HttpServletRequest request, HttpServletResponse response){

@@ -178,4 +178,8 @@
       alarm_severity = #{alarmSeverity,jdbcType=VARCHAR}
     where type_id = #{typeId,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectAlarmSeverity" resultType="String">
+    SELECT DISTINCT(alarm_severity) from alarm_type
+  </select>
 </mapper>

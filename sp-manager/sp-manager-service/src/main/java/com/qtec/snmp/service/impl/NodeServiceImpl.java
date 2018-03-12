@@ -1,7 +1,6 @@
 package com.qtec.snmp.service.impl;
 
-import com.qtec.snmp.common.dto.TreeNode;
-import com.qtec.snmp.dao.NEPairingMapper;
+import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
 import com.qtec.snmp.dao.NodeMapper;
 import com.qtec.snmp.dao.NodeNEMapper;
@@ -12,14 +11,11 @@ import com.qtec.snmp.pojo.vo.NodeVo;
 import com.qtec.snmp.service.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.snmp4j.smi.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: james.xu
@@ -35,7 +31,7 @@ public class NodeServiceImpl implements NodeService{
     @Autowired
     private NodeNEMapper nodeNEDao;
     @Autowired
-    private NEPairingMapper nePairingDao;
+    private NERelationMapper neRelationDao;
     @Autowired
     private NetElementMapper netElementDao;
 
@@ -122,12 +118,12 @@ public class NodeServiceImpl implements NodeService{
         List<LinkVo> list = null;
         try {
             list = new ArrayList<LinkVo>();
-            //先查询ne_pairing表中的数据
-            List<NEPairing> nePairings = nePairingDao.selectByExample(new NEPairingExample());
-            for (NEPairing nePairing : nePairings){
+            //先查询ne_relation表中的数据
+            List<NERelation> neRelations = neRelationDao.selectByExample(new NERelationExample());
+            for (NERelation neRelation : neRelations){
                 //查询source
                 NodeNEExample nodeNEExample1= new NodeNEExample();
-                nodeNEExample1.createCriteria().andNeidEqualTo(nePairing.getNid());
+                nodeNEExample1.createCriteria().andNeidEqualTo(neRelation.getNeid());
                 List<NodeNE> nodeNES1 = nodeNEDao.selectByExample(nodeNEExample1);
                 //获取节点id
                 Long nid1 = nodeNES1.get(0).getNid();
@@ -137,22 +133,25 @@ public class NodeServiceImpl implements NodeService{
                 List<Node> nodes1 = nodeDao.selectByExample(nodeExample1);
                 String source = nodes1.get(0).getNodeName();
                 //查询target
-                NodeNEExample nodeNEExample2= new NodeNEExample();
-                nodeNEExample2.createCriteria().andNeidEqualTo(nePairing.getPairingId());
-                List<NodeNE> nodeNES2 = nodeNEDao.selectByExample(nodeNEExample2);
-                //获取节点id
-                Long nid2 = nodeNES2.get(0).getNid();
-                //根据节点id查询到节点名
-                NodeExample nodeExample2 = new NodeExample();
-                nodeExample2.createCriteria().andIdEqualTo(nid2);
-                List<Node> nodes2 = nodeDao.selectByExample(nodeExample2);
-                String target = nodes2.get(0).getNodeName();
-                //封装进linkVo对象
-                LinkVo linkVo = new LinkVo();
-                linkVo.setSource(source);
-                linkVo.setTarget(target);
-                //存入list
-                list.add(linkVo);
+                //如果存在pairingId
+                if(neRelation.getPairingId()!=null){
+                    NodeNEExample nodeNEExample2= new NodeNEExample();
+                    nodeNEExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
+                    List<NodeNE> nodeNES2 = nodeNEDao.selectByExample(nodeNEExample2);
+                    //获取节点id
+                    Long nid2 = nodeNES2.get(0).getNid();
+                    //根据节点id查询到节点名
+                    NodeExample nodeExample2 = new NodeExample();
+                    nodeExample2.createCriteria().andIdEqualTo(nid2);
+                    List<Node> nodes2 = nodeDao.selectByExample(nodeExample2);
+                    String target = nodes2.get(0).getNodeName();
+                    //封装进linkVo对象
+                    LinkVo linkVo = new LinkVo();
+                    linkVo.setSource(source);
+                    linkVo.setTarget(target);
+                    //存入list
+                    list.add(linkVo);
+                }
             }
 
         }catch (Exception e) {

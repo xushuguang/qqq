@@ -5,36 +5,11 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<div id="alarmListToolbar">
-    <div style="padding: 5px; background-color: #fff;">
-        <from id="alarmForm">
-        <label>告警网元：</label>
-        <input class="easyui-textbox" type="text" id="qkdIp">
-        &nbsp;&nbsp;
-        <label>告警级别：</label>
-        <select id="alarmSeverity" class="easyui-combobox">
-            <option value="" disabled selected>请选择</option>
-            <option value="Fatal">Fatal</option>
-            <option value="Error">Error</option>
-            <option value="Warning">Warning</option>
-            <option value="Info">Info</option>
-        </select>
-        &nbsp;&nbsp;
-        <label>告警时间：</label>
-        从：<input type="text" id="time1" style="width: 195px" editable="false"
-                 class="easyui-datetimebox"/>
-        到：<input type="text" id="time2" style="width: 195px" editable="false"
-                 class="easyui-datetimebox"/>
-        &nbsp;&nbsp;
-            <button onclick="searchForm()" type="button" class="easyui-linkbutton">搜索</button>
-            <button onclick="clearForm()" type="button" class="easyui-linkbutton">重置</button>
-        </from>
-    </div>
-    <div>
-        <button onclick="start()" class="easyui-linkbutton" data-options="iconCls:'icon-up',plain:true">开始</button>
-        <button onclick="stop()" class="easyui-linkbutton" data-options="iconCls:'icon-down',plain:true">停止</button>
-        <button onclick="remove()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</button>
-    </div>
+<div>
+    <button onclick="start()" class="easyui-linkbutton" data-options="iconCls:'icon-up',plain:true">开始</button>
+    <button onclick="stop()" class="easyui-linkbutton" data-options="iconCls:'icon-down',plain:true">停止</button>
+    <button onclick="remove()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</button>
+    <button onclick="refresh()" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">刷新</button>
 </div>
 <%--容器放好--%>
 <table id="dgAlarms"></table>
@@ -115,18 +90,26 @@
         rownumbers: true,
         //添加工具栏
         toolbar: '#alarmListToolbar',
-        //初始化页面数据条数
-        pageSize: 20,
-        //在设置分页属性的时候 初始化页面大小选择列表
-        pageList: [20, 50, 100],
         //请求服务器端数据
         url: 'listRTAlarms',
         //请求方式，默认是POST
         method: 'get',
         //是否显示分页工具栏
-        pagination: true,
+        pagination: false,
         //自适应父容器
         fit: true,
+        //行样式
+        rowStyler:function (index, row) {
+            if(row.alarmSeverity=='Fatal'){
+                return 'background-color:red;';
+            }else if(row.alarmSeverity=='Error'){
+                return 'background-color:orange;';
+            }else if(row.alarmSeverity=='Warning'){
+                return 'background-color:burlywood;';
+            }else if(row.alarmSeverity=='Info'){
+                return 'background-color:darkgray;';
+            }
+        },
         //列属性
         columns: [[
             {field: 'alarmType', title: '告警类型'},
@@ -137,4 +120,9 @@
             {field: 'qkdIp', title: '告警网元'}
         ]]
     });
+    //实时刷新
+    //timerID = setInterval("refresh()",2000);
+    function refresh(){
+        $('#dgAlarms').datagrid('reload');
+    }
 </script>

@@ -104,6 +104,18 @@
         pagination: true,
         //自适应父容器
         fit: true,
+        //行样式
+        rowStyler:function (index, row) {
+            if(row.alarmSeverity=='Fatal'){
+                return 'background-color:red;';
+            }else if(row.alarmSeverity=='Error'){
+                return 'background-color:orange;';
+            }else if(row.alarmSeverity=='Warning'){
+                return 'background-color:burlywood;';
+            }else if(row.alarmSeverity=='Info'){
+                return 'background-color:darkgray;';
+            }
+        },
         //列属性
         columns: [[
             {field: 'ck', checkbox: true},

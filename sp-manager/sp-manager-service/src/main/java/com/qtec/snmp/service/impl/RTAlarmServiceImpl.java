@@ -5,6 +5,7 @@ import com.qtec.snmp.common.dto.Page;
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.dao.AlarmCustomMapper;
 import com.qtec.snmp.dao.AlarmMapper;
+import com.qtec.snmp.dao.AlarmTypeMapper;
 import com.qtec.snmp.pojo.po.Alarm;
 import com.qtec.snmp.pojo.po.AlarmExample;
 import com.qtec.snmp.pojo.vo.AlarmQuery;
@@ -34,20 +35,21 @@ public class RTAlarmServiceImpl implements RTAlarmService{
     private AlarmMapper alarmDao;
     @Autowired
     private AlarmCustomMapper AlarmCustomDao;
+    @Autowired
+    private AlarmTypeMapper alarmTypeDao;
     @Override
-    public Result<AlarmVo> listRTAlarm(Page page, Order order, AlarmQuery query) {
+    public Result<AlarmVo> listRTAlarm(Order order, AlarmQuery query) {
         Result<AlarmVo> result = null;
         try {
-            //1封装一个Map
+            //封装一个Map
             Map<String,Object> map = new HashMap<String, Object>();
-            map.put("page", page);
             map.put("order", order);
             map.put("query", query);
-            //1.先查询总记录
+            //先查询总记录
             long total = AlarmCustomDao.countAlarms(map);
-            //2 查询指定页码的记录集合
+            //查询指定页码的记录集合
             List<AlarmVo> list = AlarmCustomDao.listAlarms(map);
-            //6 存放result中
+            //存放result中
             result = new Result<AlarmVo>();
             result.setTotal(total);
             result.setRows(list);
@@ -78,33 +80,25 @@ public class RTAlarmServiceImpl implements RTAlarmService{
     public List<EchartsVo> listRTalarmVo() {
         List<EchartsVo> list = null;
         try {
-            //查询紧急告警数
-            EchartsVo vo1 = new EchartsVo();
-            int value1 = AlarmCustomDao.countRTalarmNum("Fatal");
-            vo1.setName("紧急告警");
-            vo1.setValue(value1);
-            //查询严重告警数
-            EchartsVo vo2 = new EchartsVo();
-            int value2 = AlarmCustomDao.countRTalarmNum("Error");
-            vo2.setName("严重告警");
-            vo2.setValue(value2);
-            //查询重要告警数
-            EchartsVo vo3 = new EchartsVo();
-            int value3 = AlarmCustomDao.countRTalarmNum("Warning");
-            vo3.setName("重要告警");
-            vo3.setValue(value3);
-            //查询中等告警数
-            EchartsVo vo4 = new EchartsVo();
-            int value4 = AlarmCustomDao.countRTalarmNum("Info");
-            vo4.setName("中等告警");
-            vo4.setValue(value4);
-            //放入list集合
             list = new ArrayList<EchartsVo>();
-            list.add(vo1);
-            list.add(vo2);
-            list.add(vo3);
-            list.add(vo4);
-
+            //先查询告警类型
+            List<String> alarmSeverityList= alarmTypeDao.selectAlarmSeverity();
+            //遍历查询每个类型的告警数并封装进EchartsVo
+            for (String alarmServerity : alarmSeverityList){
+                EchartsVo vo = new EchartsVo();
+                int value = AlarmCustomDao.countRTalarmNum(alarmServerity);
+                if (alarmServerity.equals("Fatal")){
+                    vo.setName("紧急告警");
+                }else if (alarmServerity.equals("Error")){
+                    vo.setName("严重告警");
+                }else if (alarmServerity.equals("Warning")){
+                    vo.setName("重要告警");
+                }else if (alarmServerity.equals("Info")){
+                    vo.setName("中等告警");
+                }
+                vo.setValue(value);
+                list.add(vo);
+            }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();

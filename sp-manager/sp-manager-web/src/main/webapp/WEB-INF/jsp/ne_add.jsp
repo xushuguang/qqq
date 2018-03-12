@@ -21,8 +21,7 @@
                 <td class="label">NE type(类型)：</td>
                 <td>
                     <select id="type" class="easyui-combobox" name="type" data-options="required:true" style="width:200px;">
-                        <option value="QTN">QTN</option>
-                        <option value="QKM">QKM</option>
+                        <option value="TNS">TNS</option>
                         <option value="QNC">QNC</option>
                         <option value="QKD">QKD</option>
                     </select>

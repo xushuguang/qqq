@@ -3,14 +3,14 @@ package com.qtec.snmp.pojo.po;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NEPairingExample {
+public class NERelationExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public NEPairingExample() {
+    public NERelationExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -104,63 +104,63 @@ public class NEPairingExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andNidIsNull() {
-            addCriterion("nid is null");
+        public Criteria andNeidIsNull() {
+            addCriterion("neid is null");
             return (Criteria) this;
         }
 
-        public Criteria andNidIsNotNull() {
-            addCriterion("nid is not null");
+        public Criteria andNeidIsNotNull() {
+            addCriterion("neid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNidEqualTo(Long value) {
-            addCriterion("nid =", value, "nid");
+        public Criteria andNeidEqualTo(Long value) {
+            addCriterion("neid =", value, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidNotEqualTo(Long value) {
-            addCriterion("nid <>", value, "nid");
+        public Criteria andNeidNotEqualTo(Long value) {
+            addCriterion("neid <>", value, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidGreaterThan(Long value) {
-            addCriterion("nid >", value, "nid");
+        public Criteria andNeidGreaterThan(Long value) {
+            addCriterion("neid >", value, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidGreaterThanOrEqualTo(Long value) {
-            addCriterion("nid >=", value, "nid");
+        public Criteria andNeidGreaterThanOrEqualTo(Long value) {
+            addCriterion("neid >=", value, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidLessThan(Long value) {
-            addCriterion("nid <", value, "nid");
+        public Criteria andNeidLessThan(Long value) {
+            addCriterion("neid <", value, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidLessThanOrEqualTo(Long value) {
-            addCriterion("nid <=", value, "nid");
+        public Criteria andNeidLessThanOrEqualTo(Long value) {
+            addCriterion("neid <=", value, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidIn(List<Long> values) {
-            addCriterion("nid in", values, "nid");
+        public Criteria andNeidIn(List<Long> values) {
+            addCriterion("neid in", values, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidNotIn(List<Long> values) {
-            addCriterion("nid not in", values, "nid");
+        public Criteria andNeidNotIn(List<Long> values) {
+            addCriterion("neid not in", values, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidBetween(Long value1, Long value2) {
-            addCriterion("nid between", value1, value2, "nid");
+        public Criteria andNeidBetween(Long value1, Long value2) {
+            addCriterion("neid between", value1, value2, "neid");
             return (Criteria) this;
         }
 
-        public Criteria andNidNotBetween(Long value1, Long value2) {
-            addCriterion("nid not between", value1, value2, "nid");
+        public Criteria andNeidNotBetween(Long value1, Long value2) {
+            addCriterion("neid not between", value1, value2, "neid");
             return (Criteria) this;
         }
 
@@ -221,6 +221,66 @@ public class NEPairingExample {
 
         public Criteria andPairingIdNotBetween(Long value1, Long value2) {
             addCriterion("pairing_id not between", value1, value2, "pairingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdIsNull() {
+            addCriterion("parent_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdIsNotNull() {
+            addCriterion("parent_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdEqualTo(Long value) {
+            addCriterion("parent_id =", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotEqualTo(Long value) {
+            addCriterion("parent_id <>", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdGreaterThan(Long value) {
+            addCriterion("parent_id >", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("parent_id >=", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdLessThan(Long value) {
+            addCriterion("parent_id <", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdLessThanOrEqualTo(Long value) {
+            addCriterion("parent_id <=", value, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdIn(List<Long> values) {
+            addCriterion("parent_id in", values, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotIn(List<Long> values) {
+            addCriterion("parent_id not in", values, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdBetween(Long value1, Long value2) {
+            addCriterion("parent_id between", value1, value2, "parentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIdNotBetween(Long value1, Long value2) {
+            addCriterion("parent_id not between", value1, value2, "parentId");
             return (Criteria) this;
         }
     }

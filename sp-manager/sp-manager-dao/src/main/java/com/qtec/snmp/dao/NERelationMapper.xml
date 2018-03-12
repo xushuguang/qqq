@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.qtec.snmp.dao.NEPairingMapper" >
-  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.NEPairing" >
-    <result column="nid" property="nid" jdbcType="BIGINT" />
+<mapper namespace="com.qtec.snmp.dao.NERelationMapper" >
+  <resultMap id="BaseResultMap" type="com.qtec.snmp.pojo.po.NERelation" >
+    <result column="neid" property="neid" jdbcType="BIGINT" />
     <result column="pairing_id" property="pairingId" jdbcType="BIGINT" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -64,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    nid, pairing_id
+    neid, pairing_id, parent_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.NEPairingExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.NERelationExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from ne_pairing
+    from ne_relation
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -80,49 +81,60 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.NEPairingExample" >
-    delete from ne_pairing
+  <delete id="deleteByExample" parameterType="com.qtec.snmp.pojo.po.NERelationExample" >
+    delete from ne_relation
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.NEPairing" >
-    insert into ne_pairing (nid, pairing_id)
-    values (#{nid,jdbcType=BIGINT}, #{pairingId,jdbcType=BIGINT})
+  <insert id="insert" parameterType="com.qtec.snmp.pojo.po.NERelation" >
+    insert into ne_relation (neid, pairing_id, parent_id
+      )
+    values (#{neid,jdbcType=BIGINT}, #{pairingId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.NEPairing" >
-    insert into ne_pairing
+  <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.NERelation" >
+    insert into ne_relation
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="nid != null" >
-        nid,
+      <if test="neid != null" >
+        neid,
       </if>
       <if test="pairingId != null" >
         pairing_id,
       </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="nid != null" >
-        #{nid,jdbcType=BIGINT},
+      <if test="neid != null" >
+        #{neid,jdbcType=BIGINT},
       </if>
       <if test="pairingId != null" >
         #{pairingId,jdbcType=BIGINT},
       </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.NEPairingExample" resultType="java.lang.Integer" >
-    select count(*) from ne_pairing
+  <select id="countByExample" parameterType="com.qtec.snmp.pojo.po.NERelationExample" resultType="java.lang.Integer" >
+    select count(*) from ne_relation
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update ne_pairing
+    update ne_relation
     <set >
-      <if test="record.nid != null" >
-        nid = #{record.nid,jdbcType=BIGINT},
+      <if test="record.neid != null" >
+        neid = #{record.neid,jdbcType=BIGINT},
       </if>
       <if test="record.pairingId != null" >
         pairing_id = #{record.pairingId,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -130,9 +142,10 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update ne_pairing
-    set nid = #{record.nid,jdbcType=BIGINT},
-      pairing_id = #{record.pairingId,jdbcType=BIGINT}
+    update ne_relation
+    set neid = #{record.neid,jdbcType=BIGINT},
+      pairing_id = #{record.pairingId,jdbcType=BIGINT},
+      parent_id = #{record.parentId,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

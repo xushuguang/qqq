@@ -67,9 +67,11 @@ public class UserGroupServiceImpl implements UserGroupService{
     public List<ComboNode> listComboNode() {
         List<ComboNode> list = null;
         try {
+            //先查询所有UserGroup
             UserGroupExample example = new UserGroupExample();
             List<UserGroup> userGroups = userGroupDao.selectByExample(example);
-            list = new ArrayList<ComboNode>();
+            list = new ArrayList<>();
+            //遍历封装并加入list中
             for (UserGroup userGroup : userGroups){
                 ComboNode comboNode = new ComboNode();
                 comboNode.setId(userGroup.getId());

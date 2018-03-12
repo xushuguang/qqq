@@ -208,4 +208,9 @@
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <!--自己后加的-->
+  <select id="selectType" resultType="String">
+    SELECT DISTINCT(type) FROM net_element;
+  </select>
 </mapper>

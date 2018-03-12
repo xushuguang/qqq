@@ -9,5 +9,10 @@ import com.qtec.snmp.pojo.po.LocalNodeCfg;
  * Version:V1.0
  */
 public interface LocalNodeService {
+    /**
+     * 根据ip查询local信息
+     * @param ip
+     * @return localNodeCfg
+     */
     LocalNodeCfg searchLocalNodeCfg(String ip);
 }

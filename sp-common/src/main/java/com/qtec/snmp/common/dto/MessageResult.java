@@ -1,5 +1,8 @@
 package com.qtec.snmp.common.dto;
 
+/**
+ * 后台给前端发送的消息类
+ */
 public class MessageResult {
 
     private boolean success;

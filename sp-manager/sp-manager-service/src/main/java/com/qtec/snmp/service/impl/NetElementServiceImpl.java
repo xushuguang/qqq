@@ -1,10 +1,12 @@
 package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.common.utils.GetStateUtil;
+import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
-import com.qtec.snmp.pojo.po.NetElement;
-import com.qtec.snmp.pojo.po.NetElementExample;
+import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.pojo.vo.EchartsVo;
+import com.qtec.snmp.pojo.vo.LinkVo;
+import com.qtec.snmp.pojo.vo.NodeVo;
 import com.qtec.snmp.service.NetElementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,9 @@ public class NetElementServiceImpl implements NetElementService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private NetElementMapper netElementDao;
+    @Autowired
+    private NERelationMapper neRelationDao;
+
     @Override
     public int saveNetElement(NetElement netElement) {
         int insert = 0;
@@ -48,55 +53,123 @@ public class NetElementServiceImpl implements NetElementService {
         }
         return insert;
     }
+
     @Override
-    public List<NetElement> listNetElemet() {
-        List<NetElement> list = null;
+    public List<EchartsVo> statisticsNetElemet() {
+        List<EchartsVo> list = null;
         try {
-            list = netElementDao.selectByExample( new NetElementExample());
-        }catch (Exception e){
+            list = new ArrayList<>();
+            List<String> types = netElementDao.selectType();
+            for (String type : types){
+                NetElementExample example = new NetElementExample();
+                example.createCriteria().andTypeEqualTo(type);
+                int value = netElementDao.selectByExample(example).size();
+                EchartsVo vo = new EchartsVo();
+                vo.setName(type);
+                vo.setValue(value);
+                list.add(vo);
+            }
+        }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
         return list;
     }
+
     @Override
-    public List<EchartsVo> listNetElemetVo() {
-        List<EchartsVo> list = null;
+    public List<NodeVo> listNodeVo() {
+        List<NodeVo> list = null;
         try {
-            //查询 QNC
-            NetElementExample example1 = new NetElementExample();
-            example1.createCriteria().andTypeEqualTo("QNC");
-            int value1 = netElementDao.selectByExample(example1).size();
-            EchartsVo vo1 = new EchartsVo();
-            vo1.setName("QNC");
-            vo1.setValue(value1);
-            //查询 QSC
-            NetElementExample example2 = new NetElementExample();
-            example2.createCriteria().andTypeEqualTo("QSC");
-            int value2 = netElementDao.selectByExample(example2).size();
-            EchartsVo vo2 = new EchartsVo();
-            vo2.setName("QSC");
-            vo2.setValue(value2);
-            //查询 QKM
-            NetElementExample example3 = new NetElementExample();
-            example3.createCriteria().andTypeEqualTo("QKM");
-            int value3 = netElementDao.selectByExample(example3).size();
-            EchartsVo vo3 = new EchartsVo();
-            vo3.setName("QKM");
-            vo3.setValue(value3);
-            //查询 QKD
-            NetElementExample example4 = new NetElementExample();
-            example4.createCriteria().andTypeEqualTo("QKD");
-            int value4 = netElementDao.selectByExample(example4).size();
-            EchartsVo vo4 = new EchartsVo();
-            vo4.setName("QKD");
-            vo4.setValue(value4);
-            //存入集合
-            list = new ArrayList<EchartsVo>();
-            list.add(vo1);
-            list.add(vo2);
-            list.add(vo3);
-            list.add(vo4);
+            list = new ArrayList<>();
+            //先查询管理层设备QTN,QNC
+            NetElementExample netElementExample = new NetElementExample();
+            netElementExample.createCriteria().andTypeNotEqualTo("QKD");
+            List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
+            //封装进nodeVo
+            for (NetElement netElement : netElements){
+                NodeVo nodeVo = new NodeVo();
+                nodeVo.setName(netElement.getNeName());
+                nodeVo.setLabel(netElement.getNeName());
+                nodeVo.setCategory(2);
+                nodeVo.setSymbolSize(20);
+                nodeVo.setFlag(true);
+                nodeVo.setIgnore(true);
+                list.add(nodeVo);
+            }
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<LinkVo> listLinkVo() {
+        List<LinkVo> list = null;
+        try {
+            list = new ArrayList<LinkVo>();
+            //先查询ne_relation表中的数据
+            List<NERelation> neRelations = neRelationDao.selectByExample(new NERelationExample());
+            for (NERelation neRelation : neRelations){
+                //查询source
+                NERelationExample neRelationExample1 = new NERelationExample();
+                neRelationExample1.createCriteria().andNeidEqualTo(neRelation.getNeid());
+                List<NERelation> neRelations1 = neRelationDao.selectByExample(neRelationExample1);
+                //获取节点id
+                Long parentId1 = neRelations1.get(0).getParentId();
+                //根据节点id查询到节点名
+                NetElementExample netElementExample1 = new NetElementExample();
+                netElementExample1.createCriteria().andIdEqualTo(parentId1);
+                List<NetElement> netElements1 = netElementDao.selectByExample(netElementExample1);
+                String source = netElements1.get(0).getNeName();
+                //查询target
+                //如果存在pairingId
+                if(neRelation.getPairingId()!=null){
+                    NERelationExample neRelationExample2 = new NERelationExample();
+                    neRelationExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
+                    List<NERelation> neRelations2 = neRelationDao.selectByExample(neRelationExample2);
+                    //获取节点id
+                    Long parentId2 = neRelations2.get(0).getParentId();
+                    //根据节点id查询到节点名
+                    NetElementExample netElementExample2 = new NetElementExample();
+                    netElementExample2.createCriteria().andIdEqualTo(parentId2);
+                    List<NetElement> netElements2 = netElementDao.selectByExample(netElementExample2);
+                    String target = netElements2.get(0).getNeName();
+                    //封装进linkVo对象
+                    LinkVo linkVo = new LinkVo();
+                    linkVo.setSource(source);
+                    linkVo.setTarget(target);
+                    //存入list
+                    list.add(linkVo);
+                }
+            }
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<NetElement> getNEDetails(String neName) {
+        List<NetElement> list = null;
+        try {
+            list = new ArrayList<>();
+            //先根据neName查询到parentId
+            NetElementExample netElementExample = new NetElementExample();
+            netElementExample.createCriteria().andNeNameEqualTo(neName);
+            List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
+            Long parentId = netElements.get(0).getId();
+            //再根据parentId查询到neid
+            NERelationExample neRelationExample = new NERelationExample();
+            neRelationExample.createCriteria().andParentIdEqualTo(parentId);
+            List<NERelation> neRelations = neRelationDao.selectByExample(neRelationExample);
+            for (NERelation neRelation : neRelations){
+                Long neid = neRelation.getNeid();
+                //根据neid查询netElement
+                NetElement netElement = netElementDao.selectByPrimaryKey(neid);
+                list.add(netElement);
+            }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

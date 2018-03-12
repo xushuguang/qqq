@@ -11,5 +11,10 @@ import java.util.List;
  * Version:V1.0
  */
 public interface MenuService {
+    /**
+     * 查询菜单信息
+     * @param parentid
+     * @return List<TreeNode>
+     */
     List<TreeNode> listMenuForTree(Integer parentid);
 }

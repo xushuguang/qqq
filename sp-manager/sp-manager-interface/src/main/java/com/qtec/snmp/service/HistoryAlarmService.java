@@ -16,7 +16,19 @@ import java.util.List;
  * Version:V1.0
  */
 public interface HistoryAlarmService {
+    /**
+     * 列表查询
+     * @param page
+     * @param order
+     * @param query
+     * @return result
+     */
     Result<AlarmVo> listHistoryAlarms(Page page, Order order, AlarmQuery query);
 
+    /**
+     * 处理告警，更新数据
+     * @param ids
+     * @return int
+     */
     int historyAlarmUp(List<Long> ids);
 }

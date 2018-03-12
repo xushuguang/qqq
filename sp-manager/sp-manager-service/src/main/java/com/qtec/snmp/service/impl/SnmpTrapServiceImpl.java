@@ -110,8 +110,6 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
             for (int i = 0; i < reVBs.size(); i++) {
                 OID oid = reVBs.get(i).getOid();
                 Variable variable = reVBs.get(i).getVariable();
-                //System.out.println(oid);
-                //System.out.println(variable);
                 if (oid.toString().equals("1.3.6.1.4.1.49838.6.3.11.2.1")) {
                     alarm.setTypeId(variable.toInt());
                 } else if (oid.toString().equals("1.3.6.1.4.1.49838.6.3.11.2.3")) {

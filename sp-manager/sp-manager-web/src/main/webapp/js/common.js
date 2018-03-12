@@ -19,12 +19,11 @@ var snmp = {
         });
     },
     addTabs:function (text,href) {
-        //新增选项卡
-        if($('#tab').tabs('exists',title)){
-            $('#tab').tabs('select',title)
+        if($('#tab').tabs('exists',text)){
+            $('#tab').tabs('select',text)
         }else{
             $('#tab').tabs('add', {
-                title: title,
+                title: text,
                 href: href,
                 closable: true
             });

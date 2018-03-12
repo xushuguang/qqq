@@ -28,4 +28,7 @@ public interface AlarmTypeMapper {
     int updateByPrimaryKeySelective(AlarmType record);
 
     int updateByPrimaryKey(AlarmType record);
+
+
+    List<String> selectAlarmSeverity();
 }

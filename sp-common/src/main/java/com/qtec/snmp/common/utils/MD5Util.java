@@ -3,6 +3,7 @@ package com.qtec.snmp.common.utils;
 import java.security.MessageDigest;
 
 /**
+ * md5加密工具类
  * User: james.xu
  * Date: 2018/2/8
  * Time: 13:20

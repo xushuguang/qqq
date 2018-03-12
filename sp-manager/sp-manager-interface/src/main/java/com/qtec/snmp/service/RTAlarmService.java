@@ -1,7 +1,6 @@
 package com.qtec.snmp.service;
 
 import com.qtec.snmp.common.dto.Order;
-import com.qtec.snmp.common.dto.Page;
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.pojo.vo.AlarmQuery;
 import com.qtec.snmp.pojo.vo.AlarmVo;
@@ -16,8 +15,17 @@ import java.util.List;
  * Version:V1.0
  */
 public interface RTAlarmService {
-    Result<AlarmVo> listRTAlarm(Page page, Order order, AlarmQuery query);
+    /**
+     * 查询实时告警
+     * @param order
+     * @param query
+     * @return result
+     */
+    Result<AlarmVo> listRTAlarm(Order order, AlarmQuery query);
 
+    /**
+     * 移除实时告警
+     */
     void removeRTAlarms();
 
     List<EchartsVo> listRTalarmVo();

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 /**
- * get,walk工具类
+ * SNMP get,walk工具类
  * User: james.xu
  * Date: 2018/1/12
  * Time: 13:25

@@ -28,4 +28,6 @@ public interface NetElementMapper {
     int updateByPrimaryKeySelective(NetElement record);
 
     int updateByPrimaryKey(NetElement record);
+
+    List<String> selectType();
 }

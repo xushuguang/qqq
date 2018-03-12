@@ -14,11 +14,29 @@ import java.util.List;
  * Version:V1.0
  */
 public interface NodeService {
+    /**
+     * 添加节点
+     * @param nodeDto
+     * @return boolean
+     */
     boolean addNode(NodeDto nodeDto);
 
+    /**
+     * 查询nodeVo
+     * @return list
+     */
     List<NodeVo> listNodeVo();
 
+    /**
+     * 查询linkVo
+     * @return list
+     */
     List<LinkVo> listLinkVo();
 
+    /**
+     * 查询节点下面的设备详细信息
+     * @param nodeName
+     * @return list
+     */
     List<NetElement> getNodeDetails(String nodeName);
 }
