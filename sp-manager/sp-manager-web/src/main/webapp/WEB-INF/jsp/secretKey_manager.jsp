@@ -20,8 +20,11 @@
         success : function (data) {
             // 绘制图表。
             echarts.init(document.getElementById('sercretKeyManager')).setOption({
+               //标题
                 title: {
-                    text:"密钥管理层"
+                    text:"密钥管理层",
+                    x:'left',
+                    y:'top'
                 },
                 tooltip : {
                     show : true,   //默认显示
@@ -36,40 +39,42 @@
                     confine:false,//是否将 tooltip 框限制在图表的区域内。外层的 dom 被设置为 'overflow: hidden'，或者移动端窄屏，导致 tooltip 超出外界被截断时，此配置比较有用。
                     transitionDuration:0.4,//提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。
                     formatter: function (params,ticket,callback) {
-                        var neName=params.data.name;//当前选中节点数据
-                        $.ajax({
-                            async : true,//设置异、同步加载
-                            cache : false,//false就不会从浏览器缓存中加载请求信息了
-                            type : 'post',
-                            data:{'neName':neName},
-                            dataType : "json",
-                            url : 'getNEDetails',
-                            success : function(data) { //请求成功后处理函数。
-                                var res = "<table><caption align='top'>网元设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='50px'>操作</td></tr>";
-                                for (var i =0;i<data.length;i++){
-                                    var id = data[i].id;
-                                    res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
-                                    console.log(data[i].state)
-                                    if(data[i].state==0){
-                                        res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td>";
-                                    }else if(data[i].state==1){
-                                        res +="<div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td>";
-                                    }else if(data[i].state==2){
-                                        res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td>";
+                        if(params.dataType=="node"){//点击的是点
+                            var neName=params.data.name;//当前选中节点数据
+                            $.ajax({
+                                async : true,//设置异、同步加载
+                                cache : false,//false就不会从浏览器缓存中加载请求信息了
+                                type : 'post',
+                                data:{'neName':neName},
+                                dataType : "json",
+                                url : 'getNEChildren',
+                                success : function(data) { //请求成功后处理函数。
+                                    var res = "<table><caption align='top'>网元设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='50px'>操作</td></tr>";
+                                    for (var i =0;i<data.length;i++){
+                                        var id = data[i].id;
+                                        res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
+                                        if(data[i].state==0){
+                                            res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td>";
+                                        }else if(data[i].state==1){
+                                            res +="<div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td>";
+                                        }else if(data[i].state==2){
+                                            res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td>";
+                                        }
+                                        res += "<td><button onclick='neDetails("+data[i].id+")'>详情</button></td>";
                                     }
-                                    res += "<td><button onclick='neDetails("+data[i].id+")'>详情</button></td>";
+                                    res += '</tr></table>';
+                                    callback(ticket,res);
+                                },
+                                error : function() {//请求失败处理函数
+                                    $.messager.alert('警告', '请求失败！', 'warning');
                                 }
-                                res += '</tr></table>';
-                                callback(ticket,res);
-                            },
-                            error : function() {//请求失败处理函数
-                                $.messager.alert('警告', '请求失败！', 'warning');
-                            }
-                        });
+                            });
+                        }
                         return 'Loading';
                     }
                 },
                 series: [{
+                    layoutAnimation : false,
                     itemStyle: {
                         normal: {
                             label: {
@@ -116,7 +121,8 @@
                     gravity: 1.1,
                     scaling: 1.1,
                     nodes: data.nodes,
-                    links: data.links
+                    links: data.links,
+                    linestyle:{}
                 }]
             });
         }

@@ -13,11 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,11 +116,11 @@ public class NetElementAction {
      * @return String
      */
     @ResponseBody
-    @RequestMapping(value = "/getNEDetails", method = RequestMethod.POST)
-    public String getNEDetails(String neName) {
+    @RequestMapping(value = "/getNEChildren", method = RequestMethod.POST)
+    public String getNEChildren(String neName) {
         String jsonStr = null;
         try {
-            List<NetElement> list = netElementService.getNEDetails(neName);
+            List<NetElement> list = netElementService.getNEChildren(neName);
             jsonStr = JsonUtil.objectToJson(list);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -129,27 +129,11 @@ public class NetElementAction {
         return jsonStr;
     }
     @ResponseBody
-    @RequestMapping(value = "/neDetails", method = RequestMethod.POST)
-    public Result<PropertyGrid> neDetails() {
+    @RequestMapping(value = "/getNEDetails/{id}", method = RequestMethod.POST)
+    public Result<PropertyGrid> neDetails(@PathVariable("id")Long id) {
         Result<PropertyGrid> result = null;
         try {
-            result = new Result();
-            List<PropertyGrid> list = new ArrayList();
-            for (int i=0;i<5;i++){
-                PropertyGrid propertyGrid = new PropertyGrid();
-                propertyGrid.setName("属性"+i);
-                propertyGrid.setValue("值"+i);
-                propertyGrid.setGroup("NE");
-                list.add(propertyGrid);
-            }
-            for (int i=5;i<10;i++){
-                PropertyGrid propertyGrid = new PropertyGrid();
-                propertyGrid.setName("属性"+i);
-                propertyGrid.setValue("值"+i);
-                propertyGrid.setGroup("Paring");
-                list.add(propertyGrid);
-            }
-            result.setRows(list);
+            result= netElementService.getNEDetails(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

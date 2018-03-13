@@ -228,6 +228,7 @@
         }
     });
     //ajax动态生成设备拓扑图
+    var myChart = echarts.init(document.getElementById('Equipment'));
     $.ajax({
         type: "get",
         async : true,
@@ -235,7 +236,7 @@
         dataType: "json",
         success : function (data) {
             // 绘制图表。
-            echarts.init(document.getElementById('Equipment')).setOption({
+            myChart.setOption({
                 title: {
                     text:"设备拓扑图"
                 },
@@ -252,34 +253,40 @@
                     confine:true,//是否将 tooltip 框限制在图表的区域内。外层的 dom 被设置为 'overflow: hidden'，或者移动端窄屏，导致 tooltip 超出外界被截断时，此配置比较有用。
                     transitionDuration:0.4,//提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。
                     formatter: function (params,ticket,callback) {
-                        var nodeName=params.data.name;//当前选中节点数据
-                        $.ajax({
-                            async : true,//设置异、同步加载
-                            cache : false,//false就不会从浏览器缓存中加载请求信息了
-                            type : 'post',
-                            data:{"nodeName":nodeName},
-                            dataType : "json",
-                            url : 'getNodeDetails',
-                            success : function(data) { //请求成功后处理函数。
-                                var res = "<table><caption align='top'>网元设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td></tr>";
-                                for (var i =0;i<data.length;i++){
-                                    res += '<tr><td>'+data[i].neName+'</td><td>'+data[i].neIp+'</td><td>';
-                                    if(data[i].state==0){
-                                       res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td></tr>";
-                                    }else if(data[i].state==1){
-                                        res +="<div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td></tr>";
-                                    }else if(data[i].state==2){
-                                        res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td></tr>";
-                                    }
+                        if (params.dataType=='node'){//选择的是节点
+                            var nodeName=params.data.name;//当前选中节点数据
+                            $.ajax({
+                                async : true,//设置异、同步加载
+                                cache : false,//false就不会从浏览器缓存中加载请求信息了
+                                type : 'post',
+                                data:{"nodeName":nodeName},
+                                dataType : "json",
+                                url : 'getNodeDetails',
+                                success : function(data) { //请求成功后处理函数。
+                                   var res = "<table><caption align='top'>网元设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td></tr>";
+                                    for (var i =0;i<data.length;i++){
+                                        res += '<tr><td>'+data[i].neName+'</td><td>'+data[i].neIp+'</td><td>';
+                                        if(data[i].state==0){
+                                            res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td></tr>";
+                                        }else if(data[i].state==1){
+                                            res +="<div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td></tr>";
+                                        }else if(data[i].state==2){
+                                            res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td></tr>";
+                                        }
 
+                                    }
+                                    res += '</table>';
+                                    callback(ticket,res);
+                                },
+                                error : function() {//请求失败处理函数
+                                    $.messager.alert('警告', '请求失败！', 'warning');
                                 }
-                                res += '</table>';
-                               callback(ticket,res);
-                            },
-                            error : function() {//请求失败处理函数
-                                $.messager.alert('警告', '请求失败！', 'warning');
-                            }
-                        });
+
+                            });
+                        }else if (params.dataType=='edge'){//选择的是连线
+                            var sss = "<span>11111</span>";
+                            callback(ticket,sss);
+                        }
                         return 'Loading';
                     }
                 },
@@ -287,6 +294,11 @@
                     layoutAnimation : false,
                     itemStyle: {
                         normal: {
+                            lineWidth:10,
+                            text:'丽萨-乔布斯',
+                            textColor:'#030303',
+                            textFont:'bold 15px verdana',
+                            textPosition:'inside',
                             label: {
                                 position: 'top',
                                 show: true,
@@ -311,7 +323,7 @@
                     },
                     force:{
                         initLayout: 'circular',//初始布局
-                        repulsion:130,//斥力大小
+                        repulsion:600,//斥力大小
                     },
 
                     animation: false,

@@ -1,5 +1,7 @@
 package com.qtec.snmp.service.impl;
 
+import com.qtec.snmp.common.dto.PropertyGrid;
+import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.common.utils.GetStateUtil;
 import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
@@ -151,7 +153,7 @@ public class NetElementServiceImpl implements NetElementService {
     }
 
     @Override
-    public List<NetElement> getNEDetails(String neName) {
+    public List<NetElement> getNEChildren(String neName) {
         List<NetElement> list = null;
         try {
             list = new ArrayList<>();
@@ -175,5 +177,79 @@ public class NetElementServiceImpl implements NetElementService {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public Result<PropertyGrid> getNEDetails(Long id) {
+        Result<PropertyGrid> result = null;
+        try {
+            //先根据id查到网元对端pairingid和parentid
+            NERelationExample neRelationExample = new NERelationExample();
+            neRelationExample.createCriteria().andNeidEqualTo(id);
+            NERelation neRelation = neRelationDao.selectByExample(neRelationExample).get(0);
+            //新建一个list用于保存
+            List<PropertyGrid> list = new ArrayList();
+            //根据id查到网元信息
+            NetElement netElement = netElementDao.selectByPrimaryKey(id);
+            //封装
+            PropertyGrid propertyGrid1 = new PropertyGrid();
+            propertyGrid1.setName("name");
+            propertyGrid1.setValue(netElement.getNeName());
+            propertyGrid1.setGroup("NE");
+            list.add(propertyGrid1);
+            PropertyGrid propertyGrid2 = new PropertyGrid();
+            propertyGrid2.setName("IP");
+            propertyGrid2.setValue(netElement.getNeIp());
+            propertyGrid2.setGroup("NE");
+            list.add(propertyGrid2);
+            PropertyGrid propertyGrid3 = new PropertyGrid();
+            propertyGrid3.setName("type");
+            propertyGrid3.setValue(netElement.getType());
+            propertyGrid3.setGroup("NE");
+            list.add(propertyGrid3);
+            //根据pairingID查询到对端网元信息
+            NetElement PairingNetElement = netElementDao.selectByPrimaryKey(neRelation.getPairingId());
+            //封装
+            PropertyGrid propertyGrid4 = new PropertyGrid();
+            propertyGrid4.setName("name");
+            propertyGrid4.setValue(PairingNetElement.getNeName());
+            propertyGrid4.setGroup("Pairing");
+            list.add(propertyGrid4);
+            PropertyGrid propertyGrid5 = new PropertyGrid();
+            propertyGrid5.setName("IP");
+            propertyGrid5.setValue(PairingNetElement.getNeIp());
+            propertyGrid5.setGroup("Pairing");
+            list.add(propertyGrid5);
+            PropertyGrid propertyGrid6 = new PropertyGrid();
+            propertyGrid6.setName("type");
+            propertyGrid6.setValue(PairingNetElement.getType());
+            propertyGrid6.setGroup("Pairing");
+            list.add(propertyGrid6);
+            //根据parentID查询到父网元信息
+            NetElement ParentNetElement = netElementDao.selectByPrimaryKey(neRelation.getParentId());
+            //封装
+            PropertyGrid propertyGrid7 = new PropertyGrid();
+            propertyGrid7.setName("name");
+            propertyGrid7.setValue(ParentNetElement.getNeName());
+            propertyGrid7.setGroup("Parent");
+            list.add(propertyGrid7);
+            PropertyGrid propertyGrid8 = new PropertyGrid();
+            propertyGrid8.setName("IP");
+            propertyGrid8.setValue(ParentNetElement.getNeIp());
+            propertyGrid8.setGroup("Parent");
+            list.add(propertyGrid8);
+            PropertyGrid propertyGrid9 = new PropertyGrid();
+            propertyGrid9.setName("type");
+            propertyGrid9.setValue(ParentNetElement.getType());
+            propertyGrid9.setGroup("Parent");
+            list.add(propertyGrid9);
+            //封装进result
+            result = new Result<>();
+            result.setRows(list);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
     }
 }

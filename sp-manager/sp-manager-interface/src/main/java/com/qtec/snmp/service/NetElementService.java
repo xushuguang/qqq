@@ -1,5 +1,7 @@
 package com.qtec.snmp.service;
 
+import com.qtec.snmp.common.dto.PropertyGrid;
+import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.vo.EchartsVo;
 import com.qtec.snmp.pojo.vo.LinkVo;
@@ -44,5 +46,7 @@ public interface NetElementService {
      * @param neName
      * @return list
      */
-    List<NetElement> getNEDetails(String neName);
+    List<NetElement> getNEChildren(String neName);
+
+    Result<PropertyGrid> getNEDetails(Long id);
 }
