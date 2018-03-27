@@ -24,7 +24,7 @@ public class SnmpTrapAction {
     @RequestMapping(value = "/startTrap",method = RequestMethod.GET)
     public void startTrap(){
         try {
-            snmpTrapService.run("192.168.100.90","162");
+            snmpTrapService.run();
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

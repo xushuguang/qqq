@@ -21,7 +21,7 @@
                 <td class="label">NE type(类型)：</td>
                 <td>
                     <select id="type" class="easyui-combobox" name="type" data-options="required:true" style="width:200px;">
-                        <option value="TSN">TSN</option>
+                        <option value="TN">TN</option>
                         <option value="QNC">QNC</option>
                         <option value="QKD">QKD</option>
                     </select>
@@ -52,8 +52,7 @@
                 data = JSON.parse(data);
                 if (data.success) {
                     $.messager.alert('消息', data.message, 'info');
-                    snmp.closeTabs('添加网元');
-                    snmp.addTabs("设备管理","ne_list");
+                    $('#neAddForm').form('clear');
                 }
             }
         });

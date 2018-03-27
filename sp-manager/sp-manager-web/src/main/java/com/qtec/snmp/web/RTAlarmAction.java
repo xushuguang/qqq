@@ -1,7 +1,6 @@
 package com.qtec.snmp.web;
 
 import com.qtec.snmp.common.dto.Order;
-import com.qtec.snmp.common.dto.Page;
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.common.utils.JsonUtil;
 import com.qtec.snmp.pojo.vo.AlarmQuery;

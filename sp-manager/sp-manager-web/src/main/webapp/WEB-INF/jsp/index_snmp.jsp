@@ -9,7 +9,8 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>首页</title>
+    <title>量子密钥网元管理系统</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <!-- 导入easyui的样式表 -->
     <%--如果在页面上使用easyui框架：1、CSS  2、JS(注意载入顺序)--%>
     <link rel="stylesheet" href="js/jquery-easyui-1.5/themes/bootstrap/easyui.css">
@@ -32,8 +33,8 @@
         }
         #Equipment{
             position: absolute;
-            width: 60%;
-            height: 60%;
+            width: 50%;
+            height: 50%;
             left:0;
             top:6%;
         }
@@ -57,7 +58,7 @@
 </div>
 <div data-options="region:'south'" style="padding:5px;background:#eee;">
     <div align="left">
-        C版权所有@浙江科易理想量子信息技术股份有限公司
+        C版权所有@浙江科易理想量子信息技术有限公司
     </div>
     <div align="right">
         版本号1.0
@@ -67,17 +68,15 @@
     <div id="menu" class="easyui-accordion">
         <div title="网元管理" data-options="selected:true,iconCls:'icon-tip'" style="padding:10px 0;">
             <ul class="easyui-tree">
-                <li data-options="attributes:{'href':'ne_list'}">设备管理</li>
-                <li data-options="attributes:{'href':'D_view_manage'}">三维视图层管理</li>
-                <li data-options="attributes:{'href':'secretKey_manager'}">量子秘钥管理层</li>
-                <li data-options="attributes:{'href':' '}">量子秘钥应用层</li>
+                <li data-options="attributes:{'href':'ne_manager'}">设备管理</li>
+                <li data-options="attributes:{'href':'TN'}">量子秘钥管理层</li>
             </ul>
         </div>
         <div title="实时告警管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'alarm_list'}">实时告警监控</li>
-                <li data-options="attributes:{'href':' '}">实时告警配置</li>
-                <li data-options="attributes:{'href':' '}">实时告警查询</li>
+                <li data-options="attributes:{'href':''}">实时告警配置</li>
+                <li data-options="attributes:{'href':''}">实时告警查询</li>
             </ul>
         </div>
         <div title="历史告警管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
@@ -137,6 +136,9 @@
 <script src="js/common.js"></script>
 <!-- 引入验证输入框js-->
 <script src="js/validatebox.js"></script>
+<!--highcharts-->
+<script src="js/highcharts/highcharts.js"></script>
+<script src="js/highcharts/exporting.js"></script>
 <script>
     snmp.onTreeClick();
 </script>
@@ -160,7 +162,6 @@
             }
         });
     }
-    //ajax动态生成设备统计图表
     $.ajax({
         type: "get",
         async : true,
@@ -228,7 +229,7 @@
         }
     });
     //ajax动态生成设备拓扑图
-    var myChart = echarts.init(document.getElementById('Equipment'));
+    var equipmentCharts = echarts.init(document.getElementById('Equipment'));
     $.ajax({
         type: "get",
         async : true,
@@ -236,7 +237,7 @@
         dataType: "json",
         success : function (data) {
             // 绘制图表。
-            myChart.setOption({
+            equipmentCharts.setOption({
                 title: {
                     text:"设备拓扑图"
                 },
@@ -284,8 +285,6 @@
 
                             });
                         }else if (params.dataType=='edge'){//选择的是连线
-                            var sss = "<span>11111</span>";
-                            callback(ticket,sss);
                         }
                         return 'Loading';
                     }
@@ -319,6 +318,9 @@
                                 }
                             }
                         },
+
+                    },
+                    linestyle: {
 
                     },
                     force:{

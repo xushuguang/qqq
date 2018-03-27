@@ -9,17 +9,13 @@ package com.qtec.snmp.service;
 public interface SnmpTrapService {
     /**
      * 初始化snmpTrap
-     * @param udp
-     * @param port
      */
-    public void init(String udp,String port);
+    public void init();
 
     /**
      * 启动snmpTrap
-     * @param udp
-     * @param port
      */
-    public void run(String udp,String port);
+    public void run();
 
     /**
      * 停止snmpTrap

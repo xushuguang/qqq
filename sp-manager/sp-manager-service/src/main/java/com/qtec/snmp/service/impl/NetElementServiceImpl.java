@@ -5,7 +5,10 @@ import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.common.utils.GetStateUtil;
 import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
-import com.qtec.snmp.pojo.po.*;
+import com.qtec.snmp.pojo.po.NERelation;
+import com.qtec.snmp.pojo.po.NERelationExample;
+import com.qtec.snmp.pojo.po.NetElement;
+import com.qtec.snmp.pojo.po.NetElementExample;
 import com.qtec.snmp.pojo.vo.EchartsVo;
 import com.qtec.snmp.pojo.vo.LinkVo;
 import com.qtec.snmp.pojo.vo.NodeVo;
@@ -183,7 +186,7 @@ public class NetElementServiceImpl implements NetElementService {
     public Result<PropertyGrid> getNEDetails(Long id) {
         Result<PropertyGrid> result = null;
         try {
-            //先根据id查到网元对端pairingid和parentid
+            //先根据id查到网元对端pairingid和parentid和distance
             NERelationExample neRelationExample = new NERelationExample();
             neRelationExample.createCriteria().andNeidEqualTo(id);
             NERelation neRelation = neRelationDao.selectByExample(neRelationExample).get(0);
@@ -243,8 +246,28 @@ public class NetElementServiceImpl implements NetElementService {
             propertyGrid9.setValue(ParentNetElement.getType());
             propertyGrid9.setGroup("Parent");
             list.add(propertyGrid9);
+            //封装distance
+            PropertyGrid propertyGrid10 = new PropertyGrid();
+            propertyGrid10.setName("distance(/km)");
+            propertyGrid10.setValue(neRelation.getDistance().toString());
+            list.add(propertyGrid10);
             //封装进result
             result = new Result<>();
+            result.setRows(list);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Result<NetElement> listNetElement() {
+        Result<NetElement> result = null;
+        try {
+            result = new Result<>();
+            NetElementExample example = new NetElementExample();
+            List<NetElement> list = netElementDao.selectByExample(example);
             result.setRows(list);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);

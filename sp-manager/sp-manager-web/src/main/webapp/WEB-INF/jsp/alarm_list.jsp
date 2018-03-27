@@ -5,21 +5,59 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<style type="text/css">
+    /*-- 消除grid屏闪问题 --//*/
+    .datagrid-mask{
+        opacity:0;
+        filter:alpha(opacity=0);
+    }
+    .datagrid-mask-msg{
+        opacity:0;
+        filter:alpha(opacity=0);
+    }
+    #divAlarms{
+        position: absolute;
+        width: 100%;
+        height: 80%;
+        left:0;
+        top:15%;
+    }
+</style>
+<form id="alarmForm">
+    <div style="padding: 5px; background-color: #fff;">
+        <label>告警网元：</label>
+        <input class="easyui-textbox" type="text" id="qkdIp">
+        &nbsp;&nbsp;
+        <label>告警级别：</label>
+        <select id="alarmSeverity" class="easyui-combobox">
+            <option value="" disabled selected>请选择</option>
+            <option value="Fatal">Fatal</option>
+            <option value="Error">Error</option>
+            <option value="Warning">Warning</option>
+            <option value="Info">Info</option>
+        </select>
+        &nbsp;&nbsp;
+        <label>告警时间：</label>
+        从：<input type="text" id="time1" style="width: 195px" editable="false"
+                 class="easyui-datetimebox"/>
+        到：<input type="text" id="time2" style="width: 195px" editable="false"
+                 class="easyui-datetimebox"/>
+        &nbsp;&nbsp;
+        <button onclick="searchForm()" type="button" class="easyui-linkbutton">搜索</button>
+        <button onclick="clearForm()" type="button" class="easyui-linkbutton">重置</button>
+    </div>
+</form>
 <div>
     <button onclick="start()" class="easyui-linkbutton" data-options="iconCls:'icon-up',plain:true">开始</button>
     <button onclick="stop()" class="easyui-linkbutton" data-options="iconCls:'icon-down',plain:true">停止</button>
     <button onclick="remove()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</button>
-    <button onclick="refresh()" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">刷新</button>
 </div>
+<div id="divAlarms">
 <%--容器放好--%>
 <table id="dgAlarms"></table>
-
+</div>
 <%--通过js代码来渲染容器--%>
 <script>
-    //定时刷新
-    setTimeout(function () {
-        $('#dgAlarms').datagrid('reload');
-    },1000);
     //点击搜索按钮动作
     function searchForm() {
         $('#dgAlarms').datagrid('load',{
@@ -112,6 +150,7 @@
         },
         //列属性
         columns: [[
+            {field: 'id', title: '告警id'},
             {field: 'alarmType', title: '告警类型'},
             {field: 'alarmSeverity', title: '告警级别'},
             {field: 'alarmTime', title: '发生时间',formatter: function (value, rows, index) {
@@ -121,7 +160,7 @@
         ]]
     });
     //实时刷新
-    //timerID = setInterval("refresh()",2000);
+    timerID = setInterval("refresh()",500);
     function refresh(){
         $('#dgAlarms').datagrid('reload');
     }

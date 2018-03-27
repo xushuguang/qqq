@@ -9,7 +9,7 @@ package com.qtec.snmp.pojo.vo;
 public class LinkVo {
     private String source;
     private String target;
-
+    private String name;
     public String getSource() {
         return source;
     }
@@ -24,5 +24,13 @@ public class LinkVo {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

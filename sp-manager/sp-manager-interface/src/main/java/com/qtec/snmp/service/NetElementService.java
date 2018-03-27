@@ -48,5 +48,16 @@ public interface NetElementService {
      */
     List<NetElement> getNEChildren(String neName);
 
+    /**
+     * 根据网元id获取网元详情
+     * @param id
+     * @return
+     */
     Result<PropertyGrid> getNEDetails(Long id);
+
+    /**
+     * 查询所有网元
+     * @return
+     */
+    Result<NetElement> listNetElement();
 }

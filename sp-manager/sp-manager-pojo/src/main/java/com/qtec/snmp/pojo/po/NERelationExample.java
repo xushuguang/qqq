@@ -283,6 +283,66 @@ public class NERelationExample {
             addCriterion("parent_id not between", value1, value2, "parentId");
             return (Criteria) this;
         }
+
+        public Criteria andDistanceIsNull() {
+            addCriterion("distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIsNotNull() {
+            addCriterion("distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceEqualTo(Long value) {
+            addCriterion("distance =", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotEqualTo(Long value) {
+            addCriterion("distance <>", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThan(Long value) {
+            addCriterion("distance >", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThanOrEqualTo(Long value) {
+            addCriterion("distance >=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThan(Long value) {
+            addCriterion("distance <", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThanOrEqualTo(Long value) {
+            addCriterion("distance <=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIn(List<Long> values) {
+            addCriterion("distance in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotIn(List<Long> values) {
+            addCriterion("distance not in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceBetween(Long value1, Long value2) {
+            addCriterion("distance between", value1, value2, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotBetween(Long value1, Long value2) {
+            addCriterion("distance not between", value1, value2, "distance");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

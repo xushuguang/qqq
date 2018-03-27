@@ -4,6 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>用户登录</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="js/jquery-easyui-1.5/themes/bootstrap/easyui.css" rel="external nofollow" rel="stylesheet">
     <link rel="stylesheet" href="js/jquery-easyui-1.5/themes/icon.css" rel="external nofollow" rel="stylesheet">
     <script src="js/jquery-easyui-1.5/jquery.min.js"></script>

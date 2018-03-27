@@ -9,6 +9,7 @@ import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.pojo.vo.LinkVo;
 import com.qtec.snmp.pojo.vo.NodeVo;
 import com.qtec.snmp.service.NodeService;
+import com.qtec.snmp.service.SnmpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class NodeServiceImpl implements NodeService{
     private NERelationMapper neRelationDao;
     @Autowired
     private NetElementMapper netElementDao;
+    @Autowired
+    private SnmpService snmpService;
 
     /**
      * 添加节点
@@ -71,6 +74,8 @@ public class NodeServiceImpl implements NodeService{
                     nodeNE.setNeid(neid);
                     insert1 = nodeNEDao.insert(nodeNE);
                 }
+                //get各网元关系
+                snmpService.setNeRelation();
                 if (insert1>0 && insert2>0){
                     flag = true;
                 }
@@ -149,6 +154,7 @@ public class NodeServiceImpl implements NodeService{
                     LinkVo linkVo = new LinkVo();
                     linkVo.setSource(source);
                     linkVo.setTarget(target);
+                    linkVo.setName("1111");
                     //存入list
                     list.add(linkVo);
                 }

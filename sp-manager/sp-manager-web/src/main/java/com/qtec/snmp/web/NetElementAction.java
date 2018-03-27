@@ -93,7 +93,18 @@ public class NetElementAction {
         }
         return  jsonStr;
     }
-
+    @ResponseBody
+    @RequestMapping(value = "/listNetElement", method = RequestMethod.GET)
+    public Result<NetElement> listNetElement() {
+        Result<NetElement> result = null;
+        try {
+            result= netElementService.listNetElement();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
+    }
     /**
      * 网元管理层拓扑图数据
      * @return String
@@ -139,6 +150,21 @@ public class NetElementAction {
             e.printStackTrace();
         }
         return result;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/doQueryData", method = RequestMethod.POST)
+    public String doQueryData() {
+        String jsonStr = null;
+        try {
+            EchartsVo echartsVo = new EchartsVo();
+            echartsVo.setName("1");
+            echartsVo.setValue(2);
+            jsonStr = JsonUtil.objectToJson(echartsVo);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 }
 

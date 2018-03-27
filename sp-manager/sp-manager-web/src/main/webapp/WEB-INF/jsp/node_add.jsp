@@ -51,7 +51,17 @@
             {field:'neName',title:'neName',width:100},
             {field:'neIp',title:'neIp',width:200},
             {field:'type',title:'type',width:50},
-            {field:'state',title:'state',width:50}
+            {field:'state',title:'state',width:50,formatter:function (params) {
+                var res = "";
+                if(params==0){
+                    res +="<div style='width: 10px;height: 10px;background-color: red ;border-radius: 50%;'></div>";
+                }else if(params==1){
+                    res +="<div style='width: 10px;height: 10px;background-color: yellow   ;border-radius: 50%;'></div>";
+                }else if(params==2){
+                    res +="<div style='width: 10px;height: 10px;background-color: green ;border-radius: 50%;'></div>";
+                }
+                return res;
+            }}
         ]]
     });
     //表单提交动作

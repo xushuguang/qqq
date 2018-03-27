@@ -7,6 +7,8 @@ public class NERelation {
 
     private Long parentId;
 
+    private Long distance;
+
     public Long getNeid() {
         return neid;
     }
@@ -29,5 +31,13 @@ public class NERelation {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    public Long getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Long distance) {
+        this.distance = distance;
     }
 }

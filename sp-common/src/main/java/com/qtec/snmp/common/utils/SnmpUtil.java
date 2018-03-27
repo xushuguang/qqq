@@ -83,7 +83,6 @@ public class SnmpUtil {
         ArrayList<String> result = new ArrayList<String>();
         TransportMapping transport = null;
         Snmp snmp = null;
-
         try {
             CommunityTarget target = this.createDefault(ip, community);
             transport = new DefaultUdpTransportMapping();
@@ -149,6 +148,5 @@ public class SnmpUtil {
             finished = true;
         }
         return finished;
-
     }
 }
