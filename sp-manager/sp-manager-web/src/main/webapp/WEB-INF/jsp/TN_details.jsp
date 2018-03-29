@@ -12,7 +12,7 @@
         left:0;
         top:5%;
     }
-    #buffer{
+    #keyBuffer{
         position: absolute;
         width: 60%;
         height: 60%;
@@ -22,7 +22,8 @@
     }
 </style>
 <div id="TNDetails"></div>
-<div id="buffer"></div>
+<div id="keyBuffer"></div>
+<script src="js/keyBuffer.js"></script>
 <script>
     //设备详情数据表格
     var neName = sessionStorage.getItem("neName");
@@ -61,72 +62,5 @@
         snmp.closeTabs("QKD详情");
         snmp.addTabs("QKD详情","QKD_details");
     }
-    //buffer曲线图
-    var bufferCharts = echarts.init(document.getElementById('buffer'));
-    option = {
-        title : {
-            text: 'keyBuffer实时图',
-        },
-        tooltip : {
-            trigger: 'axis'
-        },
-        legend: {
-            data:['buffer1','buffer2','buffer3']
-        },
-        toolbox: {
-            show : true,
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                magicType : {show: true, type: ['line', 'bar']},
-            }
-        },
-        calculable : true,
-        xAxis : [
-            {
-                type : 'category',
-                boundaryGap : false,
-                data : ['06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00']
-            }
-        ],
-        yAxis : [
-            {
-                type : 'value',
-                axisLabel : {
-                    formatter: '{value} %'
-                }
-            }
-        ],
-        series : [
-            {
-                name:'buffer1',
-                type:'line',
-                data:[80, 70, 75, 69, 87, 89, 77,88],
-                markPoint : {
-                    data : [
-                    ]
-                }
-            },
-            {
-                name:'buffer2',
-                type:'line',
-                data:[69, 74, 55, 83, 78, 55, 65,87],
-                markPoint : {
-                    data : [
-                    ]
-                },
-            },
-            {
-                name:'buffer3',
-                type:'line',
-                data:[99, 95, 89, 82, 76, 88, 90,75],
-                markPoint : {
-                    data : [
-                    ]
-                },
-            }
-        ]
-    };
-    bufferCharts.setOption(option);
 </script>
 

@@ -2,7 +2,6 @@ package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.common.dto.PropertyGrid;
 import com.qtec.snmp.common.dto.Result;
-import com.qtec.snmp.common.utils.GetStateUtil;
 import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
 import com.qtec.snmp.pojo.po.NERelation;
@@ -45,10 +44,11 @@ public class NetElementServiceImpl implements NetElementService {
             List<NetElement> netElements = netElementDao.selectByExample(example);
             if (netElements != null && netElements.size()>0) {
                 //设备已存在，不可以添加
+                insert = 0;
             }else {
                 //设备不存在，可以添加
                //给设备添加状态
-                netElement.setState(GetStateUtil.getState(netElement.getNeIp()));
+                netElement.setState(0);
                 //添加设备
                 insert = netElementDao.insert(netElement);
             }

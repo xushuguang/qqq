@@ -75,8 +75,6 @@
         <div title="实时告警管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'alarm_list'}">实时告警监控</li>
-                <li data-options="attributes:{'href':''}">实时告警配置</li>
-                <li data-options="attributes:{'href':''}">实时告警查询</li>
             </ul>
         </div>
         <div title="历史告警管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">

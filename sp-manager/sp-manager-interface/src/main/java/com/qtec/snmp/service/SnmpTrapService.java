@@ -1,5 +1,10 @@
 package com.qtec.snmp.service;
 
+import com.qtec.snmp.pojo.vo.KeyBuffer;
+import com.qtec.snmp.pojo.vo.KeyRate;
+
+import java.util.Map;
+
 /**
  * User: james.xu
  * Date: 2018/1/30
@@ -10,16 +15,30 @@ public interface SnmpTrapService {
     /**
      * 初始化snmpTrap
      */
-    public void init();
+    void init();
 
     /**
      * 启动snmpTrap
      */
-    public void run();
+    void run();
 
     /**
      * 停止snmpTrap
      */
-    public void stop();
+    void stop();
+
+    /**
+     * 获取keyRate
+     * @param qkdId
+     * @return keyRate
+     */
+    KeyRate getKeyRate(Long qkdId);
+
+    /**
+     * 获取keyBufferMap
+     * @param neName
+     * @return
+     */
+    Map<String,KeyBuffer> getKeyBuffer(String neName);
 
 }

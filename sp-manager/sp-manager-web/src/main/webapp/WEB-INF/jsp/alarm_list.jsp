@@ -160,7 +160,7 @@
         ]]
     });
     //实时刷新
-    timerID = setInterval("refresh()",500);
+    //timerID = setInterval("refresh()",500);
     function refresh(){
         $('#dgAlarms').datagrid('reload');
     }

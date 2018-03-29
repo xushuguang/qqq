@@ -1,6 +1,8 @@
 package com.qtec.snmp.service.impl;
 
+import com.qtec.snmp.service.GetStateService;
 import com.qtec.snmp.service.SnmpService;
+import com.qtec.snmp.service.SnmpTrapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,10 @@ import org.springframework.stereotype.Service;
 public class StartGateServiceData implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private SnmpService snmpService;
+    @Autowired
+    private GetStateService getStateService;
+    @Autowired
+    private SnmpTrapService snmpTrapService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -28,7 +34,9 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
             // 这种情况下，就会造成onApplicationEvent方法被执行两次。为了避免这个问题，我们可以只在root
            // application context初始化完成后调用逻辑代码，其他的容器的初始化完成，则不做任何处理。
             if (event.getApplicationContext().getParent() == null) {
+                snmpTrapService.run();
                 snmpService.setNeRelationTiming();
+                getStateService.getStateTiming();
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
