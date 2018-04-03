@@ -3,21 +3,22 @@ package com.qtec.snmp.service.impl;
 import com.qtec.snmp.dao.NetElementMapper;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.po.NetElementExample;
-import com.qtec.snmp.pojo.vo.KeyBuffer;
+import com.qtec.snmp.pojo.vo.KeyBufferVo;
 import com.qtec.snmp.pojo.vo.KeyRate;
 import com.qtec.snmp.service.GetStateService;
 import com.qtec.snmp.service.SnmpTrapService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * GetStateService实现类
  * User: james.xu
  * Date: 2018/3/29
  * Time: 11:21
@@ -30,6 +31,12 @@ public class GetStateServiceImpl implements GetStateService{
     @Autowired
     private SnmpTrapService snmpTrapService;
     private static final int TIMEOUT = 3000;
+
+    /**
+     *通过ping和keyRate,keyBuffer获取状态
+     * “@Scheduled”spring  Quartz任务调度框架定时注解
+     */
+    @Scheduled(fixedRate = 1000 * 60 * 30)
     public void getState(){
         //查询所有网元
         List<NetElement> list = netElementDao.selectByExample(new NetElementExample());
@@ -43,8 +50,8 @@ public class GetStateServiceImpl implements GetStateService{
                     state = 1;
                     //再通过snmp看是否能获取到key
                     if (netElement.getType().equals("TN")) {
-                        Map<String, KeyBuffer> keyBufferMap = snmpTrapService.getKeyBuffer(netElement.getNeName());
-                        if (keyBufferMap!=null&&keyBufferMap.size()>0){
+                        List<KeyBufferVo> keyBufferVoList = snmpTrapService.getKeyBuffer(netElement.getNeName());
+                        if (keyBufferVoList!=null&&keyBufferVoList.size()>0){
                             state = 2;
                         }
                     } else if (netElement.getType().equals("QKD")) {
@@ -64,18 +71,5 @@ public class GetStateServiceImpl implements GetStateService{
             example.createCriteria().andNeIpEqualTo(netElement.getNeIp());
             netElementDao.updateByExample(netElement,example);
         }
-    }
-    /**
-     * 定时任务
-     */
-    public void getStateTiming(){
-        //通过ScheduledExecutorService定时执行任务
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                getState();
-            }
-        }, 30, 1800, TimeUnit.SECONDS);
     }
 }

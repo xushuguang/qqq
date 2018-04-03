@@ -3,6 +3,7 @@ package com.qtec.snmp.pojo.dto;
 import java.util.List;
 
 /**
+ * UserGroup信息封装类
  * User: james.xu
  * Date: 2018/2/7
  * Time: 17:03

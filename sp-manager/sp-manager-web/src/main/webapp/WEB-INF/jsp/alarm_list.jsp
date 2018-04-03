@@ -48,9 +48,7 @@
     </div>
 </form>
 <div>
-    <button onclick="start()" class="easyui-linkbutton" data-options="iconCls:'icon-up',plain:true">开始</button>
-    <button onclick="stop()" class="easyui-linkbutton" data-options="iconCls:'icon-down',plain:true">停止</button>
-    <button onclick="remove()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</button>
+    <button onclick="remove()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除实时告警</button>
 </div>
 <div id="divAlarms">
 <%--容器放好--%>
@@ -141,16 +139,15 @@
             if(row.alarmSeverity=='Fatal'){
                 return 'background-color:red;';
             }else if(row.alarmSeverity=='Error'){
-                return 'background-color:orange;';
+                return 'background-color:orangered;';
             }else if(row.alarmSeverity=='Warning'){
-                return 'background-color:burlywood;';
+                return 'background-color:orange;';
             }else if(row.alarmSeverity=='Info'){
-                return 'background-color:darkgray;';
+                return 'background-color:darkgrey;';
             }
         },
         //列属性
         columns: [[
-            {field: 'id', title: '告警id'},
             {field: 'alarmType', title: '告警类型'},
             {field: 'alarmSeverity', title: '告警级别'},
             {field: 'alarmTime', title: '发生时间',formatter: function (value, rows, index) {

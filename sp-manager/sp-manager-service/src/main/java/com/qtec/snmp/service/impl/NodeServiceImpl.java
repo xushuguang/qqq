@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * NodeService实现类
  * User: james.xu
  * Date: 2018/3/2
  * Time: 10:19
@@ -41,7 +42,7 @@ public class NodeServiceImpl implements NodeService{
     /**
      * 添加节点
      * @param nodeDto
-     * @return
+     * @return boolean
      */
     @Override
     public boolean  addNode(NodeDto nodeDto) {
@@ -88,8 +89,8 @@ public class NodeServiceImpl implements NodeService{
     }
 
     /**
-     * 查询力导向图中的node 数据
-     * @return
+     * 查询拓扑图中的node 数据
+     * @return list
      */
     @Override
     public List<NodeVo> listNodeVo() {
@@ -103,8 +104,6 @@ public class NodeServiceImpl implements NodeService{
                 nodeVo.setCategory(2);
                 nodeVo.setLabel(node.getNodeName());
                 nodeVo.setSymbolSize(20);
-                nodeVo.setFlag(true);
-                nodeVo.setIgnore(true);
                 list.add(nodeVo);
             }
         }catch (Exception e) {
@@ -115,8 +114,8 @@ public class NodeServiceImpl implements NodeService{
     }
 
     /**
-     * 查询力导向图中的link数据
-     * @return
+     * 查询拓扑图中的link数据
+     * @return list
      */
     @Override
     public List<LinkVo> listLinkVo() {
@@ -167,6 +166,11 @@ public class NodeServiceImpl implements NodeService{
         return list;
     }
 
+    /**
+     *根据节点名获取当前节点底下的所有网元设备信息
+     * @param nodeName
+     * @return  list
+     */
     @Override
     public List<NetElement> getNodeDetails(String nodeName) {
         List<NetElement> list = null;

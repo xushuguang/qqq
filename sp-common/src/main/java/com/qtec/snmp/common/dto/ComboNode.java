@@ -1,6 +1,7 @@
 package com.qtec.snmp.common.dto;
 
 /**
+ * combotree所需数据封装类
  * User: james.xu
  * Date: 2018/2/8
  * Time: 10:31

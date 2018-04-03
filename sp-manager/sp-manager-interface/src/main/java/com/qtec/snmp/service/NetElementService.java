@@ -10,6 +10,7 @@ import com.qtec.snmp.pojo.vo.NodeVo;
 import java.util.List;
 
 /**
+ * netElementService接口
  * User: james.xu
  * Date: 2018/2/1
  * Time: 15:13

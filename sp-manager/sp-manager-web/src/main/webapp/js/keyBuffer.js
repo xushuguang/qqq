@@ -16,20 +16,24 @@ $(document).ready(function() {
                 load: function() {
                     // set up the updating of the chart each second
                     // var series = this.series[0];
-                    $.each(this.series, function(idx, series) {
+                    $.each(this.series, function(i, series) {
                         setInterval(function() {
                             $.ajax({
                                 url : 'getKeyBuffer',
                                 type : 'post',
                                 data:{"neName":neName},
-                                success : function(keyBufferMap){
-                                    console.log(keyBufferMap)
+                                success : function(data){
+                                    for(var j = 0; j < data.length; j++){
+                                        var x = (new Date()).getTime(); // current time
+                                        var y;
+                                        if (chart.series[j].name==data[j].name) {
+                                            y = parseInt(data[i].data);
+                                        }
+                                        series.addPoint([x, y], true, true);
+                                    }
                                 }
                             });
-                            var x = (new Date()).getTime(), // current time
-                                y = Math.random();
-                            series.addPoint([x, y], true, true);
-                        }, 10000);
+                        }, 5000);
                     });
                 }
             }
@@ -50,7 +54,7 @@ $(document).ready(function() {
             },
             startOnTick: true, //为true时，设置min才有效
             min: 0,
-            max: 1,
+            max: 10,
             plotLines: [{
                 value: 0,
                 width: 1,
@@ -61,7 +65,7 @@ $(document).ready(function() {
             formatter: function() {
                 return '<b>' + this.series.name + '</b><br/>' +
                     Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' + '<span style="color:#08c">' +
-                    Highcharts.numberFormat(this.y*100, 2) + ' %' + '</span>';
+                    Highcharts.numberFormat(this.y, 0) + '</span>';
 
             }
         },
@@ -71,38 +75,39 @@ $(document).ready(function() {
         exporting: {
             enabled: false
         },
-        series: [{
-            name: 'keyBuffer1',
-            data:(function() {
-                // generate an array of random data
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
-                for (i = -9; i <= 0; i++) {
-                    data.push({
-                        x: time + i * 10000,
-                        y: 0
-                    });
-                }
-                return data;
-            })()
-        }, {
-            name: 'keyBuffer2',
-            data: (function() {
-                // generate an array of random data
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
-                for (i = -9; i <= 0; i++) {
-                    data.push({
-                        x: time + i * 10000,
-                        y: 0
-                    });
-                }
-                return data;
-            })()
-        }
-        ]
+        series: create()
     };
+    function create() {
+        var seriesArr = new Array();
+        $.ajax({
+            url: 'getKeyBuffer',
+            type: 'post',
+            data: {"neName": neName},
+            async : false, //同步处理后面才能处理新添加的series
+            success: function (data) {
+                console.log(data)
+                for (var i = 0; i < data.length; i++) {
+                    var name = data[i].name;
+                    var value =  (function () {
+                        // generate an array of random data
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            i;
+                        for (i = -29; i <= 0; i += 1) {
+                            data.push({
+                                x: time + i * 5000,
+                                y: 0
+                            });
+                        }
+                        return data;
+                    }());
+                    seriesArr.push({"name": name, "data": value});
+                }
+            }
+        },false);
+        if (seriesArr.length>0){
+            return seriesArr;
+        }
+    }
     chart = new Highcharts.Chart(options);
 });

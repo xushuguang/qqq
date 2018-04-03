@@ -1,9 +1,9 @@
 package com.qtec.snmp.service;
 
-import com.qtec.snmp.pojo.vo.KeyBuffer;
+import com.qtec.snmp.pojo.vo.KeyBufferVo;
 import com.qtec.snmp.pojo.vo.KeyRate;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * User: james.xu
@@ -39,6 +39,11 @@ public interface SnmpTrapService {
      * @param neName
      * @return
      */
-    Map<String,KeyBuffer> getKeyBuffer(String neName);
+    List<KeyBufferVo> getKeyBuffer(String neName);
+
+    /**
+     * 定时清除keyBufferList
+     */
+    void keyBufferListClear();
 
 }

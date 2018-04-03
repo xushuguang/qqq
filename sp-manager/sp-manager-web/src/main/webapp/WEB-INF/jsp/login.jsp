@@ -50,21 +50,7 @@
                 <td><span id="spanPwd" style="color:red"></span></td>
             </tr>
             <tr style="height:10px"></tr>
-            <tr>
-                <td style="width:20px"></td>
-                <td>验证码:</td>
-                <td><input type="text"class="easyui-textbox" id="txtVcode" name="txtVcode"/></td>
-                <td><span id="spanVcode"style="color:red"></span></td>
-            </tr>
-
             <tr style="height:10px"></tr>
-
-            <tr>
-                <td style="width:20px"></td>
-                <td><img id="image" src="" style="float: left; height: 24px;" /></td>
-                <td><a href="javascript:void(0)" rel="external nofollow" rel="external nofollow" id="changeVcode">看不清，换一张</a></td>
-            </tr>
-
         </table>
        </form>
     </div>

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * HistoryAlarmService实现类
  * User: james.xu
  * Date: 2018/1/18
  * Time: 15:26
@@ -32,6 +33,14 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
     private AlarmMapper alarmDao;
     @Autowired
     private AlarmCustomMapper alarmCustomDao;
+
+    /**
+     * 根据条件查询历史告警
+     * @param page
+     * @param order
+     * @param query
+     * @return
+     */
     @Override
     public Result<AlarmVo> listHistoryAlarms(Page page, Order order, AlarmQuery query) {
         Result<AlarmVo> result = null;
@@ -56,6 +65,11 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
         return result;
     }
 
+    /**
+     * 把未处理的告警变成已处理
+     * @param ids
+     * @return
+     */
     @Override
     public int historyAlarmUp(List<Long> ids) {
         int i = 0;

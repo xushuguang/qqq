@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * UserGroupService实现类
  * User: james.xu
  * Date: 2018/2/7
  * Time: 17:07
@@ -31,6 +32,12 @@ public class UserGroupServiceImpl implements UserGroupService{
     private UserGroupMapper userGroupDao;
     @Autowired
     private GroupMenuMapper groupMenuDao;
+
+    /**
+     * 保存 userGroup
+     * @param userGroupDto
+     * @return int
+     */
     @Override
     public int insertUserGroupDto(UserGroupDto userGroupDto) {
         int result =0;
@@ -63,6 +70,10 @@ public class UserGroupServiceImpl implements UserGroupService{
         return result;
     }
 
+    /**
+     *查询所有ComboNode
+     * @return list
+     */
     @Override
     public List<ComboNode> listComboNode() {
         List<ComboNode> list = null;
@@ -85,6 +96,10 @@ public class UserGroupServiceImpl implements UserGroupService{
         return list;
     }
 
+    /**
+     * 查询所有UserGroup
+     * @return result
+     */
     @Override
     public Result<UserGroup> listUserGroup() {
         Result<UserGroup> result = null;

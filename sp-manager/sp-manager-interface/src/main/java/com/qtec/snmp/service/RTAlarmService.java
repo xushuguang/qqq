@@ -9,6 +9,7 @@ import com.qtec.snmp.pojo.vo.EchartsVo;
 import java.util.List;
 
 /**
+ * RTAlarmService接口
  * User: james.xu
  * Date: 2018/1/31
  * Time: 16:26
@@ -28,5 +29,9 @@ public interface RTAlarmService {
      */
     void removeRTAlarms();
 
+    /**
+     * 首页实时告警圆环图所需数据
+     * @return
+     */
     List<EchartsVo> listRTalarmVo();
 }

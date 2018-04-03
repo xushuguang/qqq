@@ -11,6 +11,7 @@ import com.qtec.snmp.service.SnmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * snmpGet，Walk
+ * SnmpService实现类
  * User: james.xu
  * Date: 2018/3/26
  * Time: 14:43
@@ -36,11 +37,10 @@ public class SnmpServiceImpl implements SnmpService{
     private NetElementMapper netElementDao;
     @Autowired
     private NERelationMapper neRelationDao;
-    //读取spring-mib配置文件
-    private ApplicationContext context= new ClassPathXmlApplicationContext("spring-mib.xml");
-    private Parameter parameter = (Parameter) context.getBean("parameter");
-    private QKDIPEntry qkdIPEntry = (QKDIPEntry) context.getBean("qkdIPEntry");
-    //获取node表里的所有数据
+    /**
+     * 获取node表里的所有数据
+     * @return list
+     */
     public List<Node> getNodes(){
         NodeExample example = new NodeExample();
         List<Node> nodes = nodeDao.selectByExample(example);
@@ -50,6 +50,7 @@ public class SnmpServiceImpl implements SnmpService{
     /**
      * 存入网元关联信息
      */
+    @Scheduled(fixedRate = 1000 * 60 * 30)
     public void setNeRelation(){
         List<Node> nodes = getNodes();
         if (nodes!=null&&nodes.size()>0){
@@ -61,15 +62,15 @@ public class SnmpServiceImpl implements SnmpService{
                 SnmpUtil snmpUtil = new SnmpUtil(nodeIp,"public");
                 try {
                     //获取当前的TNIP
-                    String localTNIP = snmpUtil.snmpGet(parameter.getLocalTNIPOid());
+                    String localTNIP = snmpUtil.snmpGet(".1.3.6.1.4.1.8072.9999.9999.1.1.1.0");
                     //根据TNIP找到TNID
                     NetElementExample netElementExample = new NetElementExample();
                     netElementExample.createCriteria().andNeIpEqualTo(localTNIP);
                     Long TNId = netElementDao.selectByExample(netElementExample).get(0).getId();
                     //获取当前TN下的所有QKDIP
-                    ArrayList<String> QKDIPs = snmpUtil.snmpWalk(qkdIPEntry.getQkdIPParaOid());
-                    ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(qkdIPEntry.getPairQKDIPOid());
-                    ArrayList<String> distances = snmpUtil.snmpWalk(qkdIPEntry.getDistanceOid());
+                    ArrayList<String> QKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
+                    ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
+                    ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
                     for (int j=0; j<QKDIPs.size(); j++){
                         String qkdIp = QKDIPs.get(j);
                         NetElementExample netElementExample1 = new NetElementExample();
@@ -103,19 +104,5 @@ public class SnmpServiceImpl implements SnmpService{
                 }
             }
         }
-    }
-
-    /**
-     * 定时任务
-     */
-    public void setNeRelationTiming(){
-        //通过ScheduledExecutorService定时执行任务
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                setNeRelation();
-            }
-        }, 0, 30, TimeUnit.MINUTES);
     }
 }

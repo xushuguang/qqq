@@ -1,6 +1,6 @@
 package com.qtec.snmp.web;
 
-import com.qtec.snmp.pojo.vo.KeyBuffer;
+import com.qtec.snmp.pojo.vo.KeyBufferVo;
 import com.qtec.snmp.pojo.vo.KeyRate;
 import com.qtec.snmp.service.SnmpTrapService;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * User: james.xu
@@ -59,14 +59,14 @@ public class SnmpTrapAction {
     }
     @ResponseBody
     @RequestMapping(value = "/getKeyBuffer",method = RequestMethod.POST)
-    public Map<String,KeyBuffer> getKeyRate(@RequestParam("neName")String neName){
-        Map<String,KeyBuffer> keyBufferMap = null;
+    public  List<KeyBufferVo> getKeyBuffer(@RequestParam("neName")String neName){
+        List<KeyBufferVo> list = null;
         try {
-           keyBufferMap = snmpTrapService.getKeyBuffer(neName);
+            list = snmpTrapService.getKeyBuffer(neName);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return keyBufferMap;
+        return list;
     }
 }

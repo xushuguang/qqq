@@ -109,11 +109,11 @@
             if(row.alarmSeverity=='Fatal'){
                 return 'background-color:red;';
             }else if(row.alarmSeverity=='Error'){
-                return 'background-color:orange;';
+                return 'background-color:orangered;';
             }else if(row.alarmSeverity=='Warning'){
-                return 'background-color:burlywood;';
+                return 'background-color:orange;';
             }else if(row.alarmSeverity=='Info'){
-                return 'background-color:darkgray;';
+                return 'background-color:darkgrey;';
             }
         },
         //列属性

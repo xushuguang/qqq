@@ -1,7 +1,6 @@
 package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.common.dto.Order;
-import com.qtec.snmp.common.dto.Page;
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.dao.AlarmCustomMapper;
 import com.qtec.snmp.dao.AlarmMapper;
@@ -12,6 +11,7 @@ import com.qtec.snmp.pojo.vo.AlarmQuery;
 import com.qtec.snmp.pojo.vo.AlarmVo;
 import com.qtec.snmp.pojo.vo.EchartsVo;
 import com.qtec.snmp.service.RTAlarmService;
+import com.qtec.snmp.service.SnmpTrapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * RTAlarmService实现类
  * User: james.xu
  * Date: 2018/1/31
  * Time: 16:27
@@ -37,6 +38,13 @@ public class RTAlarmServiceImpl implements RTAlarmService{
     private AlarmCustomMapper AlarmCustomDao;
     @Autowired
     private AlarmTypeMapper alarmTypeDao;
+
+    /**
+     * 根据 AlarmQuery和Order查询RTAlarm
+     * @param order
+     * @param query
+     * @return result
+     */
     @Override
     public Result<AlarmVo> listRTAlarm(Order order, AlarmQuery query) {
         Result<AlarmVo> result = null;
@@ -60,6 +68,9 @@ public class RTAlarmServiceImpl implements RTAlarmService{
         return result;
     }
 
+    /**
+     * 移除实时告警信息
+     */
     @Override
     public void removeRTAlarms() {
         //把alarm数据表里的alarm_ack值为"RT"的全部设置为"N"
@@ -76,6 +87,10 @@ public class RTAlarmServiceImpl implements RTAlarmService{
 
     }
 
+    /**
+     * 首页查询实时告警分类以及数目
+     * @return list
+     */
     @Override
     public List<EchartsVo> listRTalarmVo() {
         List<EchartsVo> list = null;

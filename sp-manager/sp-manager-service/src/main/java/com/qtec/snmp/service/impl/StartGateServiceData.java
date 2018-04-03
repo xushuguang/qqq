@@ -26,6 +26,11 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
     @Autowired
     private SnmpTrapService snmpTrapService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /**
+     * 程序启动执行的方法
+     * @param event
+     */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         try {
@@ -35,8 +40,9 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
            // application context初始化完成后调用逻辑代码，其他的容器的初始化完成，则不做任何处理。
             if (event.getApplicationContext().getParent() == null) {
                 snmpTrapService.run();
-                snmpService.setNeRelationTiming();
-                getStateService.getStateTiming();
+                snmpService.setNeRelation();
+                getStateService.getState();
+                snmpTrapService.keyBufferListClear();
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

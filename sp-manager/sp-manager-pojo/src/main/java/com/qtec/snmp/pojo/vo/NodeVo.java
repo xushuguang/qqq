@@ -11,9 +11,6 @@ public class NodeVo {
     private String name;
     private String label;
     private int symbolSize;
-    private boolean ignore;
-    private boolean flag;
-
     public int getCategory() {
         return category;
     }
@@ -44,21 +41,5 @@ public class NodeVo {
 
     public void setSymbolSize(int symbolSize) {
         this.symbolSize = symbolSize;
-    }
-
-    public boolean isIgnore() {
-        return ignore;
-    }
-
-    public void setIgnore(boolean ignore) {
-        this.ignore = ignore;
-    }
-
-    public boolean isFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
     }
 }

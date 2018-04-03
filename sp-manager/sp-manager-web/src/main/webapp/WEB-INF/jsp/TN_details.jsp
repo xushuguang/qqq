@@ -9,24 +9,27 @@
     #TNDetails{
         position: absolute;
         width: 40%;
+        height: 40%;
         left:0;
         top:5%;
     }
     #keyBuffer{
         position: absolute;
-        width: 60%;
-        height: 60%;
-        right: 0;
+        width: 90%;
+        height: 50%;
+        left:0;
         bottom: 0;
         margin: 0 auto;
     }
 </style>
 <div id="TNDetails"></div>
 <div id="keyBuffer"></div>
+<script>
+    var neName = sessionStorage.getItem("neName");
+</script>
 <script src="js/keyBuffer.js"></script>
 <script>
     //设备详情数据表格
-    var neName = sessionStorage.getItem("neName");
     $.ajax({
         async : true,//设置异、同步加载
         cache : false,//false就不会从浏览器缓存中加载请求信息了

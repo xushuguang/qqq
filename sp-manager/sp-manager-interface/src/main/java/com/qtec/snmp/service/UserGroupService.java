@@ -8,6 +8,7 @@ import com.qtec.snmp.pojo.po.UserGroup;
 import java.util.List;
 
 /**
+ * UserGroupService接口
  * User: james.xu
  * Date: 2018/2/7
  * Time: 17:07

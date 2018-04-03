@@ -5,6 +5,7 @@ import com.qtec.snmp.common.dto.TreeNode;
 import java.util.List;
 
 /**
+ * menuService接口
  * User: james.xu
  * Date: 2018/2/7
  * Time: 13:40

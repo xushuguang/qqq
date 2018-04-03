@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * MenuService实现类
  * User: james.xu
  * Date: 2018/2/7
  * Time: 13:40
@@ -25,6 +26,12 @@ public class MenuServiceImpl implements MenuService{
 
     @Autowired
     private MenuMapper menuDao;
+
+    /**
+     * 根据父菜单id查询子菜单信息
+     * @param parentid
+     * @return
+     */
     @Override
     public List<TreeNode> listMenuForTree(Integer parentid) {
         List<TreeNode> nodeList = null;

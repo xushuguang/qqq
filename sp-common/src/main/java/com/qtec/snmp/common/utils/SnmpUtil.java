@@ -30,6 +30,12 @@ public class SnmpUtil {
     protected String ip;
     protected String community;
 
+    /**
+     * 初始化配置snmp
+     * @param ip
+     * @param community
+     * @return CommunityTarget
+     */
     public CommunityTarget createDefault(String ip,String community) {
         //设置agent端的ip和端口
         Address targetAddress = GenericAddress.parse(DEFAULT_PROTOCOL + ":" + ip + "/" + DEFAULT_PORT);
@@ -42,11 +48,22 @@ public class SnmpUtil {
         return target;
     }
 
+    /**
+     * 带参构造
+     * @param ip
+     * @param community
+     */
     public SnmpUtil(String ip,String community) {
         this.ip = ip;
         this.community = community;
     }
 
+    /**
+     * snmp Get 到一条信息时的方法
+     * @param oid
+     * @return String
+     * @throws IOException
+     */
     @SuppressWarnings("rawtypes")
     public String snmpGet(String oid) throws IOException {
         //实例化Communit实例化comm对象
@@ -64,6 +81,11 @@ public class SnmpUtil {
         return readResponse(snmp.send(pdu, target));
     }
 
+    /**
+     * 结果解析
+     * @param respEvnt
+     * @return String
+     */
     @SuppressWarnings("rawtypes")
     public String readResponse(ResponseEvent respEvnt) {
         // 解析Response
@@ -78,6 +100,11 @@ public class SnmpUtil {
 
     }
 
+    /**
+     * snmp Get 多条信息的方法
+     * @param oid
+     * @return ArrayList<String>
+     */
     @SuppressWarnings("rawtypes")
     public ArrayList<String> snmpWalk(String oid) {
         ArrayList<String> result = new ArrayList<String>();
@@ -130,7 +157,13 @@ public class SnmpUtil {
     }
 
 
-
+    /**
+     * 检查snmpWalk是否完毕
+     * @param targetOID
+     * @param pdu
+     * @param vb
+     * @return boolean
+     */
     public static boolean checkWalkFinished(OID targetOID, PDU pdu,
                                             VariableBinding vb) {
         boolean finished = false;

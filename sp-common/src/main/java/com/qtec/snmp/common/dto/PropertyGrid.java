@@ -1,6 +1,7 @@
 package com.qtec.snmp.common.dto;
 
 /**
+ * propertyGrid所需数据封装类
  * User: james.xu
  * Date: 2018/3/12
  * Time: 16:38

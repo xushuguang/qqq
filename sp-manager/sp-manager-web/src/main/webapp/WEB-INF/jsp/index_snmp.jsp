@@ -3,6 +3,7 @@
   Date: 2018/1/16
   Time: 10:45
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> <!--输出,条件,迭代标签库-->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -17,6 +18,19 @@
     <link rel="stylesheet" href="js/jquery-easyui-1.5/themes/icon.css">
     <link rel="stylesheet" href="css/common.css">
     <style>
+        #sign{
+            width: 172px;
+            height: 62px;
+            position: absolute;
+            left: 0;
+            background: url("images/sign.png");
+        }
+        #title{
+            position: absolute;
+            top: 20%;
+            left: 40%;
+            width: 20%;
+        }
         #RTalarm{
             position: absolute;
             width: 40%;
@@ -34,26 +48,22 @@
         #Equipment{
             position: absolute;
             width: 50%;
-            height: 50%;
+            height: 70%;
             left:0;
             top:6%;
-        }
-        #secretKey{
-            position: absolute;
-            width: 60%;
-            height: 30%;
-            left:0;
-            bottom:0;
         }
     </style>
 </head>
 <body class="easyui-layout" >
-<div data-options="region:'north'" style="height:70px;padding-left:10px;background-color: #00bbee" >
-       <a style="font-size: large">量子秘钥网元管理系统</a>
+<div data-options="region:'north'" style="height:70px;padding-left:10px;background: url('images/111.jpg')" >
+    <div id="sign"></div>
+    <div id="title">
+        <a style="font-size: large;color: cyan">量子秘钥网元管理系统</a>
+    </div>
     <div align="right">
-        <a>欢迎${sessionScope.user.username}！</a>
         <button onclick="exitUser()" class="easyui-linkbutton" type="button"
-                data-options="iconCls:'icon-undo'">退出/切换用户</button>
+                data-options="iconCls:'icon-undo'">退出/切换用户</button><br>
+        <a style="color: aliceblue">当前用户：${sessionScope.user.username}</a>
     </div>
 </div>
 <div data-options="region:'south'" style="padding:5px;background:#eee;">
@@ -82,19 +92,9 @@
                 <li data-options="attributes:{'href':'history_alarm_list'}">告警结果查询</li>
             </ul>
         </div>
-        <div title="配置数据管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
-            <ul class="easyui-tree">
-                <li data-options="attributes:{'href':' '}">#</li>
-            </ul>
-        </div>
         <div title="统计数据管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'statistic_data_query'}">统计数据查询</li>
-            </ul>
-        </div>
-        <div title="日志管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
-            <ul class="easyui-tree">
-                <li data-options="attributes:{'href':' '}">系统操作日志</li>
             </ul>
         </div>
         <div title="用户管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
@@ -120,7 +120,6 @@
             <div id="element" ></div>
             <div id="RTalarm" ></div>
             <div id="Equipment" ></div>
-            <div id="secretKey" ></div>
         </div>
     </div>
 </div>
@@ -211,6 +210,7 @@
                     data:['紧急告警','严重告警','重要告警','中等告警']
                 },
                 calculable : true,
+                color:['orange','orangered','red','darkgrey'],
                 series : [
                     {
                         type:'pie',
@@ -262,7 +262,7 @@
                                 dataType : "json",
                                 url : 'getNodeDetails',
                                 success : function(data) { //请求成功后处理函数。
-                                   var res = "<table><caption align='top'>网元设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td></tr>";
+                                    var res = "<table><caption align='top'>网元设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td></tr>";
                                     for (var i =0;i<data.length;i++){
                                         res += '<tr><td>'+data[i].neName+'</td><td>'+data[i].neIp+'</td><td>';
                                         if(data[i].state==0){
@@ -288,44 +288,33 @@
                     }
                 },
                 series: [{
-                    layoutAnimation : false,
                     itemStyle: {
                         normal: {
                             lineWidth:10,
-                            text:'丽萨-乔布斯',
                             textColor:'#030303',
                             textFont:'bold 15px verdana',
                             textPosition:'inside',
                             label: {
-                                position: 'top',
+                                position:'top',
                                 show: true,
                                 textStyle: {
                                     color: '#333'
                                 }
                             },
-                            nodeStyle: {
-                                brushType: 'both',
-                                borderColor: 'rgb(240,255,255)',
-                                borderWidth: 1
+                            nodeStyle : {
+                                brushType : 'both',
+                                borderColor : '#333',
+                                borderWidth : 1
                             },
                             linkStyle: {
-                                normal: {
-                                    color: 'source',
-                                    curveness: 0,
-                                    type: "solid"
-                                }
+                                type: 'curve'
                             }
-                        },
-
-                    },
-                    linestyle: {
-
+                        }
                     },
                     force:{
                         initLayout: 'circular',//初始布局
                         repulsion:600,//斥力大小
                     },
-
                     animation: false,
                     name:"",
                     type: 'graph',//关系图类型
@@ -344,36 +333,6 @@
                     scaling: 1.1,
                     nodes: data.nodes,
                     links: data.links
-                }]
-            });
-        }
-    });
-    //ajax动态生成密钥生成总量柱状图
-    $.ajax({
-        type: "get",
-        async : true,
-        url: 'listSecretKey',
-        dataType: "json",
-        success : function (data) {
-            // 绘制图表。
-            echarts.init(document.getElementById('secretKey')).setOption({
-                title:{
-                    text:"密钥生成总量"
-                },
-                tooltip:{},
-                //x轴的文本
-                xAxis:{
-                    data:["01-05 09:34:44","01-05 09:39:44", "01-05 09:34:44","01-05 09:34:44", "01-05 09:34:44",
-                        "01-05 09:34:44","01-05 09:34:44","01-05 09:34:44","01-05 09:34:44","01-05 09:34:44",
-                        "01-05 09:34:44","01-05 09:34:44","01-05 09:34:44","01-05 09:34:44","01-05 09:34:44",
-                        "01-05 09:34:44","01-05 09:34:44","01-05 09:34:44","01-05 09:34:44","01-05 09:34:44"]
-                },
-                //y轴的文本
-                yAxis:{},
-                series:[{
-                    name:"",
-                    type:"bar",
-                    data:[9099,9000,9454,9887,8500,9099,9000,9454,9887,8500,9099,9000,9454,9887,8500,9099,9000,9454,9887,8500,]
                 }]
             });
         }

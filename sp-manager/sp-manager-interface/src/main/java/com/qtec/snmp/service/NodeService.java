@@ -8,6 +8,7 @@ import com.qtec.snmp.pojo.vo.NodeVo;
 import java.util.List;
 
 /**
+ * NodeService接口
  * User: james.xu
  * Date: 2018/3/2
  * Time: 10:17

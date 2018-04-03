@@ -33,7 +33,7 @@
     </where>
   </select>
   <select id="listAlarms" resultMap="BaseResultMap">
-    select
+    (select
     <include refid="Base_Column_List"/>
     from alarm a
     LEFT JOIN alarm_type t
@@ -42,6 +42,9 @@
       a.alarm_ack = 'RT'
       <include refid="Alarm_Where_Clause"/>
     </where>
+    ORDER BY a.id DESC
+    limit 100)
+    ORDER BY id ASC
   </select>
   <select id="countHistoryAlarms" resultType="_long">
     select count(1) from alarm a

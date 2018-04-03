@@ -151,20 +151,5 @@ public class NetElementAction {
         }
         return result;
     }
-    @ResponseBody
-    @RequestMapping(value = "/doQueryData", method = RequestMethod.POST)
-    public String doQueryData() {
-        String jsonStr = null;
-        try {
-            EchartsVo echartsVo = new EchartsVo();
-            echartsVo.setName("1");
-            echartsVo.setValue(2);
-            jsonStr = JsonUtil.objectToJson(echartsVo);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            e.printStackTrace();
-        }
-        return jsonStr;
-    }
 }
 

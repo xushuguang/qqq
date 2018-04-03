@@ -8,15 +8,16 @@
 <style>
     #tdDetails{
         position: absolute;
-        width: 50%;
+        width: 30%;
+        height: 30%;
         left:0;
         top:5%;
     }
     #keyRate{
         position: absolute;
-        width: 50%;
+        width: 90%;
         height: 50%;
-        right: 0;
+        left:0;
         bottom: 0;
         margin: 0 auto;
     }

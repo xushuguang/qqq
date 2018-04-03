@@ -5,6 +5,7 @@ import com.qtec.snmp.pojo.po.User;
 import com.qtec.snmp.pojo.vo.UserVo;
 
 /**
+ * UserService接口
  * User: james.xu
  * Date: 2018/2/6
  * Time: 11:20

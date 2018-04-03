@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * NetElementService实现类
  * User: james.xu
  * Date: 2018/2/1
  * Time: 15:16
@@ -34,6 +35,11 @@ public class NetElementServiceImpl implements NetElementService {
     @Autowired
     private NERelationMapper neRelationDao;
 
+    /**
+     *保存网元设备
+     * @param netElement
+     * @return int
+     */
     @Override
     public int saveNetElement(NetElement netElement) {
         int insert = 0;
@@ -59,6 +65,10 @@ public class NetElementServiceImpl implements NetElementService {
         return insert;
     }
 
+    /**
+     * 首页获取网元设备类型和数目信息
+     * @return list
+     */
     @Override
     public List<EchartsVo> statisticsNetElemet() {
         List<EchartsVo> list = null;
@@ -81,6 +91,10 @@ public class NetElementServiceImpl implements NetElementService {
         return list;
     }
 
+    /**
+     * 拓扑图获取node
+     * @return list
+     */
     @Override
     public List<NodeVo> listNodeVo() {
         List<NodeVo> list = null;
@@ -97,8 +111,6 @@ public class NetElementServiceImpl implements NetElementService {
                 nodeVo.setLabel(netElement.getNeName());
                 nodeVo.setCategory(2);
                 nodeVo.setSymbolSize(20);
-                nodeVo.setFlag(true);
-                nodeVo.setIgnore(true);
                 list.add(nodeVo);
             }
         }catch (Exception e) {
@@ -108,6 +120,10 @@ public class NetElementServiceImpl implements NetElementService {
         return list;
     }
 
+    /**
+     * 拓扑图获取link
+     * @return
+     */
     @Override
     public List<LinkVo> listLinkVo() {
         List<LinkVo> list = null;
@@ -155,6 +171,11 @@ public class NetElementServiceImpl implements NetElementService {
         return list;
     }
 
+    /**
+     * 根据网元名获取该网元设备底下的所有网元
+     * @param neName
+     * @return list
+     */
     @Override
     public List<NetElement> getNEChildren(String neName) {
         List<NetElement> list = null;
@@ -182,6 +203,11 @@ public class NetElementServiceImpl implements NetElementService {
         return list;
     }
 
+    /**
+     * 根据网元id获取当前网元设备的详细信息
+     * @param id
+     * @return result
+     */
     @Override
     public Result<PropertyGrid> getNEDetails(Long id) {
         Result<PropertyGrid> result = null;
@@ -196,61 +222,43 @@ public class NetElementServiceImpl implements NetElementService {
             NetElement netElement = netElementDao.selectByPrimaryKey(id);
             //封装
             PropertyGrid propertyGrid1 = new PropertyGrid();
-            propertyGrid1.setName("name");
+            propertyGrid1.setName("名称");
             propertyGrid1.setValue(netElement.getNeName());
-            propertyGrid1.setGroup("NE");
+            propertyGrid1.setGroup("本地网元详情");
             list.add(propertyGrid1);
             PropertyGrid propertyGrid2 = new PropertyGrid();
-            propertyGrid2.setName("IP");
+            propertyGrid2.setName("IP地址");
             propertyGrid2.setValue(netElement.getNeIp());
-            propertyGrid2.setGroup("NE");
+            propertyGrid2.setGroup("本地网元详情");
             list.add(propertyGrid2);
             PropertyGrid propertyGrid3 = new PropertyGrid();
-            propertyGrid3.setName("type");
+            propertyGrid3.setName("类型");
             propertyGrid3.setValue(netElement.getType());
-            propertyGrid3.setGroup("NE");
+            propertyGrid3.setGroup("本地网元详情");
             list.add(propertyGrid3);
             //根据pairingID查询到对端网元信息
             NetElement PairingNetElement = netElementDao.selectByPrimaryKey(neRelation.getPairingId());
             //封装
             PropertyGrid propertyGrid4 = new PropertyGrid();
-            propertyGrid4.setName("name");
+            propertyGrid4.setName("名称");
             propertyGrid4.setValue(PairingNetElement.getNeName());
-            propertyGrid4.setGroup("Pairing");
+            propertyGrid4.setGroup("对端网元详情");
             list.add(propertyGrid4);
             PropertyGrid propertyGrid5 = new PropertyGrid();
-            propertyGrid5.setName("IP");
+            propertyGrid5.setName("IP地址");
             propertyGrid5.setValue(PairingNetElement.getNeIp());
-            propertyGrid5.setGroup("Pairing");
+            propertyGrid5.setGroup("对端网元详情");
             list.add(propertyGrid5);
             PropertyGrid propertyGrid6 = new PropertyGrid();
-            propertyGrid6.setName("type");
+            propertyGrid6.setName("类型");
             propertyGrid6.setValue(PairingNetElement.getType());
-            propertyGrid6.setGroup("Pairing");
+            propertyGrid6.setGroup("对端网元详情");
             list.add(propertyGrid6);
-            //根据parentID查询到父网元信息
-            NetElement ParentNetElement = netElementDao.selectByPrimaryKey(neRelation.getParentId());
-            //封装
-            PropertyGrid propertyGrid7 = new PropertyGrid();
-            propertyGrid7.setName("name");
-            propertyGrid7.setValue(ParentNetElement.getNeName());
-            propertyGrid7.setGroup("Parent");
-            list.add(propertyGrid7);
-            PropertyGrid propertyGrid8 = new PropertyGrid();
-            propertyGrid8.setName("IP");
-            propertyGrid8.setValue(ParentNetElement.getNeIp());
-            propertyGrid8.setGroup("Parent");
-            list.add(propertyGrid8);
-            PropertyGrid propertyGrid9 = new PropertyGrid();
-            propertyGrid9.setName("type");
-            propertyGrid9.setValue(ParentNetElement.getType());
-            propertyGrid9.setGroup("Parent");
-            list.add(propertyGrid9);
             //封装distance
-            PropertyGrid propertyGrid10 = new PropertyGrid();
-            propertyGrid10.setName("distance(/km)");
-            propertyGrid10.setValue(neRelation.getDistance().toString());
-            list.add(propertyGrid10);
+            PropertyGrid propertyGrid7 = new PropertyGrid();
+            propertyGrid7.setName("距离(/km)");
+            propertyGrid7.setValue(neRelation.getDistance().toString());
+            list.add(propertyGrid7);
             //封装进result
             result = new Result<>();
             result.setRows(list);
@@ -261,6 +269,10 @@ public class NetElementServiceImpl implements NetElementService {
         return result;
     }
 
+    /**
+     * 获取所有网元设备
+     * @return result
+     */
     @Override
     public Result<NetElement> listNetElement() {
         Result<NetElement> result = null;
