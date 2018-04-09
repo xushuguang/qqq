@@ -8,9 +8,7 @@ import com.qtec.snmp.pojo.po.NERelation;
 import com.qtec.snmp.pojo.po.NERelationExample;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.po.NetElementExample;
-import com.qtec.snmp.pojo.vo.EchartsVo;
-import com.qtec.snmp.pojo.vo.LinkVo;
-import com.qtec.snmp.pojo.vo.NodeVo;
+import com.qtec.snmp.pojo.vo.*;
 import com.qtec.snmp.service.NetElementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,13 +102,28 @@ public class NetElementServiceImpl implements NetElementService {
             NetElementExample netElementExample = new NetElementExample();
             netElementExample.createCriteria().andTypeNotEqualTo("QKD");
             List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
-            //封装进nodeVo
             for (NetElement netElement : netElements){
+                //添加颜色
+                ItemStyle itemStyle = new ItemStyle();
+                Normal normal = new Normal();
+               if (netElement.getState()==2){
+                   //设备状态为2，则是绿色
+                   normal.setColor("green");
+               }else if (netElement.getState()==1){
+                   //设备状态为1，则是黄色
+                   normal.setColor("yellow");
+               }else {
+                   //设备状态为0，则是红色
+                   normal.setColor("red");
+               }
+                itemStyle.setNormal(normal);
+                //封装进nodeVo
                 NodeVo nodeVo = new NodeVo();
                 nodeVo.setName(netElement.getNeName());
-                nodeVo.setLabel(netElement.getNeName());
                 nodeVo.setCategory(2);
+                nodeVo.setSymbol("circle");
                 nodeVo.setSymbolSize(20);
+                nodeVo.setItemStyle(itemStyle);
                 list.add(nodeVo);
             }
         }catch (Exception e) {

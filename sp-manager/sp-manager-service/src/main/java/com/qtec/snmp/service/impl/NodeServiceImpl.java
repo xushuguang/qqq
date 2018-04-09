@@ -6,8 +6,10 @@ import com.qtec.snmp.dao.NodeMapper;
 import com.qtec.snmp.dao.NodeNEMapper;
 import com.qtec.snmp.pojo.dto.NodeDto;
 import com.qtec.snmp.pojo.po.*;
+import com.qtec.snmp.pojo.vo.ItemStyle;
 import com.qtec.snmp.pojo.vo.LinkVo;
 import com.qtec.snmp.pojo.vo.NodeVo;
+import com.qtec.snmp.pojo.vo.Normal;
 import com.qtec.snmp.service.NodeService;
 import com.qtec.snmp.service.SnmpService;
 import org.slf4j.Logger;
@@ -99,10 +101,40 @@ public class NodeServiceImpl implements NodeService{
             list = new ArrayList<>();
             List<Node> nodes = nodeDao.selectByExample(new NodeExample());
             for (Node node : nodes){
+                int num = 0;
+                //根据当前的node节点查询所有的网元设备的状态
+                NodeNEExample nodeNEExample = new NodeNEExample();
+                nodeNEExample.createCriteria().andNidEqualTo(node.getId());
+                List<NodeNE> nodeNES = nodeNEDao.selectByExample(nodeNEExample);
+                for (NodeNE nodeNE : nodeNES){
+                    Integer state = netElementDao.selectByPrimaryKey(nodeNE.getNeid()).getState();
+                    if (state==0){
+                        num += 0;
+                    }else if (state==1){
+                        num += 1;
+                    }else if (state==2){
+                        num += 2;
+                    }
+                }
+                //给节点添加颜色
+                ItemStyle itemStyle = new ItemStyle();
+                Normal normal = new Normal();
+                if (num==nodeNES.size()*2){
+                    //所有设备状态全部为2
+                    normal.setColor("green");
+                }else if (num<nodeNES.size()*2&&num>=nodeNES.size()*1){
+                    //所有设备中状态存在1
+                    normal.setColor("yellow");
+                }else {
+                    //所有设备状态中存在0
+                    normal.setColor("red");
+                }
+                itemStyle.setNormal(normal);
                 NodeVo nodeVo = new NodeVo();
                 nodeVo.setName(node.getNodeName());
                 nodeVo.setCategory(2);
-                nodeVo.setLabel(node.getNodeName());
+                nodeVo.setSymbol("circle");
+                nodeVo.setItemStyle(itemStyle);
                 nodeVo.setSymbolSize(20);
                 list.add(nodeVo);
             }

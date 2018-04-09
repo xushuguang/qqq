@@ -18,9 +18,9 @@
     #divAlarms{
         position: absolute;
         width: 100%;
-        height: 80%;
+        height: 89%;
         left:0;
-        top:15%;
+        top:11%;
     }
 </style>
 <form id="alarmForm">
@@ -34,7 +34,6 @@
             <option value="Fatal">Fatal</option>
             <option value="Error">Error</option>
             <option value="Warning">Warning</option>
-            <option value="Info">Info</option>
         </select>
         &nbsp;&nbsp;
         <label>告警时间：</label>
@@ -47,9 +46,6 @@
         <button onclick="clearForm()" type="button" class="easyui-linkbutton">重置</button>
     </div>
 </form>
-<div>
-    <button onclick="remove()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除实时告警</button>
-</div>
 <div id="divAlarms">
 <%--容器放好--%>
 <table id="dgAlarms"></table>
@@ -123,7 +119,7 @@
         //数据表格的标题
         title: '告警主列表',
        // 显示行号
-        rownumbers: true,
+        rownumbers: false,
         //添加工具栏
         toolbar: '#alarmListToolbar',
         //请求服务器端数据
@@ -157,7 +153,7 @@
         ]]
     });
     //实时刷新
-    //timerID = setInterval("refresh()",500);
+    timerID = setInterval("refresh()",500);
     function refresh(){
         $('#dgAlarms').datagrid('reload');
     }

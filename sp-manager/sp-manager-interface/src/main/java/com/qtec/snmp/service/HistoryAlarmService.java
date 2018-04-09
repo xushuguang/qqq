@@ -31,4 +31,9 @@ public interface HistoryAlarmService {
      * @return int
      */
     int historyAlarmUp(List<Long> ids);
+
+    /**
+     * 删除历史告警
+     */
+    void deleteHistoryAlarms();
 }

@@ -6,9 +6,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>sq-manager-web</artifactId>
+    <artifactId>sp-manager-web</artifactId>
     <packaging>war</packaging>
-    <name>sq-manager-web Maven Webapp</name>
+    <name>sp-manager-web Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
@@ -65,7 +65,7 @@
 
     </dependencies>
     <build>
-        <finalName>tt-manager-web</finalName>
+        <finalName>sp-manager-web</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>

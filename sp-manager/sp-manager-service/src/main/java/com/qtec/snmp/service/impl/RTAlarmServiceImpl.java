@@ -11,10 +11,10 @@ import com.qtec.snmp.pojo.vo.AlarmQuery;
 import com.qtec.snmp.pojo.vo.AlarmVo;
 import com.qtec.snmp.pojo.vo.EchartsVo;
 import com.qtec.snmp.service.RTAlarmService;
-import com.qtec.snmp.service.SnmpTrapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -69,9 +69,10 @@ public class RTAlarmServiceImpl implements RTAlarmService{
     }
 
     /**
-     * 移除实时告警信息
+     * 定时移除实时告警信息
      */
     @Override
+    @Scheduled(fixedRate = 1000*60)
     public void removeRTAlarms() {
         //把alarm数据表里的alarm_ack值为"RT"的全部设置为"N"
         try {
@@ -84,7 +85,6 @@ public class RTAlarmServiceImpl implements RTAlarmService{
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-
     }
 
     /**

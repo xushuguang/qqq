@@ -23,17 +23,22 @@ $(document).ready(function() {
                                 type : 'post',
                                 data:{"neName":neName},
                                 success : function(data){
-                                    for(var j = 0; j < data.length; j++){
-                                        var x = (new Date()).getTime(); // current time
-                                        var y;
-                                        if (chart.series[j].name==data[j].name) {
-                                            y = parseInt(data[i].data);
+                                    var x = (new Date()).getTime(); // current time
+                                    var y;
+                                    if(data.length>0){
+                                        for(var j = 0; j < data.length; j++){
+                                            if (chart.series[j].name==data[j].name) {
+                                                y = parseInt(data[i].data);
+                                            }
+                                            series.addPoint([x, y], true, true);
                                         }
+                                    }else {
+                                        y = 0;
                                         series.addPoint([x, y], true, true);
                                     }
                                 }
                             });
-                        }, 5000);
+                        }, 1000*60);
                     });
                 }
             }
@@ -85,22 +90,25 @@ $(document).ready(function() {
             data: {"neName": neName},
             async : false, //同步处理后面才能处理新添加的series
             success: function (data) {
-                console.log(data)
-                for (var i = 0; i < data.length; i++) {
-                    var name = data[i].name;
-                    var value =  (function () {
-                        // generate an array of random data
-                        var data = [],
-                            time = (new Date()).getTime(),
-                            i;
-                        for (i = -29; i <= 0; i += 1) {
-                            data.push({
-                                x: time + i * 5000,
-                                y: 0
-                            });
-                        }
-                        return data;
-                    }());
+                var value =  (function () {
+                    var data = [],
+                        time = (new Date()).getTime(),
+                        i;
+                    for (i = -119; i <= 0; i += 1) {
+                        data.push({
+                            x: time + i * 1000*60,
+                            y: 0
+                        });
+                    }
+                    return data;
+                }());
+                if (data.length>0){
+                    for (var i = 0; i < data.length; i++) {
+                        var name = data[i].name;
+                        seriesArr.push({"name": name, "data": value});
+                    }
+                }else {
+                    var name = '无数据';
                     seriesArr.push({"name": name, "data": value});
                 }
             }

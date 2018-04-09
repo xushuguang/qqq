@@ -1,8 +1,6 @@
 package com.qtec.snmp.service.impl;
 
-import com.qtec.snmp.service.GetStateService;
-import com.qtec.snmp.service.SnmpService;
-import com.qtec.snmp.service.SnmpTrapService;
+import com.qtec.snmp.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,10 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
     private GetStateService getStateService;
     @Autowired
     private SnmpTrapService snmpTrapService;
+    @Autowired
+    private RTAlarmService rtAlarmService;
+    @Autowired
+    private HistoryAlarmService historyAlarmService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -43,6 +45,8 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
                 snmpService.setNeRelation();
                 getStateService.getState();
                 snmpTrapService.keyBufferListClear();
+                rtAlarmService.removeRTAlarms();
+                historyAlarmService.deleteHistoryAlarms();
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

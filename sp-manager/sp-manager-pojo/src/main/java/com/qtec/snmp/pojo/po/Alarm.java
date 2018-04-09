@@ -62,4 +62,16 @@ public class Alarm {
     public void setAlarmAck(String alarmAck) {
         this.alarmAck = alarmAck == null ? null : alarmAck.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Alarm{" +
+                "id=" + id +
+                ", typeId=" + typeId +
+                ", qkdIp='" + qkdIp + '\'' +
+                ", qkdRuntime='" + qkdRuntime + '\'' +
+                ", alarmTime=" + alarmTime +
+                ", alarmAck='" + alarmAck + '\'' +
+                '}';
+    }
 }

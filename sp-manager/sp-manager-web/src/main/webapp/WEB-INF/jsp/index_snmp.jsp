@@ -234,6 +234,7 @@
         url: 'listNodeVo',
         dataType: "json",
         success : function (data) {
+            console.log(data)
             // 绘制图表。
             equipmentCharts.setOption({
                 title: {
@@ -290,25 +291,17 @@
                 series: [{
                     itemStyle: {
                         normal: {
-                            lineWidth:10,
-                            textColor:'#030303',
-                            textFont:'bold 15px verdana',
-                            textPosition:'inside',
+                            lineWidth: 10,
+                            textColor: '#333',
+                            textFont: 'bold 15px verdana',
+                            textPosition: 'inside',
                             label: {
-                                position:'top',
+                                position: 'top',
                                 show: true,
                                 textStyle: {
                                     color: '#333'
                                 }
                             },
-                            nodeStyle : {
-                                brushType : 'both',
-                                borderColor : '#333',
-                                borderWidth : 1
-                            },
-                            linkStyle: {
-                                type: 'curve'
-                            }
                         }
                     },
                     force:{

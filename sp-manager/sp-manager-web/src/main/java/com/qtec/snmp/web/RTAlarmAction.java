@@ -42,16 +42,6 @@ public class RTAlarmAction {
         return result;
     }
     @ResponseBody
-    @RequestMapping(value = "/removeRTAlarms",method = RequestMethod.GET)
-    public void removeRTAlarms(){
-        try {
-           rtAlarmService.removeRTAlarms();
-        }catch (Exception e){
-            logger.error(e.getMessage(), e);
-            e.printStackTrace();
-        }
-    }
-    @ResponseBody
     @RequestMapping(value = "/listRTalarmVo", method = RequestMethod.GET)
     public String listRTalarmVo(){
         String jsonStr = null;

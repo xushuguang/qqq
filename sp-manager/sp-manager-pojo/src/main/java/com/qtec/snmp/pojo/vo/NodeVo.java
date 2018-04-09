@@ -9,8 +9,9 @@ package com.qtec.snmp.pojo.vo;
 public class NodeVo {
     private int category;
     private String name;
-    private String label;
     private int symbolSize;
+    private String symbol;
+    private ItemStyle itemStyle;
     public int getCategory() {
         return category;
     }
@@ -27,19 +28,27 @@ public class NodeVo {
         this.name = name;
     }
 
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
     public int getSymbolSize() {
         return symbolSize;
     }
 
     public void setSymbolSize(int symbolSize) {
         this.symbolSize = symbolSize;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public ItemStyle getItemStyle() {
+        return itemStyle;
+    }
+
+    public void setItemStyle(ItemStyle itemStyle) {
+        this.itemStyle = itemStyle;
     }
 }

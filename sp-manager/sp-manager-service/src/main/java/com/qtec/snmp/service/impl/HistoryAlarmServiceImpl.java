@@ -13,11 +13,15 @@ import com.qtec.snmp.service.HistoryAlarmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * HistoryAlarmService实现类
@@ -86,5 +90,16 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
             e.printStackTrace();
         }
         return i;
+    }
+    @Override
+    @Scheduled(fixedRate = 1000 * 60 * 60)
+    public void deleteHistoryAlarms(){
+        AlarmExample alarmExample = new AlarmExample();
+        alarmExample.createCriteria().andAlarmAckNotEqualTo("RT");
+        int count = alarmDao.countByExample(alarmExample);
+        while (count>100000){
+            alarmCustomDao.deleteHistoryAlarms();
+            count = count - 1000;
+        }
     }
 }

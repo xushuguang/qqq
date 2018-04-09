@@ -62,4 +62,16 @@ public class AlarmVo {
     public void setAlarmAck(String alarmAck) {
         this.alarmAck = alarmAck;
     }
+
+    @Override
+    public String toString() {
+        return "AlarmVo{" +
+                "id=" + id +
+                ", qkdIp='" + qkdIp + '\'' +
+                ", alarmTime=" + alarmTime +
+                ", alarmType='" + alarmType + '\'' +
+                ", alarmSeverity='" + alarmSeverity + '\'' +
+                ", alarmAck='" + alarmAck + '\'' +
+                '}';
+    }
 }

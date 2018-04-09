@@ -31,4 +31,12 @@ public interface AlarmCustomMapper {
 
    int countRTalarmNum(String alarmServerity);
 
+   /**
+    * 删除历史告警
+    */
+   void deleteHistoryAlarms();
+   /**
+    * 对id进行重新更新
+    */
+   void updateAlarmId();
 }

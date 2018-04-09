@@ -39,11 +39,11 @@
     LEFT JOIN alarm_type t
     ON a.type_id = t.type_id
     <where>
-      a.alarm_ack = 'RT'
+      a.alarm_ack = 'RT' AND t.alarm_severity != 'INFO'
       <include refid="Alarm_Where_Clause"/>
     </where>
     ORDER BY a.id DESC
-    limit 100)
+    limit 50)
     ORDER BY id ASC
   </select>
   <select id="countHistoryAlarms" resultType="_long">
@@ -76,4 +76,7 @@
       and t.alarm_severity = #{alarmSeverity}
     </where>
   </select>
+  <delete id="deleteHistoryAlarms">
+    delete from alarm  where exists (select * from (select id from alarm limit 1,500000) as a where a.id=alarm.id);
+  </delete>
 </mapper>

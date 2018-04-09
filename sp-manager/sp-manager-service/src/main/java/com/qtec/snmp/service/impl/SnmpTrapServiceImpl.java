@@ -28,10 +28,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * SnmpTrapService实现类
@@ -149,7 +149,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
                     //存入数据库
                     alarm.setAlarmAck("RT");
                     alarm.setAlarmTime(new Date());
-                    //alarmDao.insert(alarm);
+                    alarmDao.insert(alarm);
                 }
             }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")){
                 //trap信息是关于QKD keyRate的
@@ -244,11 +244,10 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
 
     /**
      * 定时清除keyBufferList类
-     * @Scheduled”spring  Quartz任务调度框架定时注解
+     * "@Scheduled"spring  Quartz任务调度框架定时注解
      */
-    @Scheduled(fixedRate = 1000 * 20)
+    @Scheduled(fixedRate = 1000 * 60*2)
     public void keyBufferListClear(){
         keyBufferList.clear();
-        System.out.println("keyBufferList已经清除完毕");
     }
 }
