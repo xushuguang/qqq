@@ -73,12 +73,13 @@
             url: 'addNode',
             //表单提交之前被触发，如果返回false终止提交
             onSubmit: function () {},
+            //表单提交成功后触发
             success: function (data) {
                 data = JSON.parse(data);
                 if (data.success) {
                     $.messager.alert('消息', data.message, 'info');
                     snmp.closeTabs('添加节点');
-                    snmp.addTabs("设备管理","ne_list");
+                    snmp.addTabs("节点管理","node_manage");
                 }
             }
         });

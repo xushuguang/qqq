@@ -35,8 +35,5 @@ public interface AlarmCustomMapper {
     * 删除历史告警
     */
    void deleteHistoryAlarms();
-   /**
-    * 对id进行重新更新
-    */
-   void updateAlarmId();
+
 }

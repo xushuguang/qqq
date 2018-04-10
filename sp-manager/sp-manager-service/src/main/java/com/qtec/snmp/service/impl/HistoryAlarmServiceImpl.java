@@ -16,12 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * HistoryAlarmService实现类
@@ -97,9 +94,9 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
         AlarmExample alarmExample = new AlarmExample();
         alarmExample.createCriteria().andAlarmAckNotEqualTo("RT");
         int count = alarmDao.countByExample(alarmExample);
-        while (count>100000){
+        while (count>800000){
             alarmCustomDao.deleteHistoryAlarms();
-            count = count - 1000;
+            count = count - 10000;
         }
     }
 }

@@ -52,7 +52,8 @@
                 data = JSON.parse(data);
                 if (data.success) {
                     $.messager.alert('消息', data.message, 'info');
-                    $('#neAddForm').form('clear');
+                    snmp.closeTabs('添加网元');
+                    snmp.addTabs("网元管理","ne_manage");
                 }
             }
         });

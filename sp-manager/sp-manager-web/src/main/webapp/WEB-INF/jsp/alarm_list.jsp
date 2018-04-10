@@ -66,54 +66,6 @@
         $('#alarmForm').form('clear');
         searchForm();
     }
-    //开始监控按钮
-    function start() {
-        $.messager.confirm('确认', '您确定要开始监控吗？', function (r) {
-            if (r) {
-                //发出ajax请求
-                //$.ajax() $.post() $.get()
-                $.get(
-                    //url，提交给后台谁去处理
-                    'startTrap',
-                    function () {
-                        $('#dgAlarms').datagrid('reload');
-                    }
-                );
-            }
-        } );
-    }
-    //停止监控按钮
-    function stop() {
-        $.messager.confirm('确认', '您确定要停止监控吗？', function (r) {
-            if (r) {
-                //发出ajax请求
-                //$.ajax() $.post() $.get()
-                $.get(
-                    //url，提交给后台谁去处理
-                    'stopTrap',
-                    function () {
-                        $('#dgAlarms').datagrid('reload');
-                    }
-                );
-            }
-        } );
-    }//停止监控按钮
-    function remove() {
-        $.messager.confirm('确认', '您确定要删除实时监控信息吗？', function (r) {
-            if (r) {
-                //发出ajax请求
-                //$.ajax() $.post() $.get()
-                $.get(
-                    //url，提交给后台谁去处理
-                    'removeRTAlarms',
-                    function () {
-                        //刷新
-                        $('#dgAlarms').datagrid('reload');
-                    }
-                );
-            }
-        } );
-    }
     //初始化数据表格代码
     $('#dgAlarms').datagrid({
         //数据表格的标题

@@ -72,7 +72,7 @@ public class UserAction {
     public MessageResult loginUser(@RequestParam("username")String username, @RequestParam("password")String password, HttpServletRequest request){
         MessageResult mr = new MessageResult();
         try {
-            //1.根据用户名查询用户是否已经存在
+            //1.根据用户名和密码查询用户是否已经存在
             User user = userService.loginUser(username,password);
             if (user != null){
                 //存在

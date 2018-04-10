@@ -13,10 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -150,6 +148,32 @@ public class NetElementAction {
             e.printStackTrace();
         }
         return result;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/netElement/remove", method = RequestMethod.POST)
+    public int removeNetElements(@RequestParam("ids[]") List<Long> ids) {
+        int i = 0;
+        try {
+            i = netElementService.removeNetElements(ids);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/netElement/edit", method = RequestMethod.POST)
+    public ModelAndView editNetElement(@RequestParam("netElement")NetElement netElement){
+        ModelAndView mav = null;
+        try {
+            mav = new ModelAndView();
+            mav.setViewName("ne_edit");
+            mav.addObject("netElement",netElement);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return mav;
     }
 }
 

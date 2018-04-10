@@ -1,9 +1,11 @@
 package com.qtec.snmp.web;
 
 import com.qtec.snmp.common.dto.MessageResult;
+import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.common.utils.JsonUtil;
 import com.qtec.snmp.pojo.dto.NodeDto;
 import com.qtec.snmp.pojo.po.NetElement;
+import com.qtec.snmp.pojo.po.Node;
 import com.qtec.snmp.pojo.vo.LinkVo;
 import com.qtec.snmp.pojo.vo.NodeVo;
 import com.qtec.snmp.service.NodeService;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -79,5 +82,29 @@ public class NodeAction {
             e.printStackTrace();
         }
         return jsonStr;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/listNode", method = RequestMethod.GET)
+    public Result<Node> listNode() {
+        Result<Node> result = null;
+        try {
+            result= nodeService.listNode();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/node/remove", method = RequestMethod.POST)
+    public int removeNodes(@RequestParam("ids[]") List<Long> ids) {
+        int i = 0;
+        try {
+            i = nodeService.removeNodes(ids);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
     }
 }

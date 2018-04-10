@@ -61,4 +61,6 @@ public interface NetElementService {
      * @return
      */
     Result<NetElement> listNetElement();
+
+    int removeNetElements(List<Long> ids);
 }

@@ -1,5 +1,6 @@
 package com.qtec.snmp.service.impl;
 
+import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
 import com.qtec.snmp.dao.NodeMapper;
@@ -55,7 +56,7 @@ public class NodeServiceImpl implements NodeService{
             example.createCriteria().andNodeNameEqualTo(nodeDto.getName());
             List<Node> nodes = nodeDao.selectByExample(example);
             if (nodes != null && nodes.size()>0) {
-                //节点已存在，不可以添加
+                flag = false;
             }else {
                 //节点不存在，可以添加
                 //添加设备
@@ -63,31 +64,31 @@ public class NodeServiceImpl implements NodeService{
                 Node node = new Node();
                 node.setNodeIp(nodeDto.getNodeIp());
                 node.setNodeName(nodeDto.getName());
-                int insert2 = nodeDao.insert(node);
-                //再查询节点ip
+                int insert1 = nodeDao.insert(node);
+                //再查询节点id
                 NodeExample example1 = new NodeExample();
-                example.createCriteria().andNodeNameEqualTo(nodeDto.getName());
-                List<Node> nodes1 = nodeDao.selectByExample(example);
-                Long nid = nodes1.get(0).getId();
+                example1.createCriteria().andNodeIpEqualTo(node.getNodeIp());
+                Long nid = nodeDao.selectByExample(example1).get(0).getId();
                 //遍历集合并保存节点网元关系
-                int insert1 = 0;
+                int insert2 = 0;
                 for (Long neid : nodeDto.getIds() ){
                     NodeNE nodeNE = new NodeNE();
                     nodeNE.setNid(nid);
                     nodeNE.setNeid(neid);
-                    insert1 = nodeNEDao.insert(nodeNE);
+                    insert2 = nodeNEDao.insert(nodeNE);
                 }
-                //get各网元关系
-                snmpService.setNeRelation();
                 if (insert1>0 && insert2>0){
                     flag = true;
                 }
+                //get各网元关系
+                snmpService.setNeRelation();
             }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
+        }finally {
+            return flag;
         }
-        return flag;
     }
 
     /**
@@ -230,5 +231,38 @@ public class NodeServiceImpl implements NodeService{
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public Result<Node> listNode() {
+        Result<Node> result = null;
+        try {
+            result = new Result<>();
+            List<Node> list = nodeDao.selectByExample(new NodeExample());
+            result.setRows(list);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public int removeNodes(List<Long> ids) {
+        int result = 0;
+        try {
+            //先删除节点
+           NodeExample nodeExample = new NodeExample();
+           nodeExample.createCriteria().andIdIn(ids);
+           result = nodeDao.deleteByExample(nodeExample);
+           //再删除节点网元关联表中的数据
+            NodeNEExample nodeNEExample = new NodeNEExample();
+            nodeNEExample.createCriteria().andNidIn(ids);
+            nodeNEDao.deleteByExample(nodeNEExample);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
     }
 }

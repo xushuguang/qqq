@@ -77,6 +77,6 @@
     </where>
   </select>
   <delete id="deleteHistoryAlarms">
-    delete from alarm  where exists (select * from (select id from alarm limit 1,500000) as a where a.id=alarm.id);
+    delete from alarm  where exists (select * from (select id from alarm limit 1,10000) as a where a.id=alarm.id);
   </delete>
 </mapper>

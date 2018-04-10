@@ -78,7 +78,8 @@
     <div id="menu" class="easyui-accordion">
         <div title="网元管理" data-options="selected:true,iconCls:'icon-tip'" style="padding:10px 0;">
             <ul class="easyui-tree">
-                <li data-options="attributes:{'href':'ne_manager'}">设备管理</li>
+                <li data-options="attributes:{'href':'ne_manage'}">网元管理</li>
+                <li data-options="attributes:{'href':'node_manage'}">节点管理</li>
                 <li data-options="attributes:{'href':'TN'}">量子秘钥管理层</li>
             </ul>
         </div>

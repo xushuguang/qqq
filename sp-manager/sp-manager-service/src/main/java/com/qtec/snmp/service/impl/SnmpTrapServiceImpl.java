@@ -149,7 +149,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
                     //存入数据库
                     alarm.setAlarmAck("RT");
                     alarm.setAlarmTime(new Date());
-                    alarmDao.insert(alarm);
+                    //alarmDao.insert(alarm);
                 }
             }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")){
                 //trap信息是关于QKD keyRate的

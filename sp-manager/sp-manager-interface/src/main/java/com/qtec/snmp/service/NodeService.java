@@ -1,7 +1,9 @@
 package com.qtec.snmp.service;
 
+import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.pojo.dto.NodeDto;
 import com.qtec.snmp.pojo.po.NetElement;
+import com.qtec.snmp.pojo.po.Node;
 import com.qtec.snmp.pojo.vo.LinkVo;
 import com.qtec.snmp.pojo.vo.NodeVo;
 
@@ -40,4 +42,8 @@ public interface NodeService {
      * @return list
      */
     List<NetElement> getNodeDetails(String nodeName);
+
+    Result<Node> listNode();
+
+    int removeNodes(List<Long> ids);
 }

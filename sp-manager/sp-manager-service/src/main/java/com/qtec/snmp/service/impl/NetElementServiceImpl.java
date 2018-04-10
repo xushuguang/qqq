@@ -291,9 +291,27 @@ public class NetElementServiceImpl implements NetElementService {
         Result<NetElement> result = null;
         try {
             result = new Result<>();
-            NetElementExample example = new NetElementExample();
-            List<NetElement> list = netElementDao.selectByExample(example);
+            List<NetElement> list = netElementDao.selectByExample(new NetElementExample());
             result.setRows(list);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public int removeNetElements(List<Long> ids) {
+        int result = 0;
+        try {
+            //先根据ids删除网元
+            NetElementExample netElementExample = new NetElementExample();
+            netElementExample.createCriteria().andIdIn(ids);
+            result = netElementDao.deleteByExample(netElementExample);
+            //再根据ids删除网元关系表中的数据\
+            NERelationExample neRelationExample = new NERelationExample();
+            neRelationExample.createCriteria().andNeidIn(ids);
+            neRelationDao.deleteByExample(neRelationExample);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
