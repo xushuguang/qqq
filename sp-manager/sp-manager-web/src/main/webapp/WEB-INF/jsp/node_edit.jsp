@@ -5,28 +5,34 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<div style="padding:3px 2px;border-bottom:1px solid #ccc">节点详情</div>
-<form id="ff" action="form1_proc.php" method="post">
-    <input name="id" type="hidden"></input>
+<div class="easyui-panel" title="节点详情" data-options="fit:true">
+<form id="nodeEditForm" name="nodeEditForm" method="post">
+    <input name="id" id="id" type="hidden"></input>
     <table>
         <tr>
             <td>节点名:</td>
-            <td><input name="name" type="text" data-options="required:true"></input></td>
+            <td><input name="name" id="name" type="text" data-options="required:true"></input></td>
         </tr>
         <tr>
             <td>节点ip:</td>
-            <td><input name="email" type="text" data-options="required:true"></input></td>
+            <td><input name="nodeIp" id="nodeIp" type="text" data-options="required:true"></input></td>
         </tr>
         <tr>
             <td>拥有设备:</td>
             <td><input id="ids" name="ids"  prompt="请选择设备" data-options="required:true"></input></td>
         </tr>
         <tr>
-            <td></td>
-            <td><input type="submit" value="保存"></input></td>
+        <tr>
+            <td colspan="2" align="center">
+                <button onclick="submitForm()" class="easyui-linkbutton" type="button"
+                        data-options="iconCls:'icon-ok'">保存
+                </button>
+            </td>
+        </tr>
         </tr>
     </table>
 </form>
+</div>
 <script>
     //添加设备下拉列表动态生成
     $('#ids').combogrid({
@@ -55,4 +61,41 @@
             }}
         ]]
     });
+    $(document).ready(function() {
+        var nodeId = sessionStorage.getItem("nodeId");
+        $.post(
+            //url，提交给后台谁去处理
+            'node/getNodeById',
+            //data，提交什么到后台，ids
+            {'nodeId': nodeId},
+            //callback,相当于$.ajax中success
+            function (data) {
+                if (data!=null){
+                    $('#id').val(data.id);
+                    $('#name').val(data.name);
+                    $('#nodeIp').val(data.nodeIp);
+                    $('#ids').combogrid('setValue',data.ids);
+                }
+            }
+        );
+    });
+    //表单提交动作
+    function submitForm() {
+        $('#nodeEditForm').form('submit', {
+            //表单提交后交给谁处理
+            url: 'node/edit',
+            //表单提交之前被触发，如果返回false终止提交
+            onSubmit: function () {},
+            success: function (data) {
+                console.log(data)
+                if (data>0){
+                    $.messager.alert('消息', '修改成功！', 'info');
+                    snmp.closeTabs("节点编辑");
+                    snmp.addTabs("节点管理","node_manage");
+                }else (
+                    $.messager.alert('警告', '修改失败！', 'warning')
+                )
+            }
+        });
+    }
 </script>

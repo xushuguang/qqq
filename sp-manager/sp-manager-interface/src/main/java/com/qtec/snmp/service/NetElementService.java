@@ -63,4 +63,8 @@ public interface NetElementService {
     Result<NetElement> listNetElement();
 
     int removeNetElements(List<Long> ids);
+
+    NetElement getNetElementById(Long neId);
+
+    int updateNetElement(NetElement netElement);
 }

@@ -162,33 +162,37 @@ public class NodeServiceImpl implements NodeService{
                 NodeNEExample nodeNEExample1= new NodeNEExample();
                 nodeNEExample1.createCriteria().andNeidEqualTo(neRelation.getNeid());
                 List<NodeNE> nodeNES1 = nodeNEDao.selectByExample(nodeNEExample1);
-                //获取节点id
-                Long nid1 = nodeNES1.get(0).getNid();
-                //根据节点id查询到节点名
-                NodeExample nodeExample1 = new NodeExample();
-                nodeExample1.createCriteria().andIdEqualTo(nid1);
-                List<Node> nodes1 = nodeDao.selectByExample(nodeExample1);
-                String source = nodes1.get(0).getNodeName();
-                //查询target
-                //如果存在pairingId
-                if(neRelation.getPairingId()!=null){
-                    NodeNEExample nodeNEExample2= new NodeNEExample();
-                    nodeNEExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
-                    List<NodeNE> nodeNES2 = nodeNEDao.selectByExample(nodeNEExample2);
+                if (nodeNES1!=null&&nodeNES1.size()>0){
                     //获取节点id
-                    Long nid2 = nodeNES2.get(0).getNid();
+                    Long nid1 = nodeNES1.get(0).getNid();
                     //根据节点id查询到节点名
-                    NodeExample nodeExample2 = new NodeExample();
-                    nodeExample2.createCriteria().andIdEqualTo(nid2);
-                    List<Node> nodes2 = nodeDao.selectByExample(nodeExample2);
-                    String target = nodes2.get(0).getNodeName();
-                    //封装进linkVo对象
-                    LinkVo linkVo = new LinkVo();
-                    linkVo.setSource(source);
-                    linkVo.setTarget(target);
-                    linkVo.setName("1111");
-                    //存入list
-                    list.add(linkVo);
+                    NodeExample nodeExample1 = new NodeExample();
+                    nodeExample1.createCriteria().andIdEqualTo(nid1);
+                    List<Node> nodes1 = nodeDao.selectByExample(nodeExample1);
+                    String source = nodes1.get(0).getNodeName();
+                    //查询target
+                    //如果存在pairingId
+                    if(neRelation.getPairingId()!=null){
+                        NodeNEExample nodeNEExample2= new NodeNEExample();
+                        nodeNEExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
+                        List<NodeNE> nodeNES2 = nodeNEDao.selectByExample(nodeNEExample2);
+                        if (nodeNES2!=null&&nodeNES2.size()>0){
+                            //获取节点id
+                            Long nid2 = nodeNES2.get(0).getNid();
+                            //根据节点id查询到节点名
+                            NodeExample nodeExample2 = new NodeExample();
+                            nodeExample2.createCriteria().andIdEqualTo(nid2);
+                            List<Node> nodes2 = nodeDao.selectByExample(nodeExample2);
+                            String target = nodes2.get(0).getNodeName();
+                            //封装进linkVo对象
+                            LinkVo linkVo = new LinkVo();
+                            linkVo.setSource(source);
+                            linkVo.setTarget(target);
+                            linkVo.setName("1111");
+                            //存入list
+                            list.add(linkVo);
+                        }
+                    }
                 }
             }
 
@@ -264,5 +268,71 @@ public class NodeServiceImpl implements NodeService{
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public NodeDto getNodeById(Long nodeId) {
+        NodeDto nodeDto = null;
+        try {
+            nodeDto = new NodeDto();
+            //先根据id查询node
+            Node node = nodeDao.selectByPrimaryKey(nodeId);
+            //再根据id查询nodeNES
+            NodeNEExample nodeNEExample = new NodeNEExample();
+            nodeNEExample.createCriteria().andNidEqualTo(nodeId);
+            List<NodeNE> nodeNES = nodeNEDao.selectByExample(nodeNEExample);
+            //遍历nodeNES并把neid存入ids集合
+            List<Long> ids = new ArrayList<>();
+            for (NodeNE nodeNE : nodeNES) {
+                ids.add(nodeNE.getNeid());
+            }
+            //封装
+            nodeDto.setId(node.getId());
+            nodeDto.setName(node.getNodeName());
+            nodeDto.setNodeIp(node.getNodeIp());
+            nodeDto.setIds(ids);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return nodeDto;
+    }
+
+    @Override
+    public int updateNodeDto(NodeDto nodeDto) {
+        int i = 0;
+        try {
+           //先更新node
+            Node node = new Node();
+            node.setId(nodeDto.getId());
+            node.setNodeName(nodeDto.getName());
+            node.setNodeIp(nodeDto.getNodeIp());
+            NodeExample nodeExample = new NodeExample();
+            nodeExample.createCriteria().andIdEqualTo(nodeDto.getId());
+            int i1 = nodeDao.updateByExample(node, nodeExample);
+            //再更新NodeNe
+           //先根据nodeId删除nodeNe中的所有数据
+            NodeNEExample nodeNEExample = new NodeNEExample();
+            nodeNEExample.createCriteria().andNidEqualTo(nodeDto.getId());
+            int i2 = nodeNEDao.deleteByExample(nodeNEExample);
+            //然后再遍历循环添加数据
+            List<Long> neIds = nodeDto.getIds();
+            int i3 = 0;
+            for (Long neId : neIds){
+                NodeNE nodeNE = new NodeNE();
+                nodeNE.setNid(nodeDto.getId());
+                nodeNE.setNeid(neId);
+                 i3 = nodeNEDao.insert(nodeNE);
+            }
+            if (i1>0&&i2>0&&i3>0){
+                i = 1;
+            }
+            //get各网元关系
+            snmpService.setNeRelation();
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
     }
 }

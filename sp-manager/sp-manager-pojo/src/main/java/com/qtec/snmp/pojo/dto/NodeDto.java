@@ -10,9 +10,18 @@ import java.util.List;
  * Version:V1.0
  */
 public class NodeDto {
+    private Long id;
     private String name;
     private String nodeIp;
     private List<Long> ids;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

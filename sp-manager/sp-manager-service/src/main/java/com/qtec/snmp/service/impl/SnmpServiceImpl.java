@@ -68,28 +68,34 @@ public class SnmpServiceImpl implements SnmpService{
                             String qkdIp = QKDIPs.get(j);
                             NetElementExample netElementExample1 = new NetElementExample();
                             netElementExample1.createCriteria().andNeIpEqualTo(qkdIp);
-                            Long qkdId = netElementDao.selectByExample(netElementExample1).get(0).getId();
-                            String pairQkdIp = pairQKDIPs.get(j);
-                            NetElementExample netElementExample2 = new NetElementExample();
-                            netElementExample2.createCriteria().andNeIpEqualTo(pairQkdIp);
-                            Long pairQkdId = netElementDao.selectByExample(netElementExample2).get(0).getId();
-                            String distance = distances.get(j);
-                            //封装进实体类
-                            NERelation neRelation = new NERelation();
-                            neRelation.setNeid(qkdId);
-                            neRelation.setPairingId(pairQkdId);
-                            neRelation.setParentId(TNId);
-                            neRelation.setDistance(Long.valueOf(distance));
-                            //根据qkdIp查询当前有没有数据，如果有，则更新，如果没有，则添加
-                            NERelationExample neRelationExample = new NERelationExample();
-                            neRelationExample.createCriteria().andNeidEqualTo(qkdId);
-                            List<NERelation> neRelations = neRelationDao.selectByExample(neRelationExample);
-                            if (neRelations!= null && neRelations.size()>0){
-                                //有
-                                neRelationDao.updateByExample(neRelation,neRelationExample);
-                            }else {
-                                //没有
-                                neRelationDao.insert(neRelation);
+                            List<NetElement> list = netElementDao.selectByExample(netElementExample1);
+                            if (list!=null&&list.size()>0){
+                                Long qkdId =list.get(0).getId();
+                                String pairQkdIp = pairQKDIPs.get(j);
+                                NetElementExample netElementExample2 = new NetElementExample();
+                                netElementExample2.createCriteria().andNeIpEqualTo(pairQkdIp);
+                                List<NetElement> list1 = netElementDao.selectByExample(netElementExample2);
+                                if (list1!=null&&list1.size()>0){
+                                    Long pairQkdId = list1.get(0).getId();
+                                    String distance = distances.get(j);
+                                    //封装进实体类
+                                    NERelation neRelation = new NERelation();
+                                    neRelation.setNeid(qkdId);
+                                    neRelation.setPairingId(pairQkdId);
+                                    neRelation.setParentId(TNId);
+                                    neRelation.setDistance(Long.valueOf(distance));
+                                    //根据qkdIp查询当前有没有数据，如果有，则更新，如果没有，则添加
+                                    NERelationExample neRelationExample = new NERelationExample();
+                                    neRelationExample.createCriteria().andNeidEqualTo(qkdId);
+                                    List<NERelation> neRelations = neRelationDao.selectByExample(neRelationExample);
+                                    if (neRelations!= null && neRelations.size()>0){
+                                        //有
+                                        neRelationDao.updateByExample(neRelation,neRelationExample);
+                                    }else {
+                                        //没有
+                                        neRelationDao.insert(neRelation);
+                                    }
+                                }
                             }
                         }
                     }

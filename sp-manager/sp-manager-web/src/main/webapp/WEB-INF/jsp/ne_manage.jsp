@@ -54,20 +54,15 @@
     //点击修改网元按钮动作
     function editNE() {
         //取到选中的记录
-        var netElement = $('#dgNEs').datagrid('getSelected');
-        if (netElement==null) {
+        var row = $('#dgNEs').datagrid('getSelected');
+        if (row==null) {
             $.messager.alert('警告', '请选择一个网元！', 'warning');
             return;
         }else {
-            $.post(
-                //url，提交给后台谁去处理
-                'netElement/edit',
-                //data，提交什么到后台，ids
-                {'netElement': netElement},
-                //callback,相当于$.ajax中success
-                function (data) {
-                }
-            );
+            var neId = row.id;
+            sessionStorage.setItem("neId",neId);
+            snmp.closeTabs("网元管理");
+            snmp.addTabs("网元编辑","ne_edit");
         }
     }
     //初始化数据表格代码

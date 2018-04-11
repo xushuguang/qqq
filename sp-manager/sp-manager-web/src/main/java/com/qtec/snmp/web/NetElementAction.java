@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -162,18 +161,28 @@ public class NetElementAction {
         return i;
     }
     @ResponseBody
-    @RequestMapping(value = "/netElement/edit", method = RequestMethod.POST)
-    public ModelAndView editNetElement(@RequestParam("netElement")NetElement netElement){
-        ModelAndView mav = null;
+    @RequestMapping(value = "/netElement/getNetElementById", method = RequestMethod.POST)
+    public NetElement getNetElementById(@RequestParam("neId")Long neId){
+        NetElement netElement = null;
         try {
-            mav = new ModelAndView();
-            mav.setViewName("ne_edit");
-            mav.addObject("netElement",netElement);
+            netElement = netElementService.getNetElementById(neId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return mav;
+        return netElement;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/netElement/edit", method = RequestMethod.POST)
+    public int editNetElement(NetElement netElement){
+        int i = 0;
+        try {
+            i = netElementService.updateNetElement(netElement);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
     }
 }
 

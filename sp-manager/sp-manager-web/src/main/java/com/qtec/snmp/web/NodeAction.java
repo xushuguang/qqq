@@ -107,4 +107,28 @@ public class NodeAction {
         }
         return i;
     }
+    @ResponseBody
+    @RequestMapping(value = "/node/getNodeById", method = RequestMethod.POST)
+    public NodeDto getNodeById(@RequestParam("nodeId")Long nodeId){
+        NodeDto nodeDto = null;
+        try {
+            nodeDto = nodeService.getNodeById(nodeId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return nodeDto;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/node/edit", method = RequestMethod.POST)
+    public int editNode(NodeDto nodeDto){
+        int i = 0;
+        try {
+            i = nodeService.updateNodeDto(nodeDto);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
 }

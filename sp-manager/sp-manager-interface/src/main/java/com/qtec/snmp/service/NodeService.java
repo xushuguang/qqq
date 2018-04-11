@@ -46,4 +46,8 @@ public interface NodeService {
     Result<Node> listNode();
 
     int removeNodes(List<Long> ids);
+
+    NodeDto getNodeById(Long nodeId);
+
+    int updateNodeDto(NodeDto nodeDto);
 }

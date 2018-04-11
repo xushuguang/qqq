@@ -56,12 +56,14 @@
     function editNode() {
         //取到选中的记录
         var row = $('#dgNodes').datagrid('getSelected');
-        console.log(row);
         if (row==null) {
             $.messager.alert('警告', '请选择一个节点！', 'warning');
             return;
         }else {
-          snmp.addTabs("编辑节点","node_edit");
+            var nodeId = row.id
+            sessionStorage.setItem("nodeId",nodeId);
+            snmp.closeTabs("节点管理");
+           snmp.addTabs("编辑节点","node_edit");
         }
     }
     //初始化数据表格代码

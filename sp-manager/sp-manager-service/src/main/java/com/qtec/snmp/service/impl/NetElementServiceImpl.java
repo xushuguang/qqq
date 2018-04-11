@@ -9,6 +9,7 @@ import com.qtec.snmp.pojo.po.NERelationExample;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.po.NetElementExample;
 import com.qtec.snmp.pojo.vo.*;
+import com.qtec.snmp.service.GetStateService;
 import com.qtec.snmp.service.NetElementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,8 @@ public class NetElementServiceImpl implements NetElementService {
     private NetElementMapper netElementDao;
     @Autowired
     private NERelationMapper neRelationDao;
+    @Autowired
+    private GetStateService getStateService;
 
     /**
      *保存网元设备
@@ -317,5 +320,31 @@ public class NetElementServiceImpl implements NetElementService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public NetElement getNetElementById(Long neId) {
+        NetElement netElement = null;
+        try {
+          netElement = netElementDao.selectByPrimaryKey(neId);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return netElement;
+    }
+
+    @Override
+    public int updateNetElement(NetElement netElement) {
+        int i = 0;
+        try {
+            NetElementExample example = new NetElementExample();
+            example.createCriteria().andIdEqualTo(netElement.getId());
+            i = netElementDao.updateByExample(netElement, example);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
     }
 }
