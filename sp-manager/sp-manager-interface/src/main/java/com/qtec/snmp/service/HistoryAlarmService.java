@@ -5,6 +5,7 @@ import com.qtec.snmp.common.dto.Page;
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.pojo.vo.AlarmQuery;
 import com.qtec.snmp.pojo.vo.AlarmVo;
+import com.qtec.snmp.pojo.vo.EchartsVo;
 
 import java.util.List;
 
@@ -36,4 +37,6 @@ public interface HistoryAlarmService {
      * 删除历史告警
      */
     void deleteHistoryAlarms();
+
+    List<EchartsVo> listHistoryAlarmVo();
 }

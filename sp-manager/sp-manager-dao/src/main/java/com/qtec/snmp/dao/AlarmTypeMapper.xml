@@ -180,6 +180,6 @@
   </update>
   
   <select id="selectAlarmSeverity" resultType="String">
-    SELECT DISTINCT(alarm_severity) from alarm_type
+    SELECT DISTINCT(alarm_severity) from alarm_type WHERE alarm_severity!='info'
   </select>
 </mapper>

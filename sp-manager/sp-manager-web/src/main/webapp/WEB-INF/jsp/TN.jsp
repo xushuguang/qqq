@@ -68,7 +68,7 @@
                     },
                     force:{
                         initLayout: 'circular',//初始布局
-                        repulsion:1000,//斥力大小
+                        repulsion:600,//斥力大小
                     },
 
                     animation: false,
@@ -83,10 +83,6 @@
                     //  yAxisIndex: 0, //y轴坐标
                     // ribbonType: true,
                     useWorker: false,
-                    minRadius: 15,
-                    maxRadius: 25,
-                    gravity: 1.1,
-                    scaling: 1.1,
                     nodes: data.nodes,
                     links: data.links,
                 }]

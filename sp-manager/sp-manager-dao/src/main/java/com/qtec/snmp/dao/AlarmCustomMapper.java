@@ -36,4 +36,6 @@ public interface AlarmCustomMapper {
     */
    void deleteHistoryAlarms();
 
+   int countHistoryAlarmNum(String alarmServerity);
+
 }

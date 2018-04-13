@@ -46,11 +46,10 @@
                     res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td>";
                 }else if(data[i].state==1){
                     res +="<div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td>";
-                    res += "<td><button onclick='neDetails("+data[i].id+")'>详情</button></td>";
                 }else if(data[i].state==2){
                     res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td>";
-                    res += "<td><button onclick='neDetails("+data[i].id+")'>详情</button></td>";
                 }
+                res += "<td><button onclick='neDetails("+data[i].id+")'>详情</button></td>";
             }
             res += '</table>';
             $('#TNDetails').html(res);

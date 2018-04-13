@@ -121,14 +121,14 @@ public class NodeAction {
     }
     @ResponseBody
     @RequestMapping(value = "/node/edit", method = RequestMethod.POST)
-    public int editNode(NodeDto nodeDto){
-        int i = 0;
+    public boolean editNode(NodeDto nodeDto){
+        boolean flag = false;
         try {
-            i = nodeService.updateNodeDto(nodeDto);
+            flag = nodeService.updateNodeDto(nodeDto);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return i;
+        return flag;
     }
 }

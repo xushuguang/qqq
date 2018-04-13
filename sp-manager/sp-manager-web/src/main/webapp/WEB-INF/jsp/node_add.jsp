@@ -76,10 +76,13 @@
             //表单提交成功后触发
             success: function (data) {
                 data = JSON.parse(data);
+                console.log(data)
                 if (data.success) {
                     $.messager.alert('消息', data.message, 'info');
                     snmp.closeTabs('添加节点');
                     snmp.addTabs("节点管理","node_manage");
+                }else{
+                    $.messager.alert('警告', data.message, 'warning');
                 }
             }
         });

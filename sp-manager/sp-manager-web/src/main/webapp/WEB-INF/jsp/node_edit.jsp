@@ -88,14 +88,17 @@
             onSubmit: function () {},
             success: function (data) {
                 console.log(data)
-                if (data>0){
+                if (data=='true'){
                     $.messager.alert('消息', '修改成功！', 'info');
                     snmp.closeTabs("节点编辑");
                     snmp.addTabs("节点管理","node_manage");
-                }else (
+                }else if(data=='false'){
                     $.messager.alert('警告', '修改失败！', 'warning')
-                )
+                }
             }
         });
+    }
+    function refresh() {
+        
     }
 </script>

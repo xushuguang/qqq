@@ -14,8 +14,32 @@
 <table id="dgNodes"></table>
 <%--通过js代码来渲染容器--%>
 <script>
+    //初始化数据表格代码
+    $('#dgNodes').datagrid({
+        //数据表格的标题
+        title: '节点主列表',
+        // 显示行号
+        rownumbers: false,
+        //添加工具栏
+        toolbar: '#nodeListToolbar',
+        //请求服务器端数据
+        url: 'listNode',
+        //请求方式，默认是POST
+        method: 'get',
+        //是否显示分页工具栏
+        pagination: false,
+        //自适应父容器
+        fit: true,
+        //列属性
+        columns: [[
+            {field: 'ck', checkbox: true},
+            {field: 'nodeName', title: '节点名'},
+            {field: 'nodeIp', title: '节点IP'},
+        ]]
+    });
     //点击添加节点按钮动作
     function addNode() {
+        snmp.closeTabs("节点管理");
         snmp.addTabs('添加节点', 'node_add');
     }
     //点击删除节点按钮动作
@@ -45,8 +69,11 @@
                     //callback,相当于$.ajax中success
                     function (data) {
                         if (data > 0) {
-                            $('#dgNodes').datagrid('reload');
+                            $.messager.alert('消息', '节点删除成功！', 'info');
+                        }else {
+                            $.messager.alert('警告', '节点删除失败！', 'warning');
                         }
+                        $('#dgNodes').datagrid('reload');
                     }
                 );
             }
@@ -63,30 +90,8 @@
             var nodeId = row.id
             sessionStorage.setItem("nodeId",nodeId);
             snmp.closeTabs("节点管理");
-           snmp.addTabs("编辑节点","node_edit");
+            snmp.closeTabs("节点编辑");
+            snmp.addTabs("节点编辑","node_edit");
         }
     }
-    //初始化数据表格代码
-    $('#dgNodes').datagrid({
-        //数据表格的标题
-        title: '节点主列表',
-        // 显示行号
-        rownumbers: false,
-        //添加工具栏
-        toolbar: '#nodeListToolbar',
-        //请求服务器端数据
-        url: 'listNode',
-        //请求方式，默认是POST
-        method: 'get',
-        //是否显示分页工具栏
-        pagination: false,
-        //自适应父容器
-        fit: true,
-        //列属性
-        columns: [[
-            {field: 'ck', checkbox: true},
-            {field: 'nodeName', title: '节点名'},
-            {field: 'nodeIp', title: '节点ip'},
-        ]]
-    });
 </script>

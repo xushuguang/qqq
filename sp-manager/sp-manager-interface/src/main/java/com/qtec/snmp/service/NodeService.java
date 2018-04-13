@@ -43,11 +43,30 @@ public interface NodeService {
      */
     List<NetElement> getNodeDetails(String nodeName);
 
+    /**
+     * 查询所有节点
+     * @return Result<Node>
+     */
     Result<Node> listNode();
 
+    /**
+     * 批量移除节点
+     * @param ids
+     * @return int
+     */
     int removeNodes(List<Long> ids);
 
+    /**
+     * 根据id查询到节点信息
+     * @param nodeId
+     * @return NodeDto
+     */
     NodeDto getNodeById(Long nodeId);
 
-    int updateNodeDto(NodeDto nodeDto);
+    /**
+     * 更新节点信息
+     * @param nodeDto
+     * @return int
+     */
+    boolean updateNodeDto(NodeDto nodeDto);
 }

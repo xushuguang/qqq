@@ -50,7 +50,7 @@
         yAxis: {
             startOnTick: true, //为true时，设置min才有效
             min:0,
-            max:100,
+            max:30,
             labels: {
                 formatter: function() {
                     return this.value +'(k/s)';
@@ -85,7 +85,7 @@
                 var data = [],
                     time = (new Date()).getTime(),
                     i;
-                for (i = -49; i <= 0; i += 1) {
+                for (i = -119; i <= 0; i += 1) {
                     data.push({
                         x: time + i * 1000,
                         y: 0

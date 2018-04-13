@@ -8,7 +8,6 @@
 <div class="easyui-panel" title="网元详情" data-options="fit:true">
 <form id="neEditForm" name="neEditForm" class="neEditForm" method="post">
     <input name="id"  id="id" type="hidden"></input>
-    <input name="state"  id="state" type="hidden"></input>
     <table>
         <tr>
             <td>网元名:</td>
@@ -53,7 +52,6 @@
                     $('#neName').val(data.neName);
                     $('#neIp').val(data.neIp);
                     $('#type').combobox('select',data.type);
-                    $('#state').val(data.state);
                 }
             }
         );

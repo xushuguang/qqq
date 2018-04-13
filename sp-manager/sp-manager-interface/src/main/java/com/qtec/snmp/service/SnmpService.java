@@ -1,5 +1,7 @@
 package com.qtec.snmp.service;
 
+import com.qtec.snmp.pojo.dto.NodeDto;
+
 /**
  * SnmpService接口
  * User: james.xu
@@ -12,4 +14,10 @@ public interface SnmpService {
      * 获取网元之间关系
      */
     void setNeRelation();
+
+    /**
+     * 更新当前node下的网元关系
+     * @param nodeDto
+     */
+    void updateNERelationForNode(NodeDto nodeDto);
 }

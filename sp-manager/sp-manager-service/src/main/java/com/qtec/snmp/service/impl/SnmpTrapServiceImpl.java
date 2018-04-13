@@ -4,6 +4,7 @@ import com.qtec.snmp.dao.AlarmMapper;
 import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
 import com.qtec.snmp.pojo.po.Alarm;
+import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.po.NetElementExample;
 import com.qtec.snmp.pojo.vo.KeyBuffer;
 import com.qtec.snmp.pojo.vo.KeyBufferVo;
@@ -222,19 +223,23 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
                 if (keyBuffer.getTNIp().equals(TNIp)){
                     NetElementExample netElementExample = new NetElementExample();
                     netElementExample.createCriteria().andNeIpEqualTo(keyBuffer.getPairTNIp());
-                    String name = netElementDao.selectByExample(netElementExample).get(0).getNeName();
-                    KeyBufferVo keyBufferVo = new KeyBufferVo();
-                    keyBufferVo.setName(name);
-                    keyBufferVo.setData(keyBuffer.getKeyBuffer());
-                    if (list.size()>0){
-                        for (KeyBufferVo keyBufferVo1 : list){
-                            //如果当前list中有同样的,就不保存
-                            if (!keyBufferVo1.getName().equals(name)){
-                                list.add(keyBufferVo);
+                    List<NetElement> list1 = netElementDao.selectByExample(netElementExample);
+                    if (list1!=null&&list1.size()>0){
+                        String pairTNName = list1.get(0).getNeName();
+                        String name = neName+"->"+pairTNName;
+                        KeyBufferVo keyBufferVo = new KeyBufferVo();
+                        keyBufferVo.setName(name);
+                        keyBufferVo.setData(keyBuffer.getKeyBuffer());
+                        if (list.size()>0){
+                            for (KeyBufferVo keyBufferVo1 : list){
+                                //如果当前list中有同样的,就不保存
+                                if (!keyBufferVo1.getName().equals(name)){
+                                    list.add(keyBufferVo);
+                                }
                             }
+                        }else {
+                            list.add(keyBufferVo);
                         }
-                    }else {
-                        list.add(keyBufferVo);
                     }
                 }
             }
@@ -248,6 +253,8 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
      */
     @Scheduled(fixedRate = 1000 * 60*2)
     public void keyBufferListClear(){
-        keyBufferList.clear();
+        if (keyBufferList!=null&&keyBufferList.size()>0){
+            keyBufferList.clear();
+        }
     }
 }

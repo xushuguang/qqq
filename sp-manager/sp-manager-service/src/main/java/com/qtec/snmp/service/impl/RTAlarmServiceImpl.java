@@ -95,7 +95,7 @@ public class RTAlarmServiceImpl implements RTAlarmService{
     public List<EchartsVo> listRTalarmVo() {
         List<EchartsVo> list = null;
         try {
-            list = new ArrayList<EchartsVo>();
+            list = new ArrayList<>();
             //先查询告警类型
             List<String> alarmSeverityList= alarmTypeDao.selectAlarmSeverity();
             //遍历查询每个类型的告警数并封装进EchartsVo

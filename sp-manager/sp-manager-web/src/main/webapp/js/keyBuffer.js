@@ -59,7 +59,7 @@ $(document).ready(function() {
             },
             startOnTick: true, //为true时，设置min才有效
             min: 0,
-            max: 10,
+            max: 100,
             plotLines: [{
                 value: 0,
                 width: 1,
@@ -70,7 +70,7 @@ $(document).ready(function() {
             formatter: function() {
                 return '<b>' + this.series.name + '</b><br/>' +
                     Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' + '<span style="color:#08c">' +
-                    Highcharts.numberFormat(this.y, 0) + '</span>';
+                    Highcharts.numberFormat(this.y, 0)+'%'+ '</span>';
 
             }
         },

@@ -3,8 +3,10 @@ package com.qtec.snmp.web;
 import com.qtec.snmp.common.dto.Order;
 import com.qtec.snmp.common.dto.Page;
 import com.qtec.snmp.common.dto.Result;
+import com.qtec.snmp.common.utils.JsonUtil;
 import com.qtec.snmp.pojo.vo.AlarmQuery;
 import com.qtec.snmp.pojo.vo.AlarmVo;
+import com.qtec.snmp.pojo.vo.EchartsVo;
 import com.qtec.snmp.service.HistoryAlarmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,5 +54,18 @@ public class HistoryAlarmAction {
             e.printStackTrace();
         }
         return i;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/listHistoryAlarmVo", method = RequestMethod.GET)
+    public String listHistoryAlarmVo(){
+        String jsonStr = null;
+        try {
+            List<EchartsVo> list = historyAlarmService.listHistoryAlarmVo();
+            jsonStr = JsonUtil.objectToJson(list);
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return  jsonStr;
     }
 }

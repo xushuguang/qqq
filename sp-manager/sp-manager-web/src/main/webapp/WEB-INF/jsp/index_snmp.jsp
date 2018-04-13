@@ -31,10 +31,10 @@
             left: 40%;
             width: 20%;
         }
-        #RTalarm{
+        #HistoryAlarm{
             position: absolute;
             width: 40%;
-            height:60%;
+            height:50%;
             right:0;
             top:6%;
         }
@@ -119,7 +119,7 @@
     <div id="tab" class="easyui-tabs" data-options="fit:true">
         <div  title="主页" style="padding:20px;">
             <div id="element" ></div>
-            <div id="RTalarm" ></div>
+            <div id="HistoryAlarm" ></div>
             <div id="Equipment" ></div>
         </div>
     </div>
@@ -160,6 +160,7 @@
             }
         });
     }
+    var elementCharts = echarts.init(document.getElementById('element'));
     $.ajax({
         type: "get",
         async : true,
@@ -167,7 +168,7 @@
         dataType: "json",
         success : function (data) {
             // 绘制图表。
-            echarts.init(document.getElementById('element')).setOption({
+            elementCharts.setOption({
                 title : {
                     text: '设备统计',
                     x:'center',
@@ -188,45 +189,53 @@
             });
         }
     });
-    //ajax动态生成实时告警监控图表
-    $.ajax({
-        type: "get",
-        async : true,
-        url: 'listRTalarmVo',
-        dataType: "json",
-        success : function (data) {
-            // 绘制图表。
-            echarts.init(document.getElementById('RTalarm')).setOption({
-                title : {
-                    text: '实时告警监控',
-                    x:'center'
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend: {
-                    x : 'center',
-                    y : '90%',
-                    data:['紧急告警','严重告警','重要告警','中等告警']
-                },
-                calculable : true,
-                color:['orange','orangered','red','darkgrey'],
-                series : [
-                    {
-                        type:'pie',
-                        radius : [20, 100],
-                        center : ['50%', 150],
-                        roseType : 'area',
-                        x: '20%',
-                        max: 20,
-                        sort : 'ascending',
-                        data: data
-                    }
-                ]
-            });
-        }
-    });
+    var historyAlarmCharts = echarts.init(document.getElementById('HistoryAlarm'));
+    function refresh(){
+        //ajax动态生成历史告警监控图表
+        $.ajax({
+            type: "get",
+            async : true,
+            url: 'listHistoryAlarmVo',
+            dataType: "json",
+            success : function (data) {
+                console.log(data)
+                // 绘制图表。
+                historyAlarmCharts.setOption({
+                    title : {
+                        text: '告警监控',
+                        x:'center'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        x : 'center',
+                        y : '90%',
+                        data:['紧急告警','严重告警','重要告警']
+                    },
+                    calculable : true,
+                    color:['dimgrey','orange','red'],
+                    series : [
+                        {
+                            type:'pie',
+                            radius : [20, 100],
+                            center : ['50%', 150],
+                            roseType : 'area',
+                            x: '20%',
+                            max: 20,
+                            sort : 'ascending',
+                            data: data
+                        }
+                    ]
+                });
+            }
+        });
+    }
+    //第一次加载时刷新
+    window.onload=refresh;
+    //定时刷新
+    timerID = setInterval("refresh()",1000*60);
     //ajax动态生成设备拓扑图
     var equipmentCharts = echarts.init(document.getElementById('Equipment'));
     $.ajax({
@@ -253,6 +262,7 @@
                     position:'right',//提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。只在 trigger 为'item'的时候有效。
                     confine:true,//是否将 tooltip 框限制在图表的区域内。外层的 dom 被设置为 'overflow: hidden'，或者移动端窄屏，导致 tooltip 超出外界被截断时，此配置比较有用。
                     transitionDuration:0.4,//提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。
+                    backgroundColor:'rgba(192,192,192,0.5)',//通过设置rgba调节背景颜色与透明度
                     formatter: function (params,ticket,callback) {
                         if (params.dataType=='node'){//选择的是节点
                             var nodeName=params.data.name;//当前选中节点数据
@@ -264,9 +274,9 @@
                                 dataType : "json",
                                 url : 'getNodeDetails',
                                 success : function(data) { //请求成功后处理函数。
-                                    var res = "<table><caption align='top'>网元设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td></tr>";
+                                    var res = "<table><caption align='top'style='color: black'>网元设备</caption><tr><td width='100px' style='color: black'>设备名</td><td width='150px' style='color: black'>设备IP</td><td width='100px' style='color: black'>设备状态</td></tr>";
                                     for (var i =0;i<data.length;i++){
-                                        res += '<tr><td>'+data[i].neName+'</td><td>'+data[i].neIp+'</td><td>';
+                                        res += '<tr><td style=\'color: black\'>'+data[i].neName+'</td><td style=\'color: black\'>'+data[i].neIp+'</td><td>';
                                         if(data[i].state==0){
                                             res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td></tr>";
                                         }else if(data[i].state==1){
@@ -284,15 +294,15 @@
                                 }
 
                             });
+                            return 'Loading';
                         }else if (params.dataType=='edge'){//选择的是连线
                         }
-                        return 'Loading';
                     }
                 },
                 series: [{
                     itemStyle: {
                         normal: {
-                            lineWidth: 10,
+                            lineWidth: 200,
                             textColor: '#333',
                             textFont: 'bold 15px verdana',
                             textPosition: 'inside',
@@ -321,10 +331,6 @@
                     //  yAxisIndex: 0, //y轴坐标
                     // ribbonType: true,
                     useWorker: false,
-                    minRadius: 15,
-                    maxRadius: 25,
-                    gravity: 1.1,
-                    scaling: 1.1,
                     nodes: data.nodes,
                     links: data.links
                 }]

@@ -62,9 +62,24 @@ public interface NetElementService {
      */
     Result<NetElement> listNetElement();
 
+    /**
+     * 根据id批量删除网元设备
+     * @param ids
+     * @return int
+     */
     int removeNetElements(List<Long> ids);
 
+    /**
+     * 根据id查询设备信息
+     * @param neId
+     * @return NetElement
+     */
     NetElement getNetElementById(Long neId);
 
+    /**
+     * 更新设备信息
+     * @param netElement
+     * @return int
+     */
     int updateNetElement(NetElement netElement);
 }

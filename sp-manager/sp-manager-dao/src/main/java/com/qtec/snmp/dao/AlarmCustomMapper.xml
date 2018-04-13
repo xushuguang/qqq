@@ -76,6 +76,15 @@
       and t.alarm_severity = #{alarmSeverity}
     </where>
   </select>
+  <select id="countHistoryAlarmNum" resultType="_int">
+    select count(1) from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack = 'N'
+      and t.alarm_severity = #{alarmSeverity}
+    </where>
+  </select>
   <delete id="deleteHistoryAlarms">
     delete from alarm  where exists (select * from (select id from alarm limit 1,10000) as a where a.id=alarm.id);
   </delete>

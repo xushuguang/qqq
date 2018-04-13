@@ -41,35 +41,45 @@ public class GetStateServiceImpl implements GetStateService{
         //查询所有网元
         List<NetElement> list = netElementDao.selectByExample(new NetElementExample());
         for (NetElement netElement : list){
-            boolean getPing = false;
-            int state = 0;
-            try {
-                //先进行ping操作
-                getPing = InetAddress.getByName(netElement.getNeIp()).isReachable(TIMEOUT);
-                if (getPing) {
-                    state = 1;
-                    //再通过snmp看是否能获取到key
-                    if (netElement.getType().equals("TN")) {
-                        List<KeyBufferVo> keyBufferVoList = snmpTrapService.getKeyBuffer(netElement.getNeName());
-                        if (keyBufferVoList!=null&&keyBufferVoList.size()>0){
-                            state = 2;
-                        }
-                    } else if (netElement.getType().equals("QKD")) {
-                        //是QKD，就看是否能获取到keyRate
-                        KeyRate keyRate = snmpTrapService.getKeyRate(netElement.getId());
-                        if (keyRate!=null&&Float.parseFloat(keyRate.getKeyRate())>0){
-                            state = 2;
-                        }
-                    }
-                }
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
+            int state = getStateForNetElement(netElement);
             //更新操作
             netElement.setState(state);
             NetElementExample example = new NetElementExample();
             example.createCriteria().andNeIpEqualTo(netElement.getNeIp());
             netElementDao.updateByExample(netElement,example);
         }
+    }
+
+    /**
+     * 根据当前设备获取状态
+     * @param netElement
+     */
+    @Override
+    public int getStateForNetElement(NetElement netElement){
+        boolean getPing = false;
+        int state = 0;
+        try {
+            //先进行ping操作
+            getPing = InetAddress.getByName(netElement.getNeIp()).isReachable(TIMEOUT);
+            if (getPing) {
+                state = 1;
+                //再通过snmp看是否能获取到key
+                if (netElement.getType().equals("TN")) {
+                    List<KeyBufferVo> keyBufferVoList = snmpTrapService.getKeyBuffer(netElement.getNeName());
+                    if (keyBufferVoList!=null&&keyBufferVoList.size()>0){
+                        state = 2;
+                    }
+                } else if (netElement.getType().equals("QKD")) {
+                    //是QKD，就看是否能获取到keyRate
+                    KeyRate keyRate = snmpTrapService.getKeyRate(netElement.getId());
+                    if (keyRate!=null&&Float.parseFloat(keyRate.getKeyRate())>0){
+                        state = 2;
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return state;
     }
 }

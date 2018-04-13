@@ -11,6 +11,14 @@ var snmp = {
                 if ($('#tab').tabs('exists', node.text)) {
                     //能进入这里说明该选项卡存在
                     $('#tab').tabs('select', node.text);
+                    var selTab = $('#tab').tabs('getSelected');
+                    var url = $(selTab.panel('options').content).attr('src');
+                    $('#tab').tabs('update', {
+                        tab: selTab,
+                        options: {
+                            content:createFrame(url)
+                        }
+                    })
                 } else {
                     // console.log(this);
                     _this.addTabs(node.text, node.attributes.href);
@@ -21,12 +29,28 @@ var snmp = {
     addTabs:function (text,href) {
         if($('#tab').tabs('exists',text)){
             $('#tab').tabs('select',text)
+            var selTab = $('#tab').tabs('getSelected');
+            var url = $(selTab.panel('options').content).attr('src');
+            $('#tab').tabs('update', {
+                tab: selTab,
+                options: {
+                    content:createFrame(url)
+                }
+            })
         }else{
             $('#tab').tabs('add', {
                 title: text,
                 href: href,
                 closable: true
             });
+            var selTab = $('#tab').tabs('getSelected');
+            var url = $(selTab.panel('options').content).attr('src');
+            $('#tab').tabs('update', {
+                tab: selTab,
+                options: {
+                    content:createFrame(url)
+                }
+            })
         }
     },
     closeTabs:function (text) {

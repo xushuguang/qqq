@@ -16,6 +16,7 @@
 <script>
     //点击添加网元按钮动作
     function addNE() {
+        snmp.closeTabs("网元管理");
         snmp.addTabs('添加网元', 'ne_add');
     }
     function removeNE() {
@@ -44,8 +45,11 @@
                     //callback,相当于$.ajax中success
                     function (data) {
                         if (data > 0) {
-                            $('#dgNEs').datagrid('reload');
+                            $.messager.alert('消息', '网元删除成功！', 'info');
+                        }else {
+                            $.messager.alert('警告', '网元删除失败！', 'warning');
                         }
+                        $('#dgNEs').datagrid('reload');
                     }
                 );
             }
@@ -62,6 +66,7 @@
             var neId = row.id;
             sessionStorage.setItem("neId",neId);
             snmp.closeTabs("网元管理");
+            snmp.closeTabs("网元编辑");
             snmp.addTabs("网元编辑","ne_edit");
         }
     }
@@ -85,9 +90,20 @@
         columns: [[
             {field: 'ck', checkbox: true},
             {field: 'neName', title: '网元名'},
-            {field: 'neIp', title: '网元ip'},
+            {field: 'neIp', title: '网元IP'},
             {field: 'type', title: '网元类型'},
-            {field: 'state', title: '网元状态'}
+            {field: 'state', title: '网元状态',formatter:function (state) {
+                var res = '';
+                if (state==0){
+                    res += "<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div>";
+                }else if (state==1){
+                    res += "<div style='width: 15px;height: 15px;background-color: yellow ;border-radius: 50%;'></div>";
+                }else if (state==2){
+                    res += "<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div>";
+                }
+                console.log(res)
+                return res;
+            }}
         ]]
     });
 </script>

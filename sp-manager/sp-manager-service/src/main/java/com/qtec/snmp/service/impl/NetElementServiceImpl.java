@@ -55,7 +55,7 @@ public class NetElementServiceImpl implements NetElementService {
             }else {
                 //设备不存在，可以添加
                //给设备添加状态
-                netElement.setState(0);
+                netElement.setState(getStateService.getStateForNetElement(netElement));
                 //添加设备
                 insert = netElementDao.insert(netElement);
             }
@@ -125,7 +125,7 @@ public class NetElementServiceImpl implements NetElementService {
                 nodeVo.setName(netElement.getNeName());
                 nodeVo.setCategory(2);
                 nodeVo.setSymbol("circle");
-                nodeVo.setSymbolSize(20);
+                nodeVo.setSymbolSize(25);
                 nodeVo.setItemStyle(itemStyle);
                 list.add(nodeVo);
             }
@@ -338,6 +338,8 @@ public class NetElementServiceImpl implements NetElementService {
     public int updateNetElement(NetElement netElement) {
         int i = 0;
         try {
+            //给设备设置状态
+            netElement.setState(getStateService.getStateForNetElement(netElement));
             NetElementExample example = new NetElementExample();
             example.createCriteria().andIdEqualTo(netElement.getId());
             i = netElementDao.updateByExample(netElement, example);
