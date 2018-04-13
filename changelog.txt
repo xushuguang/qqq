@@ -1,5 +1,0 @@
-Date        Name        Module          Descriptions
-----------------------------------------------------
-2018-04-11  James       NetElement      add query,modify,delete function
-2018-04-11  James       Node            add query,modify,delete function
-2018-04-11  James       Node            modify add node bug  
