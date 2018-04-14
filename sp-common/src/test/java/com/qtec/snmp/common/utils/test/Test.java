@@ -2,6 +2,8 @@ package com.qtec.snmp.common.utils.test;
 
 import com.qtec.snmp.common.utils.SnmpUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,7 +17,7 @@ public class Test {
     @org.junit.Test
     public void test(){
         System.out.println(new Date()+"------------start------------");
-        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.117","public");
+        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.119","public");
         ArrayList<String> QKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
         ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
         ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
@@ -31,5 +33,19 @@ public class Test {
         System.out.println(str2);
         System.out.println(str3);
         System.out.println(new Date()+"--------------stop------------");
+    }
+    @org.junit.Test
+    public void test2(){
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateToString = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
+        String format = dateToString.format(date);
+        System.out.println(format);
+        try {
+            Date parse = dateToString.parse(format);
+            System.out.println(parse);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -52,6 +52,10 @@
             left:0;
             top:6%;
         }
+        #banquan{
+            position: absolute;
+            bottom:30%;
+        }
     </style>
 </head>
 <body class="easyui-layout" >
@@ -60,18 +64,18 @@
     <div id="title">
         <a style="font-size: large;color: cyan">量子秘钥网元管理系统</a>
     </div>
-    <div align="right">
+    <div align="right" style="position: absolute; right: 2%">
+        <a style="color: aliceblue">当前用户: ${sessionScope.user.username}</a><br><br>
         <button onclick="exitUser()" class="easyui-linkbutton" type="button"
-                data-options="iconCls:'icon-undo'">退出/切换用户</button><br>
-        <a style="color: aliceblue">当前用户：${sessionScope.user.username}</a>
+                data-options="iconCls:'icon-undo'">退出/切换用户</button>
     </div>
 </div>
 <div data-options="region:'south'" style="padding:5px;background:#eee;">
-    <div align="left">
-        C版权所有@浙江科易理想量子信息技术有限公司
+    <div id='banquan'align="left">
+        C版权所有@<a style="color: teal">浙江科易理想量子信息技术有限公司</a>
     </div>
     <div align="right">
-        版本号1.0
+        版本号1.0.0
     </div>
 </div>
 <div data-options="region:'west'" style="width:200px;">

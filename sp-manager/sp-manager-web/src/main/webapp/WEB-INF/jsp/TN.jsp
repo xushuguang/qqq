@@ -3,8 +3,8 @@
 <style>
     #sercretKeyManager{
         position: absolute;
-        width: 50%;
-        height: 60%;
+        width: 80%;
+        height: 80%;
         left:0;
         top:6%;
     }
@@ -19,6 +19,7 @@
         url: 'listNetElementVo',
         dataType: "json",
         success : function (data) {
+            console.log(data)
             // 绘制图表。
             TNCharts.setOption({
                //标题

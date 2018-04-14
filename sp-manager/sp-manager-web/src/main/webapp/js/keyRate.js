@@ -27,7 +27,9 @@
                             success : function(keyRate){
                                 var x = (new Date()).getTime();;
                                 var y;
-                                if (keyRate==""){
+                                if (keyRate=""){
+                                    y = 0;
+                                }else if (keyRate.keyRate="0"){
                                     y = 0;
                                 }else {
                                     y = parseInt(keyRate.keyRate)/1024;
@@ -53,7 +55,7 @@
             max:30,
             labels: {
                 formatter: function() {
-                    return this.value +'(k/s)';
+                    return this.value +'(KB/s)';
                 }
             },
             plotLines: [{
@@ -66,7 +68,7 @@
             formatter: function () {
                 return '<b>' + this.series.name + '</b><br/>' +
                     Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' + '<span style="color:#08c">' +
-                    Highcharts.numberFormat(this.y) + ' k/s' + '</span>';
+                    Highcharts.numberFormat(this.y) + ' KB/s' + '</span>';
             }
         },
         legend: {
@@ -85,7 +87,7 @@
                 var data = [],
                     time = (new Date()).getTime(),
                     i;
-                for (i = -119; i <= 0; i += 1) {
+                for (i = -59; i <= 0; i += 1) {
                     data.push({
                         x: time + i * 1000,
                         y: 0

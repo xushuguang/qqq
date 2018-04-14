@@ -1,10 +1,10 @@
 package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.dao.NetElementMapper;
+import com.qtec.snmp.pojo.po.Keyrate;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.po.NetElementExample;
 import com.qtec.snmp.pojo.vo.KeyBufferVo;
-import com.qtec.snmp.pojo.vo.KeyRate;
 import com.qtec.snmp.service.GetStateService;
 import com.qtec.snmp.service.SnmpTrapService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * GetStateService实现类
@@ -71,8 +68,8 @@ public class GetStateServiceImpl implements GetStateService{
                     }
                 } else if (netElement.getType().equals("QKD")) {
                     //是QKD，就看是否能获取到keyRate
-                    KeyRate keyRate = snmpTrapService.getKeyRate(netElement.getId());
-                    if (keyRate!=null&&Float.parseFloat(keyRate.getKeyRate())>0){
+                    Keyrate keyRate = snmpTrapService.getKeyRate(netElement.getId());
+                    if (keyRate!=null&&Float.parseFloat(keyRate.getKeyrate())>0){
                         state = 2;
                     }
                 }

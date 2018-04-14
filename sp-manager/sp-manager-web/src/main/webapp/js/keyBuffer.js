@@ -96,7 +96,7 @@ $(document).ready(function() {
                         i;
                     for (i = -119; i <= 0; i += 1) {
                         data.push({
-                            x: time + i * 1000*60,
+                            x: time + i * 1000 * 60,
                             y: 0
                         });
                     }

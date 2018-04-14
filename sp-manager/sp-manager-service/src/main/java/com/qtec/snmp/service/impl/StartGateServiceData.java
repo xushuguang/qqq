@@ -44,7 +44,6 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
                 snmpTrapService.run();
                 snmpService.setNeRelation();
                 getStateService.getState();
-                snmpTrapService.keyBufferListClear();
                 rtAlarmService.removeRTAlarms();
                 historyAlarmService.deleteHistoryAlarms();
             }

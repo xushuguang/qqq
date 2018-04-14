@@ -1,7 +1,8 @@
 package com.qtec.snmp.web;
 
+import com.qtec.snmp.common.utils.JsonUtil;
+import com.qtec.snmp.pojo.po.Keyrate;
 import com.qtec.snmp.pojo.vo.KeyBufferVo;
-import com.qtec.snmp.pojo.vo.KeyRate;
 import com.qtec.snmp.service.SnmpTrapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,8 @@ public class SnmpTrapAction {
     }
     @ResponseBody
     @RequestMapping(value = "/getKeyRate",method = RequestMethod.POST)
-    public KeyRate getKeyRate(@RequestParam("qkdId")Long qkdId){
-        KeyRate keyRate = null;
+    public Keyrate getKeyRate(@RequestParam("qkdId")Long qkdId){
+        Keyrate keyRate = null;
         try {
             keyRate = snmpTrapService.getKeyRate(qkdId);
         }catch (Exception e) {
@@ -68,5 +69,18 @@ public class SnmpTrapAction {
             e.printStackTrace();
         }
         return list;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/getKeyRateForTime",method = RequestMethod.POST)
+    public String getKeyRateForTime(@RequestParam("qkdId")Long qkdId,@RequestParam("time1")String time1,@RequestParam("time2")String time2){
+        String str = null;
+        try {
+            List<Integer> list = snmpTrapService.getKeyRateForTime(qkdId,time1,time2);
+            str = JsonUtil.objectToJson(list);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return str;
     }
 }

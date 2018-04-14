@@ -76,14 +76,16 @@ public class NetElementServiceImpl implements NetElementService {
         try {
             list = new ArrayList<>();
             List<String> types = netElementDao.selectType();
-            for (String type : types){
-                NetElementExample example = new NetElementExample();
-                example.createCriteria().andTypeEqualTo(type);
-                int value = netElementDao.selectByExample(example).size();
-                EchartsVo vo = new EchartsVo();
-                vo.setName(type);
-                vo.setValue(value);
-                list.add(vo);
+            if (types!=null&&types.size()>0){
+                for (String type : types){
+                    NetElementExample example = new NetElementExample();
+                    example.createCriteria().andTypeEqualTo(type);
+                    int value = netElementDao.selectByExample(example).size();
+                    EchartsVo vo = new EchartsVo();
+                    vo.setName(type);
+                    vo.setValue(value);
+                    list.add(vo);
+                }
             }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -147,37 +149,47 @@ public class NetElementServiceImpl implements NetElementService {
             list = new ArrayList<LinkVo>();
             //先查询ne_relation表中的数据
             List<NERelation> neRelations = neRelationDao.selectByExample(new NERelationExample());
-            for (NERelation neRelation : neRelations){
-                //查询source
-                NERelationExample neRelationExample1 = new NERelationExample();
-                neRelationExample1.createCriteria().andNeidEqualTo(neRelation.getNeid());
-                List<NERelation> neRelations1 = neRelationDao.selectByExample(neRelationExample1);
-                //获取节点id
-                Long parentId1 = neRelations1.get(0).getParentId();
-                //根据节点id查询到节点名
-                NetElementExample netElementExample1 = new NetElementExample();
-                netElementExample1.createCriteria().andIdEqualTo(parentId1);
-                List<NetElement> netElements1 = netElementDao.selectByExample(netElementExample1);
-                String source = netElements1.get(0).getNeName();
-                //查询target
-                //如果存在pairingId
-                if(neRelation.getPairingId()!=null){
-                    NERelationExample neRelationExample2 = new NERelationExample();
-                    neRelationExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
-                    List<NERelation> neRelations2 = neRelationDao.selectByExample(neRelationExample2);
-                    //获取节点id
-                    Long parentId2 = neRelations2.get(0).getParentId();
-                    //根据节点id查询到节点名
-                    NetElementExample netElementExample2 = new NetElementExample();
-                    netElementExample2.createCriteria().andIdEqualTo(parentId2);
-                    List<NetElement> netElements2 = netElementDao.selectByExample(netElementExample2);
-                    String target = netElements2.get(0).getNeName();
-                    //封装进linkVo对象
-                    LinkVo linkVo = new LinkVo();
-                    linkVo.setSource(source);
-                    linkVo.setTarget(target);
-                    //存入list
-                    list.add(linkVo);
+            if (neRelations!=null&&neRelations.size()>0){
+                for (NERelation neRelation : neRelations){
+                    //查询source
+                    NERelationExample neRelationExample1 = new NERelationExample();
+                    neRelationExample1.createCriteria().andNeidEqualTo(neRelation.getNeid());
+                    List<NERelation> neRelations1 = neRelationDao.selectByExample(neRelationExample1);
+                    if (neRelations1!=null&&neRelations1.size()>0){
+                        //获取节点id
+                        Long parentId1 = neRelations1.get(0).getParentId();
+                        //根据节点id查询到节点名
+                        NetElementExample netElementExample1 = new NetElementExample();
+                        netElementExample1.createCriteria().andIdEqualTo(parentId1);
+                        List<NetElement> netElements1 = netElementDao.selectByExample(netElementExample1);
+                        if (netElements1!=null&&neRelations1.size()>0){
+                            String source = netElements1.get(0).getNeName();
+                            //查询target
+                            //如果存在pairingId
+                            if(neRelation.getPairingId()!=null){
+                                NERelationExample neRelationExample2 = new NERelationExample();
+                                neRelationExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
+                                List<NERelation> neRelations2 = neRelationDao.selectByExample(neRelationExample2);
+                                if (neRelations2!=null&&neRelations2.size()>0){
+                                    //获取节点id
+                                    Long parentId2 = neRelations2.get(0).getParentId();
+                                    //根据节点id查询到节点名
+                                    NetElementExample netElementExample2 = new NetElementExample();
+                                    netElementExample2.createCriteria().andIdEqualTo(parentId2);
+                                    List<NetElement> netElements2 = netElementDao.selectByExample(netElementExample2);
+                                    if (netElements2!=null&&neRelations2.size()>0){
+                                        String target = netElements2.get(0).getNeName();
+                                        //封装进linkVo对象
+                                        LinkVo linkVo = new LinkVo();
+                                        linkVo.setSource(source);
+                                        linkVo.setTarget(target);
+                                        //存入list
+                                        list.add(linkVo);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }catch (Exception e) {
@@ -201,16 +213,20 @@ public class NetElementServiceImpl implements NetElementService {
             NetElementExample netElementExample = new NetElementExample();
             netElementExample.createCriteria().andNeNameEqualTo(neName);
             List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
-            Long parentId = netElements.get(0).getId();
-            //再根据parentId查询到neid
-            NERelationExample neRelationExample = new NERelationExample();
-            neRelationExample.createCriteria().andParentIdEqualTo(parentId);
-            List<NERelation> neRelations = neRelationDao.selectByExample(neRelationExample);
-            for (NERelation neRelation : neRelations){
-                Long neid = neRelation.getNeid();
-                //根据neid查询netElement
-                NetElement netElement = netElementDao.selectByPrimaryKey(neid);
-                list.add(netElement);
+            if (netElements!=null&&netElements.size()>0){
+                Long parentId = netElements.get(0).getId();
+                //再根据parentId查询到neid
+                NERelationExample neRelationExample = new NERelationExample();
+                neRelationExample.createCriteria().andParentIdEqualTo(parentId);
+                List<NERelation> neRelations = neRelationDao.selectByExample(neRelationExample);
+                if (neRelations!=null&&neRelations.size()>0){
+                    for (NERelation neRelation : neRelations){
+                        Long neid = neRelation.getNeid();
+                        //根据neid查询netElement
+                        NetElement netElement = netElementDao.selectByPrimaryKey(neid);
+                        list.add(netElement);
+                    }
+                }
             }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);

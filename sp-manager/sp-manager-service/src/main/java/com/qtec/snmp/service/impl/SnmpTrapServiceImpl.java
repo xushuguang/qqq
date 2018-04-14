@@ -1,16 +1,15 @@
 package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.dao.AlarmMapper;
-import com.qtec.snmp.dao.NERelationMapper;
+import com.qtec.snmp.dao.KeybufferMapper;
+import com.qtec.snmp.dao.KeyrateMapper;
 import com.qtec.snmp.dao.NetElementMapper;
-import com.qtec.snmp.pojo.po.Alarm;
-import com.qtec.snmp.pojo.po.NetElement;
-import com.qtec.snmp.pojo.po.NetElementExample;
-import com.qtec.snmp.pojo.vo.KeyBuffer;
+import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.pojo.vo.KeyBufferVo;
-import com.qtec.snmp.pojo.vo.KeyRate;
 import com.qtec.snmp.pojo.vo.TrapXMLVo;
 import com.qtec.snmp.service.SnmpTrapService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snmp4j.*;
 import org.snmp4j.mp.MPv1;
 import org.snmp4j.mp.MPv2c;
@@ -29,10 +28,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * SnmpTrapService实现类
@@ -43,18 +40,23 @@ import java.util.Vector;
  */
 @Service
 public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private AlarmMapper alarmDao;
     @Autowired
     private NetElementMapper netElementDao;
     @Autowired
-    private NERelationMapper neRelationDao;
+    private KeybufferMapper keybufferDao;
+    @Autowired
+    private KeyrateMapper keyrateDao;
     private MultiThreadedMessageDispatcher dispatcher;
+    private SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat dateToString = new SimpleDateFormat("HH:mm:ss");
     private Snmp snmp = null;
     private Address listenAddress;
     private ThreadPool threadPool;
-    private KeyRate keyRate = null;
-    private List<KeyBuffer> keyBufferList = new ArrayList<>();
+    private Keyrate keyRate = null;
+    private Keybuffer keyBuffer = null;
     private Alarm alarm = null;
     /**
      * 初始化snmp
@@ -86,6 +88,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
             SecurityModels.getInstance().addSecurityModel(usm);
             snmp.listen();
         }catch (Exception e){
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
             System.out.println("snmp初始化失败");
         }
@@ -100,6 +103,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
             snmp.addCommandResponder(this);
             System.out.println("start Trap listen !!");
         }catch (Exception e){
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
     }
@@ -112,6 +116,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
             snmp.close();
             System.out.println("stop Trap listen !!");
         }catch (Exception e){
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
 
@@ -155,34 +160,41 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
             }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")){
                 //trap信息是关于QKD keyRate的
                 //对keyRate信息进行处理
-                keyRate = new KeyRate();
+                keyRate = new Keyrate();
                 for (int i = 0; i < reVBs.size(); i++) {
                     OID oid = reVBs.get(i).getOid();
                     Variable variable = reVBs.get(i).getVariable();
                     if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")) {
                         keyRate.setQkdIp(variable.toString());
                     } else if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.5.0")) {
-                        keyRate.setKeyRate(variable.toString());
+                        keyRate.setKeyrate(variable.toString());
                     }
                 }
-                System.out.println("keyRate："+keyRate.toString());
+               if (keyRate!=null){
+                    keyRate.setTime(dateToString.format(new Date()));
+                    keyrateDao.insert(keyRate);
+                    System.out.println(keyRate.toString());
+               }
             }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")){
                 //trap信息是关于TN keyBuffer的
                 //对keyBuffer信息进行处理
-                KeyBuffer keyBuffer = new KeyBuffer();
+                 keyBuffer = new Keybuffer();
                 for (int i = 0; i < reVBs.size(); i++) {
                     OID oid = reVBs.get(i).getOid();
                     Variable variable = reVBs.get(i).getVariable();
                     if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")) {
-                        keyBuffer.setPairTNIp(variable.toString());
+                        keyBuffer.setPairTnIp(variable.toString());
                     } else if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.7.0")) {
-                        keyBuffer.setKeyBuffer(variable.toString());
+                        keyBuffer.setKeybuffer(variable.toString());
                     }
                 }
-                keyBuffer.setTNIp(TNIp);
-                System.out.println("keyBuffer："+keyBuffer.toString());
-                keyBufferList.add(keyBuffer);
-                System.out.println("keyBufferList："+keyBufferList.size());
+                if (keyBuffer!=null){
+                    //存入数据库
+                    keyBuffer.setTnIp(TNIp);
+                    keyBuffer.setTime(dateToString.format(new Date()));
+                    keybufferDao.insert(keyBuffer);
+                    System.out.println(keyBuffer.toString());
+                }
             }
         }
     }
@@ -191,7 +203,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
      * @param qkdId
      * @return keyRate
      */
-    public KeyRate getKeyRate(Long qkdId) {
+    public Keyrate getKeyRate(Long qkdId) {
         try {
             //根据qkdId查询到Ip
             String neIp = netElementDao.selectByPrimaryKey(qkdId).getNeIp();
@@ -200,61 +212,107 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
                 return keyRate;
             }
         }catch (Exception e){
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
         return null;
     }
 
-    /**
-     * 根据trap上来的信息根据neName获取当前TN的KeyBuffer
-     * @param neName
-     * @return list
-     */
-    public List<KeyBufferVo> getKeyBuffer(String neName){
-        List<KeyBufferVo> list = new ArrayList<>();
-        //根据当前neName查询TNIp
-        NetElementExample example = new NetElementExample();
-        example.createCriteria().andNeNameEqualTo(neName);
-        String TNIp = netElementDao.selectByExample(example).get(0).getNeIp();
-        //遍历keyBufferList
-        if (keyBufferList!=null&&keyBufferList.size()>0){
-            //如果当前keyBuffer属于当前的TN的KeyBuffer,就存到list中
-            for (KeyBuffer keyBuffer : keyBufferList){
-                if (keyBuffer.getTNIp().equals(TNIp)){
-                    NetElementExample netElementExample = new NetElementExample();
-                    netElementExample.createCriteria().andNeIpEqualTo(keyBuffer.getPairTNIp());
-                    List<NetElement> list1 = netElementDao.selectByExample(netElementExample);
-                    if (list1!=null&&list1.size()>0){
-                        String pairTNName = list1.get(0).getNeName();
-                        String name = neName+"->"+pairTNName;
-                        KeyBufferVo keyBufferVo = new KeyBufferVo();
-                        keyBufferVo.setName(name);
-                        keyBufferVo.setData(keyBuffer.getKeyBuffer());
-                        if (list.size()>0){
-                            for (KeyBufferVo keyBufferVo1 : list){
-                                //如果当前list中有同样的,就不保存
-                                if (!keyBufferVo1.getName().equals(name)){
-                                    list.add(keyBufferVo);
-                                }
-                            }
-                        }else {
-                            list.add(keyBufferVo);
-                        }
-                    }
+    @Override
+    public List<KeyBufferVo> getKeyBuffer(String neName) {
+        List<KeyBufferVo> list = null;
+        try {
+            list = new ArrayList<>();
+            //先根据当前的neName获取当前的neIP
+            NetElementExample netElementExample = new NetElementExample();
+            netElementExample.createCriteria().andNeNameEqualTo(neName);
+            List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
+            if (netElements!=null&&netElements.size()>0){
+                String TNIP = netElements.get(0).getNeIp();
+                //再根据当前的TNIP获取当前一分钟内的keyBuffer
+                Calendar beforeTime = Calendar.getInstance();
+                beforeTime.add(Calendar.MINUTE, -1);// 1分钟之前的时间
+                Date beforeD = beforeTime.getTime();
+                String time1 = dateToString.format(beforeD);
+                String time2 = dateToString.format(new Date());
+                KeybufferExample keybufferExample = new KeybufferExample();
+                keybufferExample.createCriteria().andTnIpEqualTo(TNIP).andTimeBetween(time1,time2);
+                List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
+                if (keybuffers!=null&&keybuffers.size()>0){
+                    //再查询对端的TNIP
+                    List<String> pairTNIPs = keybufferDao.distinctPairTNIP(TNIP, time1, time2);
+                    //循环遍历
+                   if (pairTNIPs!=null&&pairTNIPs.size()>0){
+                       for (String pairTNIP : pairTNIPs){
+                           List<Keybuffer> list1 = new ArrayList<>();
+                           KeyBufferVo keyBufferVo = new KeyBufferVo();
+                           for (Keybuffer keybuffer : keybuffers){
+                               //如果keybuffer是属于当前pairTNIP的，就存到一个list集合里面
+                               if (keybuffer.getPairTnIp().equals(pairTNIP)){
+                                   list1.add(keybuffer);
+                               }
+                           }
+                           if (list1!=null&&list1.size()>0){
+                               //对list1进行处理并封装
+                               int keybufferSum = 0;
+                               for (Keybuffer keybuffer : list1){
+                                   keybufferSum += Integer.parseInt(keybuffer.getKeybuffer());
+                               }
+                               //取平均值并转换成string类型
+                               String keybuffer = String.valueOf(keybufferSum/list1.size());
+                               //封装
+                               NetElementExample netElementExample1 = new NetElementExample();
+                               netElementExample1.createCriteria().andNeIpEqualTo(pairTNIP);
+                               String pairName = netElementDao.selectByExample(netElementExample1).get(0).getNeName();
+                               keyBufferVo.setName(neName+"->"+pairName);
+                               keyBufferVo.setData(keybuffer);
+                           }
+                           list.add(keyBufferVo);
+                       }
+                   }
                 }
             }
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
         return list;
     }
-
     /**
-     * 定时清除keyBufferList类
-     * "@Scheduled"spring  Quartz任务调度框架定时注解
+     * 根据当前的qkdId获取keyRate
+     * @param qkdId
+     * @return keyRate
      */
-    @Scheduled(fixedRate = 1000 * 60*2)
-    public void keyBufferListClear(){
-        if (keyBufferList!=null&&keyBufferList.size()>0){
-            keyBufferList.clear();
+    @Override
+    public List<Integer> getKeyRateForTime(Long qkdId,String time1,String time2) {
+        List<Integer> keyRates = null;
+        try {
+            //根据qkdId查询到Ip
+            String qkdIp = netElementDao.selectByPrimaryKey(qkdId).getNeIp();
+            //根据qkdip和时间查询
+            KeyrateExample keyrateExample = new KeyrateExample();
+            Date start = stringToDate.parse(time1);
+            Date end = stringToDate.parse(time2);
+            String startTime = dateToString.format(start);
+            String endTime = dateToString.format(end);
+            keyrateExample.createCriteria().andQkdIpEqualTo(qkdIp).andTimeBetween(startTime,endTime);
+            List<Keyrate> list = keyrateDao.selectByExample(keyrateExample);
+            if (list!=null&&list.size()>0){
+                keyRates = new ArrayList<>();
+                for (Keyrate keyrate : list){
+                    keyRates.add(Integer.parseInt(keyrate.getKeyrate()));
+                }
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
+        return keyRates;
+    }
+    @Override
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void removeKeyRateAndKeyBuffer(){
+        keybufferDao.deleteByExample(new KeybufferExample());
+        keyrateDao.deleteByExample(new KeyrateExample());
     }
 }

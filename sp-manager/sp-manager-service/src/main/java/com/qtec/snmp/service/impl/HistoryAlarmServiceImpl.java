@@ -114,19 +114,21 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
             list = new ArrayList<>();
             //先查询告警类型
             List<String> alarmSeverityList= alarmTypeDao.selectAlarmSeverity();
-            //遍历查询每个类型的告警数并封装进EchartsVo
-            for (String alarmServerity : alarmSeverityList){
-                EchartsVo vo = new EchartsVo();
-                int value = alarmCustomDao.countHistoryAlarmNum(alarmServerity);
-                if (alarmServerity.equals("Fatal")){
-                    vo.setName("紧急告警");
-                }else if (alarmServerity.equals("Error")){
-                    vo.setName("严重告警");
-                }else if (alarmServerity.equals("Warning")){
-                    vo.setName("重要告警");
+            if (alarmSeverityList!=null&&alarmSeverityList.size()>0){
+                //遍历查询每个类型的告警数并封装进EchartsVo
+                for (String alarmServerity : alarmSeverityList){
+                    EchartsVo vo = new EchartsVo();
+                    int value = alarmCustomDao.countHistoryAlarmNum(alarmServerity);
+                    if (alarmServerity.equals("Fatal")){
+                        vo.setName("紧急告警");
+                    }else if (alarmServerity.equals("Error")){
+                        vo.setName("严重告警");
+                    }else if (alarmServerity.equals("Warning")){
+                        vo.setName("重要告警");
+                    }
+                    vo.setValue(value);
+                    list.add(vo);
                 }
-                vo.setValue(value);
-                list.add(vo);
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
