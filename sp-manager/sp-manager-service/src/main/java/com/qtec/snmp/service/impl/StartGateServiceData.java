@@ -42,8 +42,8 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
            // application context初始化完成后调用逻辑代码，其他的容器的初始化完成，则不做任何处理。
             if (event.getApplicationContext().getParent() == null) {
                 snmpTrapService.run();
-                snmpService.setNeRelation();
                 getStateService.getState();
+                snmpService.setNeRelation();
                 rtAlarmService.removeRTAlarms();
                 historyAlarmService.deleteHistoryAlarms();
             }

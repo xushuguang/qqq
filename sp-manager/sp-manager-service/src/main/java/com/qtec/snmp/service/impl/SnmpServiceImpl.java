@@ -47,7 +47,7 @@ public class SnmpServiceImpl implements SnmpService{
     /**
      * 存入网元关联信息
      */
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 2)
+    @Scheduled(fixedRate = 1000 * 60 * 5)
     public void setNeRelation(){
         List<Node> nodes = getNodes();
         if (nodes!=null&&nodes.size()>0){
@@ -90,6 +90,7 @@ public class SnmpServiceImpl implements SnmpService{
                 ArrayList<String> QKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
                 ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
                 ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
+                ArrayList<String> states = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.5");
                 if (QKDIPs!=null&&QKDIPs.size()>0){
                     //有关系
                     //先删除当前TN下的所有neRelation
@@ -120,6 +121,18 @@ public class SnmpServiceImpl implements SnmpService{
                                 neRelation.setDistance(Long.valueOf(distance));
                                 //添加
                                 neRelationDao.insert(neRelation);
+                                //再更新QKD的状态
+                                NetElement netElement1 = new NetElement();
+                                if (states!=null&&states.size()>0){
+                                    if (states.get(i).equals("5")){
+                                        netElement1.setState(2);
+                                    }else if (states.get(i).equals("255")){
+                                        netElement1.setState(0);
+                                    }else {
+                                        netElement1.setState(1);
+                                    }
+                                    netElementDao.updateByExampleSelective(netElement1,netElementExample1);
+                                }
                             }
                         }
                     }

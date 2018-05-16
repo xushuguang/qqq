@@ -1,9 +1,6 @@
 package com.qtec.snmp.service.impl;
 
-import com.qtec.snmp.dao.AlarmMapper;
-import com.qtec.snmp.dao.KeybufferMapper;
-import com.qtec.snmp.dao.KeyrateMapper;
-import com.qtec.snmp.dao.NetElementMapper;
+import com.qtec.snmp.dao.*;
 import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.pojo.vo.KeyBufferVo;
 import com.qtec.snmp.pojo.vo.TrapXMLVo;
@@ -27,7 +24,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -39,7 +38,7 @@ import java.util.*;
  * Version:V1.0
  */
 @Service
-public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
+public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private AlarmMapper alarmDao;
@@ -49,6 +48,8 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
     private KeybufferMapper keybufferDao;
     @Autowired
     private KeyrateMapper keyrateDao;
+    @Autowired
+    private AlarmTypeMapper alarmTypeDao;
     private MultiThreadedMessageDispatcher dispatcher;
     private SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat dateToString = new SimpleDateFormat("HH:mm:ss");
@@ -64,7 +65,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
     public void init(){
         try {
             //读取spring-trap配置文件
-            ApplicationContext context = new ClassPathXmlApplicationContext("spring-trap.xml");
+            ApplicationContext context = new ClassPathXmlApplicationContext("spring/spring-trap.xml");
             TrapXMLVo trapXMLVo = (TrapXMLVo) context.getBean("trapXMLVo");
             String udp = trapXMLVo.getIp();
             String port = trapXMLVo.getPort();
@@ -127,10 +128,12 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
      * 当接收到Trap时，会自动进入这个方法
      * @param respEvnt
      */
+    @Transactional
     @Override
     public void processPdu(CommandResponderEvent respEvnt) {
         //解析Response
         if (respEvnt != null && respEvnt.getPDU() != null) {
+            System.out.println(respEvnt);
             Vector<VariableBinding> reVBs = (Vector<VariableBinding>) respEvnt.getPDU().getVariableBindings();
             //获取当前的trap过来信息的Ip
             String peerAddress = respEvnt.getPeerAddress().toString();
@@ -152,10 +155,17 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
                     }
                 }
                 if (alarm!=null){
-                    //存入数据库
-                    alarm.setAlarmAck("RT");
-                    alarm.setAlarmTime(new Date());
-                    alarmDao.insert(alarm);
+                    //先查询是否是Info
+                    AlarmType alarmType = alarmTypeDao.selectByPrimaryKey(alarm.getTypeId());
+                    if (!alarmType.getAlarmSeverity().equals("Info")){
+                        logger.debug(alarmType.getAlarmSeverity()+"::"+"alarm类型不是Info!!!");
+                        //不是Info类型的，存入数据库
+                        alarm.setAlarmAck("RT");
+                        alarm.setAlarmTime(new Date());
+                        alarmDao.insert(alarm);
+                    }else {
+                        logger.debug(alarmType.getAlarmSeverity()+"::"+"alarm类型是Info!!!");
+                    }
                 }
             }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")){
                 //trap信息是关于QKD keyRate的
@@ -171,9 +181,18 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
                     }
                 }
                if (keyRate!=null){
-                    keyRate.setTime(dateToString.format(new Date()));
-                    keyrateDao.insert(keyRate);
-                    System.out.println(keyRate.toString());
+                   keyRate.setTime(dateToString.format(new Date()));
+                    //先判断keyRate是否存在,存在就不添加，不存在就添加
+                   KeyrateExample keyrateExample = new KeyrateExample();
+                   keyrateExample.createCriteria().andQkdIpEqualTo(keyRate.getQkdIp())
+                           .andTimeEqualTo(keyRate.getTime());
+                   List<Keyrate> keyrates = keyrateDao.selectByExample(keyrateExample);
+                   if (keyrates.isEmpty()||keyrates.size()==0){
+                       logger.debug("keyRate不存在");
+                       keyrateDao.insert(keyRate);
+                   }else {
+                       logger.debug("keyRate存在");
+                   }
                }
             }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")){
                 //trap信息是关于TN keyBuffer的
@@ -192,8 +211,19 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
                     //存入数据库
                     keyBuffer.setTnIp(TNIp);
                     keyBuffer.setTime(dateToString.format(new Date()));
-                    keybufferDao.insert(keyBuffer);
-                    System.out.println(keyBuffer.toString());
+                    //先判断keyBuffer是否存在，如果存在就不添加，不存在就添加
+                    KeybufferExample keybufferExample = new KeybufferExample();
+                    keybufferExample.createCriteria().andTnIpEqualTo(keyBuffer.getTnIp())
+                            .andPairTnIpEqualTo(keyBuffer.getPairTnIp()).andKeybufferEqualTo(keyBuffer.getKeybuffer())
+                            .andTimeEqualTo(keyBuffer.getKeybuffer());
+                    List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
+                    if (keybuffers.isEmpty()||keybuffers.size()==0){
+                        logger.debug("keyBuffer不存在");
+                        //不存在，存
+                        keybufferDao.insert(keyBuffer);
+                    }else {
+                        logger.debug("keyBuffer存在");
+                    }
                 }
             }
         }
@@ -203,19 +233,26 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
      * @param qkdId
      * @return keyRate
      */
-    public Keyrate getKeyRate(Long qkdId) {
+    public double getKeyRate(Long qkdId,Long time) {
+        double result = 0;
         try {
             //根据qkdId查询到Ip
             String neIp = netElementDao.selectByPrimaryKey(qkdId).getNeIp();
-            if (keyRate!=null&&keyRate.getQkdIp().equals(neIp)) {
-                System.out.println("getKeyRate:"+keyRate.toString());
-                return keyRate;
+            //根据QKDIP和Time查询到keyRate
+            String time1 = dateToString.format(time);
+            KeyrateExample keyrateExample = new KeyrateExample();
+            keyrateExample.createCriteria().andQkdIpEqualTo(neIp).andTimeEqualTo(time1);
+            List<Keyrate> keyrates = keyrateDao.selectByExample(keyrateExample);
+            if (keyrates!=null&&keyrates.size()>0){
+                double keyrate = (double) Integer.parseInt(keyrates.get(0).getKeyrate())/1024;
+                BigDecimal bd = new BigDecimal(keyrate);
+                result = bd.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     @Override
@@ -284,8 +321,8 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
      * @return keyRate
      */
     @Override
-    public List<Integer> getKeyRateForTime(Long qkdId,String time1,String time2) {
-        List<Integer> keyRates = null;
+    public List<Double> getKeyRateForTime(Long qkdId,String time1,String time2) {
+        List<Double> keyRates = null;
         try {
             //根据qkdId查询到Ip
             String qkdIp = netElementDao.selectByPrimaryKey(qkdId).getNeIp();
@@ -300,7 +337,10 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
             if (list!=null&&list.size()>0){
                 keyRates = new ArrayList<>();
                 for (Keyrate keyrate : list){
-                    keyRates.add(Integer.parseInt(keyrate.getKeyrate()));
+                    double ff = (double)Integer.parseInt(keyrate.getKeyrate())/1024;
+                    BigDecimal bd = new BigDecimal(ff);
+                    double f1 = bd.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+                    keyRates.add(f1);
                 }
             }
         }catch (Exception e){
@@ -314,5 +354,21 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder  {
     public void removeKeyRateAndKeyBuffer(){
         keybufferDao.deleteByExample(new KeybufferExample());
         keyrateDao.deleteByExample(new KeyrateExample());
+    }
+
+    @Override
+    public List<Keyrate> getAllKeyRate(Long qkdId) {
+        List<Keyrate> keyRates = null;
+        try{
+            //根据qkdId查询到Ip
+            String qkdIp = netElementDao.selectByPrimaryKey(qkdId).getNeIp();
+            KeyrateExample keyrateExample = new KeyrateExample();
+            keyrateExample.createCriteria().andQkdIpEqualTo(qkdIp);
+            keyRates = keyrateDao.selectByExample(keyrateExample);
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return keyRates;
     }
 }

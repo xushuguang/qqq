@@ -1,6 +1,7 @@
 package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.dao.NetElementMapper;
+import com.qtec.snmp.dao.NodeNEMapper;
 import com.qtec.snmp.pojo.po.Keyrate;
 import com.qtec.snmp.pojo.po.NetElement;
 import com.qtec.snmp.pojo.po.NetElementExample;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,17 +35,19 @@ public class GetStateServiceImpl implements GetStateService{
      *通过ping和keyRate,keyBuffer获取状态
      * “@Scheduled”spring  Quartz任务调度框架定时注解
      */
-    @Scheduled(fixedRate = 1000 * 60 * 30)
+    @Scheduled(fixedRate = 1000 * 60 * 5)
     public void getState(){
         //查询所有网元
         List<NetElement> list = netElementDao.selectByExample(new NetElementExample());
         for (NetElement netElement : list){
-            int state = getStateForNetElement(netElement);
-            //更新操作
-            netElement.setState(state);
-            NetElementExample example = new NetElementExample();
-            example.createCriteria().andNeIpEqualTo(netElement.getNeIp());
-            netElementDao.updateByExample(netElement,example);
+            if (netElement.getType().equals("TN")){
+                int state = getStateForNetElement(netElement);
+                netElement.setState(state);
+                //更新操作
+                NetElementExample example = new NetElementExample();
+                example.createCriteria().andNeIpEqualTo(netElement.getNeIp());
+                netElementDao.updateByExample(netElement,example);
+            }
         }
     }
 
@@ -61,17 +65,9 @@ public class GetStateServiceImpl implements GetStateService{
             if (getPing) {
                 state = 1;
                 //再通过snmp看是否能获取到key
-                if (netElement.getType().equals("TN")) {
-                    List<KeyBufferVo> keyBufferVoList = snmpTrapService.getKeyBuffer(netElement.getNeName());
-                    if (keyBufferVoList!=null&&keyBufferVoList.size()>0){
-                        state = 2;
-                    }
-                } else if (netElement.getType().equals("QKD")) {
-                    //是QKD，就看是否能获取到keyRate
-                    Keyrate keyRate = snmpTrapService.getKeyRate(netElement.getId());
-                    if (keyRate!=null&&Float.parseFloat(keyRate.getKeyrate())>0){
-                        state = 2;
-                    }
+                List<KeyBufferVo> keyBufferVoList = snmpTrapService.getKeyBuffer(netElement.getNeName());
+                if (keyBufferVoList!=null&&keyBufferVoList.size()>0){
+                    state = 2;
                 }
             }
         }catch (Exception e) {

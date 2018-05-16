@@ -18,7 +18,7 @@
             <option value="Fatal">Fatal</option>
             <option value="Error">Error</option>
             <option value="Warning">Warning</option>
-            <option value="Info">Info</option>
+            <option value="Warning">Info</option>
         </select>
         &nbsp;&nbsp;
         <label>告警时间：</label>
@@ -126,7 +126,7 @@
             }},
             {field: 'alarmAck', title: '确认标志'},
             {field: 'alarmType', title: '告警原因'},
-            {field: 'qkdIp', title: '网元名'}
+            {field: 'qkdIp', title: '告警网元'}
         ]]
     });
 </script>

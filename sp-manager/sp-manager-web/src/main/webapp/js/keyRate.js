@@ -23,17 +23,11 @@
                         $.ajax({
                             url : 'getKeyRate',
                             type : 'post',
-                            data:{"qkdId":id},
+                            data:{"qkdId":id,"time": (new Date().getTime())},
                             success : function(keyRate){
-                                var x = (new Date()).getTime();;
-                                var y;
-                                if (keyRate=""){
-                                    y = 0;
-                                }else if (keyRate.keyRate="0"){
-                                    y = 0;
-                                }else {
-                                    y = parseInt(keyRate.keyRate)/1024;
-                                }
+                                console.log(keyRate);
+                                var x = (new Date().getTime());
+                                var y = keyRate;
                                 series.addPoint([x, y], true, true);
                             }
                         });
@@ -43,19 +37,22 @@
             }
         },
         title: {
-            text: 'keyRate实时曲线图'
+            text: '密钥速率实时曲线图'
         },
         xAxis: {
             type: 'datetime',
             tickPixelInterval: 150
         },
         yAxis: {
+            title:{
+                text:'速率'
+            },
             startOnTick: true, //为true时，设置min才有效
             min:0,
-            max:30,
+            max:10,
             labels: {
                 formatter: function() {
-                    return this.value +'(KB/s)';
+                    return this.value +'(kb/s)';
                 }
             },
             plotLines: [{
@@ -67,8 +64,8 @@
         tooltip: {
             formatter: function () {
                 return '<b>' + this.series.name + '</b><br/>' +
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' + '<span style="color:#08c">' +
-                    Highcharts.numberFormat(this.y) + ' KB/s' + '</span>';
+                    Highcharts.dateFormat('%H:%M:%S', this.x) + '<br/>' + '<span style="color:#08c">' +
+                    Highcharts.numberFormat(this.y) + ' kb/s' + '</span>';
             }
         },
         legend: {

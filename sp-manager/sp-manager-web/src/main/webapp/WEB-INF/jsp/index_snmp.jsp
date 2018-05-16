@@ -56,13 +56,16 @@
             position: absolute;
             bottom:30%;
         }
+        a{
+        text-decoration:none;
+        }
     </style>
 </head>
 <body class="easyui-layout" >
 <div data-options="region:'north'" style="height:70px;padding-left:10px;background: url('images/111.jpg')" >
     <div id="sign"></div>
     <div id="title">
-        <a style="font-size: large;color: cyan">量子秘钥网元管理系统</a>
+        <a style="font-size: large;color: cyan">量子保密通信网元管理系统</a>
     </div>
     <div align="right" style="position: absolute; right: 2%">
         <a style="color: aliceblue">当前用户: ${sessionScope.user.username}</a><br><br>
@@ -72,10 +75,10 @@
 </div>
 <div data-options="region:'south'" style="padding:5px;background:#eee;">
     <div id='banquan'align="left">
-        C版权所有@<a style="color: teal">浙江科易理想量子信息技术有限公司</a>
+        C版权所有@<a href="http://www.idq-qtec.com/index.aspx" style="color: teal" target="_blank">浙江科易理想量子信息技术有限公司</a>
     </div>
     <div align="right">
-        版本号1.0.0
+        <a href="html/about_us.html" target="_blank">关于我们</a>
     </div>
 </div>
 <div data-options="region:'west'" style="width:200px;">
@@ -113,8 +116,6 @@
         <div title="工具箱" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'online_help'}">在线帮助</li>
-                <li data-options="attributes:{'href':' '}">连线样式管理</li>
-                <li data-options="attributes:{'href':' '}">首页新闻管理</li>
             </ul>
         </div>
     </div>
@@ -124,7 +125,7 @@
         <div  title="主页" style="padding:20px;">
             <div id="element" ></div>
             <div id="HistoryAlarm" ></div>
-            <div id="Equipment" ></div>
+            <div id="Equipment" style="color:"></div>
         </div>
     </div>
 </div>
@@ -181,6 +182,7 @@
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
+                color:['lightseagreen','green'],
                 calculable : true,
                 series : [
                     {

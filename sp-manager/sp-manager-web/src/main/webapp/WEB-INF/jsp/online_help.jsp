@@ -9,5 +9,6 @@
 <hr style="background-color:#00bbee;height:1px;border:none;border-top:1px solid #555555;" />
 <table align="center">
     <tr><td><h2>帮助文档列表</h2></td></tr>
-    <tr><td><a href="txt/user_guide.txt" style="text-decoration:none;" target="_blank">1.用户操作指南</a></td></tr>
+    <tr><td><a href="html/about_us.html" style="text-decoration:none;" target="_blank">1.关于我们</a></td></tr>
+    <tr><td><a href="html/051510481967.html" style="text-decoration:none;" target="_blank">2.用户操作指南</a></td></tr>
 </table>

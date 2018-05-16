@@ -93,7 +93,7 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
         return i;
     }
     @Override
-    @Scheduled(fixedRate = 1000 * 60 * 60)
+    @Scheduled(fixedRate = 1000 * 60)
     public void deleteHistoryAlarms(){
         AlarmExample alarmExample = new AlarmExample();
         alarmExample.createCriteria().andAlarmAckNotEqualTo("RT");

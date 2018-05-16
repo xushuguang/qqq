@@ -125,26 +125,17 @@ public class NodeServiceImpl implements NodeService{
                     Normal normal = new Normal();
                     if (nodeNES!=null&&nodeNES.size()>0){
                         //有设备
+                        String color = "green";
                         for (NodeNE nodeNE : nodeNES){
                             Integer state = netElementDao.selectByPrimaryKey(nodeNE.getNeid()).getState();
                             if (state==0){
-                                num += 0;
+                                color = "red";
+                                break;
                             }else if (state==1){
-                                num += 1;
-                            }else if (state==2){
-                                num += 2;
+                                color = "yellow";
                             }
                         }
-                        if (num==nodeNES.size()*2){
-                            //所有设备状态全部为2
-                            normal.setColor("green");
-                        }else if (num<nodeNES.size()*2&&num>=nodeNES.size()*1){
-                            //所有设备中状态存在1
-                            normal.setColor("yellow");
-                        }else {
-                            //所有设备状态中存在0
-                            normal.setColor("red");
-                        }
+                        normal.setColor(color);
                     }else {
                         //没有设备
                         normal.setColor("red");

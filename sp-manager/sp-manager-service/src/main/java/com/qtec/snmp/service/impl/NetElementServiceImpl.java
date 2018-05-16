@@ -55,7 +55,11 @@ public class NetElementServiceImpl implements NetElementService {
             }else {
                 //设备不存在，可以添加
                //给设备添加状态
-                netElement.setState(getStateService.getStateForNetElement(netElement));
+                if (netElement.getType().equals("TN")){
+                    netElement.setState(getStateService.getStateForNetElement(netElement));
+                }else {
+                    netElement.setState(2);
+                }
                 //添加设备
                 insert = netElementDao.insert(netElement);
             }
@@ -290,8 +294,9 @@ public class NetElementServiceImpl implements NetElementService {
             PropertyGrid propertyGrid7 = new PropertyGrid();
             propertyGrid7.setName("距离(/km)");
             propertyGrid7.setValue(neRelation.getDistance().toString());
+            propertyGrid7.setGroup("距离");
             list.add(propertyGrid7);
-            //封装进result
+            //封装进result距离
             result = new Result<>();
             result.setRows(list);
         }catch (Exception e) {
@@ -327,7 +332,7 @@ public class NetElementServiceImpl implements NetElementService {
             NetElementExample netElementExample = new NetElementExample();
             netElementExample.createCriteria().andIdIn(ids);
             result = netElementDao.deleteByExample(netElementExample);
-            //再根据ids删除网元关系表中的数据\
+            //再根据ids删除网元关系表中的数据
             NERelationExample neRelationExample = new NERelationExample();
             neRelationExample.createCriteria().andNeidIn(ids);
             neRelationDao.deleteByExample(neRelationExample);
@@ -354,11 +359,10 @@ public class NetElementServiceImpl implements NetElementService {
     public int updateNetElement(NetElement netElement) {
         int i = 0;
         try {
-            //给设备设置状态
-            netElement.setState(getStateService.getStateForNetElement(netElement));
+
             NetElementExample example = new NetElementExample();
             example.createCriteria().andIdEqualTo(netElement.getId());
-            i = netElementDao.updateByExample(netElement, example);
+            netElementDao.updateByExampleSelective(netElement,example);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

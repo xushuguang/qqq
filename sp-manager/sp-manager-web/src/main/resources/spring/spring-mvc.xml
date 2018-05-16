@@ -30,7 +30,7 @@
     <!--图片文件-->
     <mvc:resources mapping="/images/**" location="/images/"/>
     <!--txt文件-->
-    <mvc:resources mapping="/txt/**" location="/txt/"/>
+    <mvc:resources mapping="/html/**" location="/html/"/>
     <!--拦截器配置-->
     <mvc:interceptors>
         <mvc:interceptor>

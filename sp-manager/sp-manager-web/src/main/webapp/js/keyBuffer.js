@@ -44,7 +44,7 @@ $(document).ready(function() {
             }
         },
         title: {
-            text: 'keyBuffer实时曲线图'
+            text: '可用密钥量实时曲线图'
         },
         credits: {
             enabled: false
@@ -55,11 +55,16 @@ $(document).ready(function() {
         },
         yAxis: {
             title: {
-                text: ''
+                text: '可用密钥量'
             },
             startOnTick: true, //为true时，设置min才有效
             min: 0,
             max: 100,
+            labels: {
+                formatter: function() {
+                    return this.value +'%';
+                }
+            },
             plotLines: [{
                 value: 0,
                 width: 1,

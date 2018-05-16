@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,15 +49,15 @@ public class SnmpTrapAction {
     }
     @ResponseBody
     @RequestMapping(value = "/getKeyRate",method = RequestMethod.POST)
-    public Keyrate getKeyRate(@RequestParam("qkdId")Long qkdId){
-        Keyrate keyRate = null;
+    public double getKeyRate(@RequestParam("qkdId")Long qkdId, @RequestParam("time")Long time){
+        double keyrate = 0;
         try {
-            keyRate = snmpTrapService.getKeyRate(qkdId);
+            keyrate = snmpTrapService.getKeyRate(qkdId,time);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return keyRate;
+        return keyrate;
     }
     @ResponseBody
     @RequestMapping(value = "/getKeyBuffer",method = RequestMethod.POST)
@@ -75,12 +76,24 @@ public class SnmpTrapAction {
     public String getKeyRateForTime(@RequestParam("qkdId")Long qkdId,@RequestParam("time1")String time1,@RequestParam("time2")String time2){
         String str = null;
         try {
-            List<Integer> list = snmpTrapService.getKeyRateForTime(qkdId,time1,time2);
+            List<Double> list = snmpTrapService.getKeyRateForTime(qkdId,time1,time2);
             str = JsonUtil.objectToJson(list);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
         return str;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/getAllKeyRate",method = RequestMethod.POST)
+    public List<Keyrate> getAllKeyRate(@RequestParam("qkdId")Long qkdId){
+        List<Keyrate> list = null;
+        try {
+            list = snmpTrapService.getAllKeyRate(qkdId);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return list;
     }
 }
