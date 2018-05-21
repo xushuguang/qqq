@@ -2,12 +2,12 @@ package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.common.utils.MD5Util;
+import com.qtec.snmp.dao.GroupMenuMapper;
+import com.qtec.snmp.dao.MenuMapper;
 import com.qtec.snmp.dao.UserGroupMapper;
 import com.qtec.snmp.dao.UserMapper;
-import com.qtec.snmp.pojo.po.User;
-import com.qtec.snmp.pojo.po.UserExample;
-import com.qtec.snmp.pojo.po.UserGroup;
-import com.qtec.snmp.pojo.po.UserGroupExample;
+import com.qtec.snmp.pojo.dto.TreeDto;
+import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.pojo.vo.UserVo;
 import com.qtec.snmp.service.UserService;
 import org.joda.time.DateTime;
@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: james.xu
@@ -34,6 +36,10 @@ public class UserServiceImpl implements UserService{
     private UserMapper userDao;
     @Autowired
     private UserGroupMapper userGroupDao;
+    @Autowired
+    private GroupMenuMapper groupMenuDao;
+    @Autowired
+    private MenuMapper menuDao;
     @Override
     public boolean selectUser(String username) {
         boolean flag = false;
@@ -121,4 +127,61 @@ public class UserServiceImpl implements UserService{
         }
         return result;
     }
+
+    @Override
+    public Map<String,List> finMenuByUid(Integer uid) {
+        Map<String,List> map = null;
+        try {
+            map = new HashMap<>();
+            //先根据uid查询到grupid
+            Integer groupId = userDao.selectByPrimaryKey(uid).getGroupId();
+            //再根据groupid查询到menuid
+            GroupMenuExample groupMenuExample = new GroupMenuExample();
+            groupMenuExample.createCriteria().andGidEqualTo(groupId);
+            List<GroupMenu> groupMenus = groupMenuDao.selectByExample(groupMenuExample);
+            for (GroupMenu groupMenu : groupMenus){
+                //再根据menuid查询到menu
+                Menu menu = menuDao.selectByPrimaryKey(groupMenu.getMid());
+                if (menu.getParentid()==0){
+                    //如果是父菜单，就再找他的子菜单
+                    MenuExample menuExample = new MenuExample();
+                    menuExample.createCriteria().andParentidEqualTo(menu.getMid());
+                    List<Menu> list = menuDao.selectByExample(menuExample);
+                    List<TreeDto> treeDtos = new ArrayList<>();
+                    for (Menu menu1 : list){
+                        TreeDto treeDto = new TreeDto();
+                        treeDto.setId(menu1.getMid());
+                        treeDto.setText(menu1.getMname());
+                        treeDto.setState("closed");
+                        treeDto.setUrl(menu1.getMurl());
+                        treeDtos.add(treeDto);
+                    }
+                    map.put(menu.getMname(),treeDtos);
+                }
+            }
+
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    @Override
+    public boolean delByUsername(String username) {
+        boolean flag = false;
+        try {
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andUsernameEqualTo(username);
+            int i = userDao.deleteByExample(userExample);
+            if (i>0){
+                flag = true;
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
 }

@@ -82,30 +82,32 @@
     </div>
 </div>
 <div data-options="region:'west'" style="width:200px;">
+    <p hidden="hidden">${sessionScope.user.id}</p>
     <div id="menu" class="easyui-accordion">
-        <div title="网元管理" data-options="selected:true,iconCls:'icon-tip'" style="padding:10px 0;">
+        <!--
+        <div title="网元管理" style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'ne_manage'}">网元管理</li>
                 <li data-options="attributes:{'href':'node_manage'}">节点管理</li>
                 <li data-options="attributes:{'href':'TN'}">量子秘钥管理层</li>
             </ul>
         </div>
-        <div title="实时告警管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
+        <div title="实时告警管理"  style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'alarm_list'}">实时告警监控</li>
             </ul>
         </div>
-        <div title="历史告警管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
+        <div title="历史告警管理"  style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'history_alarm_list'}">告警结果查询</li>
             </ul>
         </div>
-        <div title="统计数据管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
+        <div title="统计数据管理"  style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'statistic_data_query'}">统计数据查询</li>
             </ul>
         </div>
-        <div title="用户管理" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
+        <div title='用户管理'  style='padding:10px 0;'>
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'user_group_manage'}">用户组管理</li>
                 <li data-options="attributes:{'href':'user_group_add'}">添加用户组</li>
@@ -113,11 +115,12 @@
                 <li data-options="attributes:{'href':'user_add'}">添加用户</li>
             </ul>
         </div>
-        <div title="工具箱" data-options="iconCls:'icon-tip'" style="padding:10px 0;">
+        <div title="工具箱"  style="padding:10px 0;">
             <ul class="easyui-tree">
                 <li data-options="attributes:{'href':'online_help'}">在线帮助</li>
             </ul>
         </div>
+        -->
     </div>
 </div>
 <div data-options="region:'center'" style="background:#eee;">
@@ -125,7 +128,7 @@
         <div  title="主页" style="padding:20px;">
             <div id="element" ></div>
             <div id="HistoryAlarm" ></div>
-            <div id="Equipment" style="color:"></div>
+            <div id="Equipment"></div>
         </div>
     </div>
 </div>
@@ -147,6 +150,34 @@
 </script>
 <script>
     moment.locale();
+</script>
+<script>
+    var uid = $("p").html();
+    $(document).ready(function(){
+        $.post(
+            //url，提交给后台谁去处理
+            'user/findMenu',
+            //data，提交什么到后台，ids
+            {'uid': uid},
+            //callback,相当于$.ajax中success
+            function (data) {
+                for (var key in data) {
+                    $('#menu').accordion('add', {
+                        title: key,
+                        iconCls: 'icon-tip',
+                        selected: false,
+                        content: '<div style="padding:10px"><ul name="' + key + '"></ul></div>',
+                    });
+                    $("ul[name='" + key + "']").tree({
+                        data:data[key],
+                        onClick : function(node) {
+                            console.log(node);
+                                snmp.addTabs(node.text,node.url);
+                        }
+                    });
+            };
+       });
+    });
 </script>
 <script>
     //退出当前用户按钮
@@ -204,7 +235,6 @@
             url: 'listHistoryAlarmVo',
             dataType: "json",
             success : function (data) {
-                console.log(data)
                 // 绘制图表。
                 historyAlarmCharts.setOption({
                     title : {
@@ -250,7 +280,6 @@
         url: 'listNodeVo',
         dataType: "json",
         success : function (data) {
-            console.log(data)
             // 绘制图表。
             equipmentCharts.setOption({
                 title: {

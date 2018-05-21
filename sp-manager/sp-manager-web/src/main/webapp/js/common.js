@@ -43,14 +43,6 @@ var snmp = {
                 href: href,
                 closable: true
             });
-            var selTab = $('#tab').tabs('getSelected');
-            var url = $(selTab.panel('options').content).attr('src');
-            $('#tab').tabs('update', {
-                tab: selTab,
-                options: {
-                    content:createFrame(url)
-                }
-            })
         }
     },
     closeTabs:function (text) {

@@ -25,7 +25,6 @@
         columns: [[
             {field: 'groupName', title: '用户组名'},
             {field: 'discription', title: '描述'},
-            {field: '  ', title: '操作'}
         ]]
     });
 </script>

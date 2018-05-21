@@ -1,0 +1,12 @@
+###############################################################
+Date		Name	Module			Description
+###############################################################
+2018-05-11      James   QKD State               QKD status changed to reported by SNMP
+2018-05-14      James   Alarm                   Alarm's Info level is filtered out
+2018-05-15      James   KeyRate                 Solve KeyRate to store database duplication.
+2018-05-15      James   KeyBuffer               Solve KeyRate to store database duplication.
+2018-05-15      James   Style                   Modified some page styles as required.
+2018-05-17      James   Log                     Add Log Management and Log File Local Storage.
+2018-05-18      James   MySQL                   Change the database table engine of alarm, keyrate, keybuffer to myisam.
+2018-05-18      James   User                    Add login interceptor to increase different user logins with different access rights.
+2018-05-21      James   User                    Add delete user function.   

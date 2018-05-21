@@ -1,8 +1,12 @@
 package com.qtec.snmp.service;
 
 import com.qtec.snmp.common.dto.Result;
+import com.qtec.snmp.pojo.po.Menu;
 import com.qtec.snmp.pojo.po.User;
 import com.qtec.snmp.pojo.vo.UserVo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * UserService接口
@@ -46,4 +50,8 @@ public interface UserService {
      * @return result
      */
     Result<UserVo> listUser();
+
+    Map<String,List> finMenuByUid(Integer uid);
+
+    boolean delByUsername(String username);
 }

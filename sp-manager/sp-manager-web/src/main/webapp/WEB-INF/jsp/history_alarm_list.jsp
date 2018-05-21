@@ -18,7 +18,7 @@
             <option value="Fatal">Fatal</option>
             <option value="Error">Error</option>
             <option value="Warning">Warning</option>
-            <option value="Warning">Info</option>
+            <option value="Info">Info</option>
         </select>
         &nbsp;&nbsp;
         <label>告警时间：</label>

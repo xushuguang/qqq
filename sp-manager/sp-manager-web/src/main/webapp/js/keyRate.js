@@ -25,7 +25,7 @@
                             type : 'post',
                             data:{"qkdId":id,"time": (new Date().getTime())},
                             success : function(keyRate){
-                                console.log(keyRate);
+                                console.log(keyRate)
                                 var x = (new Date().getTime());
                                 var y = keyRate;
                                 series.addPoint([x, y], true, true);

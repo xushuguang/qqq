@@ -2,6 +2,8 @@ package com.qtec.snmp.web;
 
 import com.qtec.snmp.common.dto.MessageResult;
 import com.qtec.snmp.common.dto.Result;
+import com.qtec.snmp.common.utils.JsonUtil;
+import com.qtec.snmp.pojo.po.Menu;
 import com.qtec.snmp.pojo.po.User;
 import com.qtec.snmp.pojo.vo.UserVo;
 import com.qtec.snmp.service.UserService;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: james.xu
@@ -144,4 +149,36 @@ public class UserAction {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 查询当前用户菜单权限
+     * @param uid
+     * @return result
+     */
+    @ResponseBody
+    @RequestMapping(value = "/user/findMenu",method = RequestMethod.POST)
+    public Map<String,List> finMenuByUid(@RequestParam("uid")Integer uid){
+        Map<String,List> map = null;
+        try {
+            map = userService.finMenuByUid(uid);
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return map;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/user/delByUsername",method = RequestMethod.POST)
+    public boolean delByUsername(@RequestParam("username")String username){
+        boolean flag = false;
+        try {
+            //1.根据用户名查询用户是否已经存在
+            flag = userService.delByUsername(username);
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
 }
