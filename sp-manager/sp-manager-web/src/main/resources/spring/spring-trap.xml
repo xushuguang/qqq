@@ -8,7 +8,7 @@
                 http://www.springframework.org/schema/context/spring-context.xsd
             ">
     <bean id="trapXMLVo" class="com.qtec.snmp.pojo.vo.TrapXMLVo">
-        <property name="ip" value="192.168.100.216"/>
+        <property name="ip" value="192.168.100.59"/>
         <property name="port" value="162"/>
     </bean>
 </beans>

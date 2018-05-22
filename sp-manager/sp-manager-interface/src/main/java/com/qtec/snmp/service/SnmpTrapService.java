@@ -1,9 +1,8 @@
 package com.qtec.snmp.service;
 
+import com.qtec.snmp.pojo.po.Keybuffer;
 import com.qtec.snmp.pojo.po.Keyrate;
-import com.qtec.snmp.pojo.vo.KeyBufferVo;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,11 +39,11 @@ public interface SnmpTrapService {
      * @param neName
      * @return
      */
-    List<KeyBufferVo> getKeyBuffer(String neName);
-
-    List<Double> getKeyRateForTime(Long qkdId,String time1,String time2);
+    int getKeyBuffer(String neName,Long pairId,Long time);
 
     void removeKeyRateAndKeyBuffer();
 
     List<Keyrate> getAllKeyRate(Long qkdId);
+
+    List<Keybuffer> getAllKeyBuffer(String neName, Long pairId);
 }

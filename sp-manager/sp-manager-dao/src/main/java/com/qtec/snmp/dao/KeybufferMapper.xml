@@ -211,6 +211,5 @@
   <select id="distinctPairTNIP" resultType="String">
     SELECT DISTINCT(pair_tn_ip) FROM keybuffer
     WHERE tn_ip = #{TNIP}
-    AND time BETWEEN #{time1} AND #{time2}
   </select>
 </mapper>

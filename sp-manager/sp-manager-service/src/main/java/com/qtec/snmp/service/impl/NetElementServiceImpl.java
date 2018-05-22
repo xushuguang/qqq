@@ -2,12 +2,10 @@ package com.qtec.snmp.service.impl;
 
 import com.qtec.snmp.common.dto.PropertyGrid;
 import com.qtec.snmp.common.dto.Result;
+import com.qtec.snmp.dao.KeybufferMapper;
 import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
-import com.qtec.snmp.pojo.po.NERelation;
-import com.qtec.snmp.pojo.po.NERelationExample;
-import com.qtec.snmp.pojo.po.NetElement;
-import com.qtec.snmp.pojo.po.NetElementExample;
+import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.pojo.vo.*;
 import com.qtec.snmp.service.GetStateService;
 import com.qtec.snmp.service.NetElementService;
@@ -35,7 +33,8 @@ public class NetElementServiceImpl implements NetElementService {
     private NERelationMapper neRelationDao;
     @Autowired
     private GetStateService getStateService;
-
+    @Autowired
+    private KeybufferMapper keyBufferDao;
     /**
      *保存网元设备
      * @param netElement
@@ -368,5 +367,88 @@ public class NetElementServiceImpl implements NetElementService {
             e.printStackTrace();
         }
         return i;
+    }
+
+    @Override
+    public List<NetElement> getTNRelation(String neName) {
+        List<NetElement> list = null;
+        try {
+            //先根据neName查询到TNIP
+            NetElementExample netElementExample = new NetElementExample();
+            netElementExample.createCriteria().andNeNameEqualTo(neName);
+            List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
+            if (netElements!=null&&netElements.size()>0){
+                String TNIP = netElements.get(0).getNeIp();
+                //再根据TNIP查询到所有存在的连接
+                List<String> strings = keyBufferDao.distinctPairTNIP(TNIP);
+                if (strings!=null&&strings.size()>0) {
+                    list = new ArrayList<>();
+                    for (String str : strings) {
+                        NetElementExample netElementExample1 = new NetElementExample();
+                        netElementExample1.createCriteria().andNeIpEqualTo(str);
+                        List<NetElement> netElements1 = netElementDao.selectByExample(netElementExample1);
+                        if (netElements1 != null && netElements1.size() > 0) {
+                            list.add(netElements1.get(0));
+                        }
+                    }
+                }
+            }
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public Result<PropertyGrid> getTNDetails(String neName, Long pairId) {
+        Result<PropertyGrid> result = null;
+        try {
+            //先根据neName查询到TN信息
+            NetElementExample netElementExample = new NetElementExample();
+            netElementExample.createCriteria().andNeNameEqualTo(neName);
+            NetElement localTN = netElementDao.selectByExample(netElementExample).get(0);
+            //再根据pairId查询到TN信息
+            NetElement pairTN = netElementDao.selectByPrimaryKey(pairId);
+            //新建一个list用于保存
+            List<PropertyGrid> list = new ArrayList();
+            PropertyGrid propertyGrid1 = new PropertyGrid();
+            propertyGrid1.setName("名称");
+            propertyGrid1.setValue(localTN.getNeName());
+            propertyGrid1.setGroup("本地TN详情");
+            list.add(propertyGrid1);
+            PropertyGrid propertyGrid2 = new PropertyGrid();
+            propertyGrid2.setName("IP地址");
+            propertyGrid2.setValue(localTN.getNeIp());
+            propertyGrid2.setGroup("本地TN详情");
+            list.add(propertyGrid2);
+            PropertyGrid propertyGrid3 = new PropertyGrid();
+            propertyGrid3.setName("类型");
+            propertyGrid3.setValue(localTN.getType());
+            propertyGrid3.setGroup("本地TN详情");
+            list.add(propertyGrid3);
+            PropertyGrid propertyGrid4 = new PropertyGrid();
+            propertyGrid4.setName("名称");
+            propertyGrid4.setValue(pairTN.getNeName());
+            propertyGrid4.setGroup("对端TN详情");
+            list.add(propertyGrid4);
+            PropertyGrid propertyGrid5 = new PropertyGrid();
+            propertyGrid5.setName("IP地址");
+            propertyGrid5.setValue(pairTN.getNeIp());
+            propertyGrid5.setGroup("对端TN详情");
+            list.add(propertyGrid5);
+            PropertyGrid propertyGrid6 = new PropertyGrid();
+            propertyGrid6.setName("类型");
+            propertyGrid6.setValue(pairTN.getType());
+            propertyGrid6.setGroup("对端TN详情");
+            list.add(propertyGrid6);
+            //封装进result距离
+            result = new Result<>();
+            result.setRows(list);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
     }
 }

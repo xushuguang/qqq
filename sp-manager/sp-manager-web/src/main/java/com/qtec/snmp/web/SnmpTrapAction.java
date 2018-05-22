@@ -1,8 +1,7 @@
 package com.qtec.snmp.web;
 
-import com.qtec.snmp.common.utils.JsonUtil;
+import com.qtec.snmp.pojo.po.Keybuffer;
 import com.qtec.snmp.pojo.po.Keyrate;
-import com.qtec.snmp.pojo.vo.KeyBufferVo;
 import com.qtec.snmp.service.SnmpTrapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,28 +59,15 @@ public class SnmpTrapAction {
     }
     @ResponseBody
     @RequestMapping(value = "/getKeyBuffer",method = RequestMethod.POST)
-    public  List<KeyBufferVo> getKeyBuffer(@RequestParam("neName")String neName){
-        List<KeyBufferVo> list = null;
+    public int getKeyBuffer(@RequestParam("neName")String neName,@RequestParam("pairId")Long pairId,@RequestParam("time")Long time){
+        int keybuffer = 0;
         try {
-            list = snmpTrapService.getKeyBuffer(neName);
+            keybuffer = snmpTrapService.getKeyBuffer(neName,pairId,time);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return list;
-    }
-    @ResponseBody
-    @RequestMapping(value = "/getKeyRateForTime",method = RequestMethod.POST)
-    public String getKeyRateForTime(@RequestParam("qkdId")Long qkdId,@RequestParam("time1")String time1,@RequestParam("time2")String time2){
-        String str = null;
-        try {
-            List<Double> list = snmpTrapService.getKeyRateForTime(qkdId,time1,time2);
-            str = JsonUtil.objectToJson(list);
-        }catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            e.printStackTrace();
-        }
-        return str;
+        return keybuffer;
     }
     @ResponseBody
     @RequestMapping(value = "/getAllKeyRate",method = RequestMethod.POST)
@@ -90,6 +75,18 @@ public class SnmpTrapAction {
         List<Keyrate> list = null;
         try {
             list = snmpTrapService.getAllKeyRate(qkdId);
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return list;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/getAllKeyBuffer",method = RequestMethod.POST)
+    public List<Keybuffer> getAllKeyBuffer(@RequestParam("neName")String neName,@RequestParam("pairId")Long pairId){
+        List<Keybuffer> list = null;
+        try {
+            list = snmpTrapService.getAllKeyBuffer(neName,pairId);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

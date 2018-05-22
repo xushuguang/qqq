@@ -297,7 +297,7 @@
                     position:'right',//提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。只在 trigger 为'item'的时候有效。
                     confine:true,//是否将 tooltip 框限制在图表的区域内。外层的 dom 被设置为 'overflow: hidden'，或者移动端窄屏，导致 tooltip 超出外界被截断时，此配置比较有用。
                     transitionDuration:0.4,//提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。
-                    backgroundColor:'rgba(192,192,192,0.5)',//通过设置rgba调节背景颜色与透明度
+                    backgroundColor:'rgba(192,192,192,1.0)',//通过设置rgba调节背景颜色与透明度
                     formatter: function (params,ticket,callback) {
                         if (params.dataType=='node'){//选择的是节点
                             var nodeName=params.data.name;//当前选中节点数据

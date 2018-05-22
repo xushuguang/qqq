@@ -184,5 +184,30 @@ public class NetElementAction {
         }
         return i;
     }
+    @ResponseBody
+    @RequestMapping(value = "/getTNRelation", method = RequestMethod.POST)
+    public String getTNRelation(String neName) {
+        String jsonStr = null;
+        try {
+            List<NetElement> list = netElementService.getTNRelation(neName);
+            jsonStr = JsonUtil.objectToJson(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return jsonStr;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/getTNDetails", method = RequestMethod.POST)
+    public Result<PropertyGrid> getTNDetails(String neName,Long pairId) {
+        Result<PropertyGrid> result = null;
+        try {
+            result = netElementService.getTNDetails(neName,pairId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
 

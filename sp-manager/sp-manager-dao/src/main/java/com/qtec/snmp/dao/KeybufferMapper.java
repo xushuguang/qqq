@@ -28,5 +28,5 @@ public interface KeybufferMapper {
     int updateByPrimaryKeySelective(Keybuffer record);
 
     int updateByPrimaryKey(Keybuffer record);
-    List<String> distinctPairTNIP(@Param("TNIP")String TNIP,@Param("time1")String time1,@Param("time2")String time2);
+    List<String> distinctPairTNIP(@Param("TNIP")String TNIP);
 }

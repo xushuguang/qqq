@@ -3,7 +3,6 @@ package com.qtec.snmp.service.impl;
 import com.qtec.snmp.common.jedis.JedisClient;
 import com.qtec.snmp.dao.*;
 import com.qtec.snmp.pojo.po.*;
-import com.qtec.snmp.pojo.vo.KeyBufferVo;
 import com.qtec.snmp.pojo.vo.TrapXMLVo;
 import com.qtec.snmp.service.SnmpTrapService;
 import org.slf4j.Logger;
@@ -214,7 +213,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
                     //先判断keyBuffer是否存在，如果存在就不添加，不存在就添加
                     KeybufferExample keybufferExample = new KeybufferExample();
                     keybufferExample.createCriteria().andTnIpEqualTo(keyBuffer.getTnIp())
-                            .andPairTnIpEqualTo(keyBuffer.getPairTnIp()).andKeybufferEqualTo(keyBuffer.getKeybuffer())
+                            .andPairTnIpEqualTo(keyBuffer.getPairTnIp())
                             .andTimeEqualTo(keyBuffer.getKeybuffer());
                     List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
                     if (keybuffers.isEmpty()||keybuffers.size()==0){
@@ -259,98 +258,28 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
     }
 
     @Override
-    public List<KeyBufferVo> getKeyBuffer(String neName) {
-        List<KeyBufferVo> list = null;
+    public int getKeyBuffer(String neName,Long pairId,Long time) {
+        int result = 0;
         try {
-            list = new ArrayList<>();
-            //先根据当前的neName获取当前的neIP
             NetElementExample netElementExample = new NetElementExample();
             netElementExample.createCriteria().andNeNameEqualTo(neName);
-            List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
-            if (netElements!=null&&netElements.size()>0){
-                String TNIP = netElements.get(0).getNeIp();
-                //再根据当前的TNIP获取当前一分钟内的keyBuffer
-                Calendar beforeTime = Calendar.getInstance();
-                beforeTime.add(Calendar.MINUTE, -1);// 1分钟之前的时间
-                Date beforeD = beforeTime.getTime();
-                String time1 = dateToString.format(beforeD);
-                String time2 = dateToString.format(new Date());
-                KeybufferExample keybufferExample = new KeybufferExample();
-                keybufferExample.createCriteria().andTnIpEqualTo(TNIP).andTimeBetween(time1,time2);
-                List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
-                if (keybuffers!=null&&keybuffers.size()>0){
-                    //再查询对端的TNIP
-                    List<String> pairTNIPs = keybufferDao.distinctPairTNIP(TNIP, time1, time2);
-                    //循环遍历
-                   if (pairTNIPs!=null&&pairTNIPs.size()>0){
-                       for (String pairTNIP : pairTNIPs){
-                           List<Keybuffer> list1 = new ArrayList<>();
-                           KeyBufferVo keyBufferVo = new KeyBufferVo();
-                           for (Keybuffer keybuffer : keybuffers){
-                               //如果keybuffer是属于当前pairTNIP的，就存到一个list集合里面
-                               if (keybuffer.getPairTnIp().equals(pairTNIP)){
-                                   list1.add(keybuffer);
-                               }
-                           }
-                           if (list1!=null&&list1.size()>0){
-                               //对list1进行处理并封装
-                               int keybufferSum = 0;
-                               for (Keybuffer keybuffer : list1){
-                                   keybufferSum += Integer.parseInt(keybuffer.getKeybuffer());
-                               }
-                               //取平均值并转换成string类型
-                               String keybuffer = String.valueOf(keybufferSum/list1.size());
-                               //封装
-                               NetElementExample netElementExample1 = new NetElementExample();
-                               netElementExample1.createCriteria().andNeIpEqualTo(pairTNIP);
-                               String pairName = netElementDao.selectByExample(netElementExample1).get(0).getNeName();
-                               keyBufferVo.setName(neName+"->"+pairName);
-                               keyBufferVo.setData(keybuffer);
-                           }
-                           list.add(keyBufferVo);
-                       }
-                   }
-                }
+            String localTNIP = netElementDao.selectByExample(netElementExample).get(0).getNeIp();
+            String pairTNIP = netElementDao.selectByPrimaryKey(pairId).getNeIp();
+            String time1 = dateToString.format(time-1000);
+            KeybufferExample keybufferExample = new KeybufferExample();
+            keybufferExample.createCriteria().andTnIpEqualTo(localTNIP).andPairTnIpEqualTo(pairTNIP).andTimeEqualTo(time1);
+            List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
+            if (keybuffers!=null&&keybuffers.size()>0){
+                logger.info("获取到当前时间的KeyBuffer---------------------------------------");
+                result = Integer.parseInt(keybuffers.get(0).getKeybuffer());
+            }else {
+                logger.info("没有获取到当前时间的KeyBuffer---------------------------------------");
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return list;
-    }
-    /**
-     * 根据当前的qkdId获取keyRate
-     * @param qkdId
-     * @return keyRate
-     */
-    @Override
-    public List<Double> getKeyRateForTime(Long qkdId,String time1,String time2) {
-        List<Double> keyRates = null;
-        try {
-            //根据qkdId查询到Ip
-            String qkdIp = netElementDao.selectByPrimaryKey(qkdId).getNeIp();
-            //根据qkdip和时间查询
-            KeyrateExample keyrateExample = new KeyrateExample();
-            Date start = stringToDate.parse(time1);
-            Date end = stringToDate.parse(time2);
-            String startTime = dateToString.format(start);
-            String endTime = dateToString.format(end);
-            keyrateExample.createCriteria().andQkdIpEqualTo(qkdIp).andTimeBetween(startTime,endTime);
-            List<Keyrate> list = keyrateDao.selectByExample(keyrateExample);
-            if (list!=null&&list.size()>0){
-                keyRates = new ArrayList<>();
-                for (Keyrate keyrate : list){
-                    double ff = (double)Integer.parseInt(keyrate.getKeyrate())/1024;
-                    BigDecimal bd = new BigDecimal(ff);
-                    double f1 = bd.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-                    keyRates.add(f1);
-                }
-            }
-        }catch (Exception e){
-            logger.error(e.getMessage(), e);
-            e.printStackTrace();
-        }
-        return keyRates;
+        return result;
     }
     @Override
     @Scheduled(cron = "0 0 0 * * ?")
@@ -358,7 +287,6 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
         keybufferDao.deleteByExample(new KeybufferExample());
         keyrateDao.deleteByExample(new KeyrateExample());
     }
-
     @Override
     public List<Keyrate> getAllKeyRate(Long qkdId) {
         List<Keyrate> keyRates = null;
@@ -373,5 +301,23 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
             e.printStackTrace();
         }
         return keyRates;
+    }
+
+    @Override
+    public List<Keybuffer> getAllKeyBuffer(String neName, Long pairId) {
+        List<Keybuffer> keybuffers = null;
+        try{
+            NetElementExample netElementExample = new NetElementExample();
+            netElementExample.createCriteria().andNeNameEqualTo(neName);
+            String localTNIP = netElementDao.selectByExample(netElementExample).get(0).getNeIp();
+            String pairTNIP = netElementDao.selectByPrimaryKey(pairId).getNeIp();
+            KeybufferExample keybufferExample = new KeybufferExample();
+            keybufferExample.createCriteria().andTnIpEqualTo(localTNIP).andPairTnIpEqualTo(pairTNIP);
+            keybuffers = keybufferDao.selectByExample(keybufferExample);
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return keybuffers;
     }
 }

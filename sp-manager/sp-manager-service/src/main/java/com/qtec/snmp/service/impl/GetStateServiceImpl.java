@@ -1,19 +1,14 @@
 package com.qtec.snmp.service.impl;
 
+import com.qtec.snmp.dao.KeybufferMapper;
 import com.qtec.snmp.dao.NetElementMapper;
-import com.qtec.snmp.dao.NodeNEMapper;
-import com.qtec.snmp.pojo.po.Keyrate;
-import com.qtec.snmp.pojo.po.NetElement;
-import com.qtec.snmp.pojo.po.NetElementExample;
-import com.qtec.snmp.pojo.vo.KeyBufferVo;
+import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.service.GetStateService;
-import com.qtec.snmp.service.SnmpTrapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +23,7 @@ public class GetStateServiceImpl implements GetStateService{
     @Autowired
     NetElementMapper netElementDao;
     @Autowired
-    private SnmpTrapService snmpTrapService;
+    private KeybufferMapper keybufferDao;
     private static final int TIMEOUT = 3000;
 
     /**
@@ -64,9 +59,11 @@ public class GetStateServiceImpl implements GetStateService{
             getPing = InetAddress.getByName(netElement.getNeIp()).isReachable(TIMEOUT);
             if (getPing) {
                 state = 1;
-                //再通过snmp看是否能获取到key
-                List<KeyBufferVo> keyBufferVoList = snmpTrapService.getKeyBuffer(netElement.getNeName());
-                if (keyBufferVoList!=null&&keyBufferVoList.size()>0){
+                //再看是否能获取到keyBuffer
+                KeybufferExample keybufferExample = new KeybufferExample();
+                keybufferExample.createCriteria().andTnIpEqualTo(netElement.getNeIp());
+                List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
+                if (keybuffers!=null&&keybuffers.size()>0){
                     state = 2;
                 }
             }

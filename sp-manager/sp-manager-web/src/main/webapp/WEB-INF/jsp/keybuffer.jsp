@@ -6,14 +6,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
           pageEncoding="UTF-8" %>
 <style>
-    #tdDetails{
+    #tnDetails{
         position: absolute;
         width: 20%;
         height: 40%;
         left:0;
         top:8%;
     }
-    #keyRate{
+    #keyBuffer{
         position: absolute;
         width: 100%;
         height: 35%;
@@ -21,7 +21,7 @@
         bottom: 0;
         margin: 0 auto;
     }
-    #HistorykeyRate{
+    #HistorykeyBuffer{
         position: absolute;
         width: 80%;
         height: 50%;
@@ -30,8 +30,8 @@
         margin: 0 auto;
     }
 </style>
-<div id="tdDetails">
-    <table id="pgDetails" class="easyui-propertygrid"data-options="columns:mycolumns"></table>
+<div id="tnDetails">
+    <table id="tbDetails" class="easyui-propertygrid"data-options="columns:mycolumns"></table>
     <script>
         var mycolumns = [[
             {field:'name',title:'属性',width:'35%'},
@@ -39,27 +39,29 @@
         ]];
     </script>
 </div>
-<div id="HistorykeyRate"></div>
-<div id="keyRate"></div>
-
-<script src="js/keyRate.js"></script>
+<div id="HistorykeyBuffer"></div>
+<div id="keyBuffer"></div>
+<script src="js/keyBuffer.js"></script>
 <script>
     //设备详情数据表格
-    var id = sessionStorage.getItem("id");
-    $('#pgDetails').propertygrid({
-        url: 'getNEDetails/'+id,
+    var pairId = sessionStorage.getItem("pairId");
+    var neName = sessionStorage.getItem("neName");
+    console.log('pairId'+pairId);
+    console.log('neName'+neName);
+    $('#tbDetails').propertygrid({
+        url: 'getTNDetails?neName='+neName+'&&pairId='+pairId,
         showGroup: true,
         resizable: true,
         scrollbarSize: 0
     });
     //获取历史keyrate折线图
-    function getHistoryKeyRate() {
+    function getHistoryKeyBuffer() {
         var arr = [];
         $.post(
             //url，提交给后台谁去处理
-            'getAllKeyRate',
+            'getAllKeyBuffer',
             //data，提交什么到后台，ids
-            {'qkdId': id },
+            {'neName': neName,"pairId":pairId },
             //callback,相当于$.ajax中success
             function (data) {
                 $.each(data, function (i, item) {
@@ -68,16 +70,16 @@
                     var date = new Date(dateStr );
                     arr.push([
                         date,
-                        parseInt(item.keyrate)/1024
+                        parseInt(item.keybuffer)
                     ]);
                 });
                 var data1 = arr;
-                Highcharts.chart('HistorykeyRate', {
+                Highcharts.chart('HistorykeyBuffer', {
                     chart: {
                         zoomType: 'x'
                     },
                     title: {
-                        text: '密钥速率历史折线图'
+                        text: '可用密钥量历史折线图'
                     },
                     xAxis: {
                         type: 'datetime',
@@ -96,17 +98,18 @@
                         formatter: function () {
                             return '<b>' + this.series.name + '</b><br/>' +
                                 Highcharts.dateFormat('%H:%M:%S', this.x) + '<br/>' + '<span style="color:#08c">' +
-                                Highcharts.numberFormat(this.y) + ' kb/s' + '</span>';
+                                Highcharts.numberFormat(this.y) + ' %' + '</span>';
                         }
                     },
                     yAxis: {
                         min:0,
+                        max:100,
                         title: {
-                            text: '速率'
+                            text: '可用密钥量'
                         },
                         labels: {
                             formatter: function() {
-                                return this.value +'(kb/s)';
+                                return this.value +'(%)';
                             }
                         },
                     },
@@ -141,15 +144,15 @@
                     },
                     series: [{
                         type: 'area',
-                        name: 'keyRate',
+                        name: 'keyBuffer',
                         data: data1
                     }]
                 });
             })
     }
     $(document).ready(function(){
-        getHistoryKeyRate();
+        getHistoryKeyBuffer();
     });
-    setTimeout(getHistoryKeyRate(),1000*60*5);
+    setTimeout(getHistoryKeyBuffer(),1000*60*5);
 </script>
 
