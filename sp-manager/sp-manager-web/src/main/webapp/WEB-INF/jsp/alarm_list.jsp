@@ -15,14 +15,8 @@
         opacity:0;
         filter:alpha(opacity=0);
     }
-    #divAlarms{
-        position: absolute;
-        width: 100%;
-        height: 89%;
-        left:0;
-        top:11%;
-    }
 </style>
+<div id="alarmListToolbar">
 <form id="alarmForm">
     <div style="padding: 5px; background-color: #fff;">
         <label>告警网元：</label>
@@ -35,30 +29,20 @@
             <option value="Error">Error</option>
             <option value="Warning">Warning</option>
         </select>
-        &nbsp;&nbsp;
-        <label>告警时间：</label>
-        从：<input type="text" id="time1" style="width: 195px" editable="false"
-                 class="easyui-datetimebox"/>
-        到：<input type="text" id="time2" style="width: 195px" editable="false"
-                 class="easyui-datetimebox"/>
-        &nbsp;&nbsp;
         <button onclick="searchForm()" type="button" class="easyui-linkbutton">搜索</button>
         <button onclick="clearForm()" type="button" class="easyui-linkbutton">重置</button>
     </div>
 </form>
-<div id="divAlarms">
+</div>
 <%--容器放好--%>
 <table id="dgAlarms"></table>
-</div>
 <%--通过js代码来渲染容器--%>
 <script>
     //点击搜索按钮动作
     function searchForm() {
         $('#dgAlarms').datagrid('load',{
             qkdIp:$('#qkdIp').val(),
-            alarmSeverity:$('#alarmSeverity').combobox('getValue'),
-            time1:$("#time1").datetimebox("getValue"),
-            time2:$('#time2').datetimebox("getValue")
+            alarmSeverity:$('#alarmSeverity').combobox('getValue')
         });
     }
     //点击重置按钮动作
@@ -105,7 +89,7 @@
         ]]
     });
     //实时刷新
-    timerID = setInterval("refresh()",500);
+    timerID = setInterval("refresh()",1000);
     function refresh(){
         $('#dgAlarms').datagrid('reload');
     }

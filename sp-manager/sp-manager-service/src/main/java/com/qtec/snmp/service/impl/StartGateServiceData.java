@@ -1,5 +1,6 @@
 package com.qtec.snmp.service.impl;
 
+import com.qtec.snmp.pojo.dto.KeyBufferDto;
 import com.qtec.snmp.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,9 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
     @Autowired
     private RTAlarmService rtAlarmService;
     @Autowired
-    private HistoryAlarmService historyAlarmService;
+    private KeyRateService keyRateService;
+    @Autowired
+    private KeyBufferService keyBufferService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -45,7 +48,8 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
                 getStateService.getState();
                 snmpService.setNeRelation();
                 rtAlarmService.removeRTAlarms();
-                historyAlarmService.deleteHistoryAlarms();
+                keyRateService.setAllKeyRateToRedis();
+                keyBufferService.setAllKeyBufferToRedis();
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

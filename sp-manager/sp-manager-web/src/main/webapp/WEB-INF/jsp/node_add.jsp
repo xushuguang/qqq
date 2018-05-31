@@ -66,26 +66,29 @@
     });
     //表单提交动作
     function submitForm() {
-        //获取选取框选取的网元设备id
-        //var ids = $('#ids').combogrid('getValues');
-        $('#nodeAddForm').form('submit', {
-            //表单提交后交给谁处理
-            url: 'addNode',
-            //表单提交之前被触发，如果返回false终止提交
-            onSubmit: function () {},
-            //表单提交成功后触发
-            success: function (data) {
-                data = JSON.parse(data);
-                console.log(data)
-                if (data.success) {
-                    $.messager.alert('消息', data.message, 'info');
-                    snmp.closeTabs('添加节点');
-                    snmp.addTabs("节点管理","node_manage");
-                }else{
-                    $.messager.alert('警告', data.message, 'warning');
+        if ($('#name').validatebox('isValid')&&$('#nodeIp').validatebox('isValid')&&$('#ids').validatebox('isValid')) {
+            $('#nodeAddForm').form('submit', {
+                //表单提交后交给谁处理
+                url: 'addNode',
+                //表单提交之前被触发，如果返回false终止提交
+                onSubmit: function () {
+                },
+                //表单提交成功后触发
+                success: function (data) {
+                    data = JSON.parse(data);
+                    console.log(data)
+                    if (data.success) {
+                        $.messager.alert('消息', data.message, 'info');
+                        snmp.closeTabs('添加节点');
+                        snmp.addTabs("节点管理", "node_manage");
+                    } else {
+                        $.messager.alert('警告', data.message, 'warning');
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            $.messager.alert('警告', '信息输入不符合要求！', 'warning');
+        }
     }
     //表单重置动作
     function clearForm() {

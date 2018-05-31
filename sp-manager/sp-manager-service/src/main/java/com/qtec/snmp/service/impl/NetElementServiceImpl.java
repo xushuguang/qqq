@@ -323,6 +323,11 @@ public class NetElementServiceImpl implements NetElementService {
         return result;
     }
 
+    /**
+     * 根据网元id删除网元，可以多条删除
+     * @param ids
+     * @return int
+     */
     @Override
     public int removeNetElements(List<Long> ids) {
         int result = 0;
@@ -342,6 +347,11 @@ public class NetElementServiceImpl implements NetElementService {
         return result;
     }
 
+    /**
+     * 根据网元id获取该网元的信息
+     * @param neId
+     * @return NetElement
+     */
     @Override
     public NetElement getNetElementById(Long neId) {
         NetElement netElement = null;
@@ -354,6 +364,11 @@ public class NetElementServiceImpl implements NetElementService {
         return netElement;
     }
 
+    /**
+     * 更新网元设备
+     * @param netElement
+     * @return int
+     */
     @Override
     public int updateNetElement(NetElement netElement) {
         int i = 0;
@@ -361,7 +376,7 @@ public class NetElementServiceImpl implements NetElementService {
 
             NetElementExample example = new NetElementExample();
             example.createCriteria().andIdEqualTo(netElement.getId());
-            netElementDao.updateByExampleSelective(netElement,example);
+            i = netElementDao.updateByExampleSelective(netElement, example);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
@@ -369,6 +384,11 @@ public class NetElementServiceImpl implements NetElementService {
         return i;
     }
 
+    /**
+     * 根据当前网元名获取当前TN与其它TN之间的关系
+     * @param neName
+     * @return
+     */
     @Override
     public List<NetElement> getTNRelation(String neName) {
         List<NetElement> list = null;
@@ -378,16 +398,16 @@ public class NetElementServiceImpl implements NetElementService {
             netElementExample.createCriteria().andNeNameEqualTo(neName);
             List<NetElement> netElements = netElementDao.selectByExample(netElementExample);
             if (netElements!=null&&netElements.size()>0){
-                String TNIP = netElements.get(0).getNeIp();
-                //再根据TNIP查询到所有存在的连接
-                List<String> strings = keyBufferDao.distinctPairTNIP(TNIP);
-                if (strings!=null&&strings.size()>0) {
-                    list = new ArrayList<>();
-                    for (String str : strings) {
+                list = new ArrayList<>();
+                String tnIp = netElements.get(0).getNeIp();
+                //再根据id查询到所有对端的tnIp
+                List<String> strings = keyBufferDao.distinctPairTNIP(tnIp);
+                if (strings!=null&&strings.size()>0){
+                    for (String pairTnIp : strings){
                         NetElementExample netElementExample1 = new NetElementExample();
-                        netElementExample1.createCriteria().andNeIpEqualTo(str);
+                        netElementExample1.createCriteria().andNeIpEqualTo(pairTnIp);
                         List<NetElement> netElements1 = netElementDao.selectByExample(netElementExample1);
-                        if (netElements1 != null && netElements1.size() > 0) {
+                        if (netElements1!=null&&netElements1.size()>0){
                             list.add(netElements1.get(0));
                         }
                     }
@@ -400,6 +420,12 @@ public class NetElementServiceImpl implements NetElementService {
         return list;
     }
 
+    /**
+     * 根据当前TN名和对端TNid查询它们的信息
+     * @param neName
+     * @param pairId
+     * @return
+     */
     @Override
     public Result<PropertyGrid> getTNDetails(String neName, Long pairId) {
         Result<PropertyGrid> result = null;

@@ -42,12 +42,11 @@
 <div id="HistorykeyBuffer"></div>
 <div id="keyBuffer"></div>
 <script src="js/keyBuffer.js"></script>
+<script src="js/currentTime.js"></script>
 <script>
     //设备详情数据表格
     var pairId = sessionStorage.getItem("pairId");
     var neName = sessionStorage.getItem("neName");
-    console.log('pairId'+pairId);
-    console.log('neName'+neName);
     $('#tbDetails').propertygrid({
         url: 'getTNDetails?neName='+neName+'&&pairId='+pairId,
         showGroup: true,
@@ -63,16 +62,17 @@
             //data，提交什么到后台，ids
             {'neName': neName,"pairId":pairId },
             //callback,相当于$.ajax中success
-            function (data) {
-                $.each(data, function (i, item) {
-                    var dateStr = '2018-5-16 '+item.time;
+            function (dataStr) {
+                var data = $.parseJSON(dataStr);
+                for(var i in data){
+                    var dateStr = CurentTime()+data[i].time;
                     dateStr = dateStr.replace(/-/g,"/");
                     var date = new Date(dateStr );
                     arr.push([
                         date,
-                        parseInt(item.keybuffer)
+                        parseInt(data[i].keybuffer)
                     ]);
-                });
+                }
                 var data1 = arr;
                 Highcharts.chart('HistorykeyBuffer', {
                     chart: {
@@ -153,6 +153,6 @@
     $(document).ready(function(){
         getHistoryKeyBuffer();
     });
-    setTimeout(getHistoryKeyBuffer(),1000*60*5);
+     (getHistoryKeyBuffer(),1000*60*5);
 </script>
 

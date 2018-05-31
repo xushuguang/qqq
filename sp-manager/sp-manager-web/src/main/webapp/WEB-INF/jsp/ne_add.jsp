@@ -43,20 +43,24 @@
 <script>
     //表单提交动作
     function submitForm() {
-        $('#neAddForm').form('submit', {
-            //表单提交后交给谁处理
-            url: 'addNetElement',
-            //表单提交之前被触发，如果返回false终止提交
-            onSubmit: function () {},
-            success: function (data) {
-                data = JSON.parse(data);
-                if (data.success) {
-                    $.messager.alert('消息', data.message, 'info');
-                    snmp.closeTabs('添加网元');
-                    snmp.addTabs("网元管理","ne_manage");
+        if ($('#neName').validatebox('isValid')&&$('#neIp').validatebox('isValid')){
+            $('#neAddForm').form('submit', {
+                //表单提交后交给谁处理
+                url: 'addNetElement',
+                //表单提交之前被触发，如果返回false终止提交
+                onSubmit: function () {},
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.success) {
+                        $.messager.alert('消息', data.message, 'info');
+                        snmp.closeTabs('添加网元');
+                        snmp.addTabs("网元管理","ne_manage");
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            $.messager.alert('警告', '信息输入不符合要求！', 'warning');
+        }
     }
     //表单重置动作
     function clearForm() {

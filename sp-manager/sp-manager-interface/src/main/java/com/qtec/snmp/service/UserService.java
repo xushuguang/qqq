@@ -51,7 +51,17 @@ public interface UserService {
      */
     Result<UserVo> listUser();
 
+    /**
+     * 根据用户id查询用户页面操作权限
+     * @param uid
+     * @return
+     */
     Map<String,List> finMenuByUid(Integer uid);
 
+    /**
+     * 根据用户名删除用户
+     * @param username
+     * @return
+     */
     boolean delByUsername(String username);
 }

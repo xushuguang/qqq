@@ -1,5 +1,6 @@
 package com.qtec.snmp.common.utils.test;
 
+import com.qtec.snmp.common.utils.MD5Util;
 import com.qtec.snmp.common.utils.SnmpUtil;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -22,7 +24,7 @@ public class Test {
     @org.junit.Test
     public void test(){
         System.out.println(new Date()+"------------start------------");
-        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.119","public");
+        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.120","public");
         ArrayList<String> QKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
         ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
         ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
@@ -52,15 +54,8 @@ public class Test {
     }
     @org.junit.Test
     public void test2(){
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        try {
-            date = format.parse("2013-03-20 17:47:09");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        System.out.println(date);
-        //转换为UTC时间
-        System.out.println(date.getTime()/1000);
+        String pwd = "idqqtec";
+        String aaa = MD5Util.MD5(pwd);
+        System.out.print(aaa);
     }
 }

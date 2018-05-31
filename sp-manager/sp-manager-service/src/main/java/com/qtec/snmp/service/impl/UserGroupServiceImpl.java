@@ -34,7 +34,7 @@ public class UserGroupServiceImpl implements UserGroupService{
     private GroupMenuMapper groupMenuDao;
 
     /**
-     * 保存 userGroup
+     * 添加用户组信息
      * @param userGroupDto
      * @return int
      */
@@ -104,7 +104,7 @@ public class UserGroupServiceImpl implements UserGroupService{
     public Result<UserGroup> listUserGroup() {
         Result<UserGroup> result = null;
         try {
-            result = new Result<UserGroup>();
+            result = new Result<>();
             UserGroupExample example = new UserGroupExample();
             List<UserGroup> userGroups = userGroupDao.selectByExample(example);
             int i = userGroupDao.countByExample(example);

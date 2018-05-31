@@ -60,7 +60,7 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
             //3 查询指定页码的记录集合
             List<AlarmVo> list = alarmCustomDao.listHistoryAlarms(map);
             //4 存放result中
-            result = new Result<AlarmVo>();
+            result = new Result<>();
             result.setTotal(total);
             result.setRows(list);
         }catch (Exception e){
@@ -71,7 +71,7 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
     }
 
     /**
-     * 把未处理的告警变成已处理
+     * 处理历史告警
      * @param ids
      * @return
      */
@@ -79,30 +79,17 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
     public int historyAlarmUp(List<Long> ids) {
         int i = 0;
         try {
-            Alarm record = new Alarm();
-            record.setAlarmAck("Y");
-            //创建模板
             AlarmExample example = new AlarmExample();
             example.createCriteria().andIdIn(ids);
-            //执行更新操作
-            i = alarmDao.updateByExampleSelective(record,example);
+            //执行删除操作
+            i = alarmDao.deleteByExample(example);
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
         return i;
     }
-    @Override
-    @Scheduled(fixedRate = 1000 * 60)
-    public void deleteHistoryAlarms(){
-        AlarmExample alarmExample = new AlarmExample();
-        alarmExample.createCriteria().andAlarmAckNotEqualTo("RT");
-        int count = alarmDao.countByExample(alarmExample);
-        while (count>800000){
-            alarmCustomDao.deleteHistoryAlarms();
-            count = count - 10000;
-        }
-    }
+
     /**
      * 首页查询实时告警分类以及数目
      * @return list

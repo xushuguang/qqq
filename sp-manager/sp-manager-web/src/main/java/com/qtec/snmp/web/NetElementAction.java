@@ -39,6 +39,7 @@ public class NetElementAction {
     @ResponseBody
     @RequestMapping(value = "/addNetElement", method = RequestMethod.POST)
     public MessageResult saveNetElement(NetElement netElement) {
+        logger.info("开始测试addNetElement。。。。。。。。。。。");
         MessageResult mr = new MessageResult();
         try {
             int i = netElementService.saveNetElement(netElement);
@@ -53,26 +54,9 @@ public class NetElementAction {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
+        logger.info("结束测试。。。。。。。。。。。。。");
         return mr;
     }
-
-    /**
-     * 获取密钥的信息
-     * @return String
-     */
-    @ResponseBody
-    @RequestMapping(value = "/listSecretKey", method = RequestMethod.GET)
-    public String listSecretKey(){
-        String jsonStr = null;
-        try {
-            jsonStr = JsonUtil.objectToJson("");
-        }catch (Exception e){
-            logger.error(e.getMessage(), e);
-            e.printStackTrace();
-        }
-        return  jsonStr;
-    }
-
     /**
      *设备统计
      * @return String

@@ -41,8 +41,8 @@
 </div>
 <div id="HistorykeyRate"></div>
 <div id="keyRate"></div>
-
 <script src="js/keyRate.js"></script>
+<script src="js/currentTime.js"></script>
 <script>
     //设备详情数据表格
     var id = sessionStorage.getItem("id");
@@ -61,16 +61,17 @@
             //data，提交什么到后台，ids
             {'qkdId': id },
             //callback,相当于$.ajax中success
-            function (data) {
-                $.each(data, function (i, item) {
-                    var dateStr = '2018-5-16 '+item.time;
+            function (dataStr) {
+                var data = $.parseJSON(dataStr);
+                for(var i in data){
+                    var dateStr = CurentTime()+data[i].time;
                     dateStr = dateStr.replace(/-/g,"/");
                     var date = new Date(dateStr );
                     arr.push([
                         date,
-                        parseInt(item.keyrate)/1024
+                        parseInt(data[i].keyrate)/1024
                     ]);
-                });
+                }
                 var data1 = arr;
                 Highcharts.chart('HistorykeyRate', {
                     chart: {

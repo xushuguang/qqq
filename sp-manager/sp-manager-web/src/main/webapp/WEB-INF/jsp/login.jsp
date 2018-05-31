@@ -29,7 +29,7 @@
         }
     </script>
 </head>
-<body>
+<body onkeydown="keyLogin();">
 <div id="win"class="easyui-window">
     <div>
         <div style="height:20px"></div>
@@ -60,6 +60,13 @@
     </div>
 </div>
 <script>
+    $(document).ready(function(){
+        console.log(sessionStorage.getItem('user'))
+    });
+    function keyLogin(){
+        if (event.keyCode==13)  //回车键的键值为13
+            document.getElementById("btnOk").onclick(); //调用登录按钮的登录事件
+    }
     function login(){
         $('#userLoginForm').form('submit', {
             url:"loginUser",

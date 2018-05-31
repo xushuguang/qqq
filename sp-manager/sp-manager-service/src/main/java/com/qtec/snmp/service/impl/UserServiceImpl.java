@@ -40,6 +40,12 @@ public class UserServiceImpl implements UserService{
     private GroupMenuMapper groupMenuDao;
     @Autowired
     private MenuMapper menuDao;
+
+    /**
+     * 根据用户名查询用户是否存在
+     * @param username
+     * @return
+     */
     @Override
     public boolean selectUser(String username) {
         boolean flag = false;
@@ -57,6 +63,11 @@ public class UserServiceImpl implements UserService{
         return flag;
     }
 
+    /**
+     * 保存用户信心并用MD5加密密码
+     * @param user
+     * @return
+     */
     @Override
     public int insertUser(User user) {
         int i = 0;
@@ -70,6 +81,12 @@ public class UserServiceImpl implements UserService{
         return i;
     }
 
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public User loginUser(String username, String password) {
         User user = null;
@@ -84,6 +101,11 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
+    /**
+     * 根据用户名查询用户的有效时间
+     * @param username
+     * @return
+     */
     @Override
     public boolean selectTime(String username) {
         boolean flag = false;
@@ -102,11 +124,15 @@ public class UserServiceImpl implements UserService{
         return flag;
     }
 
+    /**
+     * 查询所有用户信息
+     * @return
+     */
     @Override
     public Result<UserVo> listUser() {
         Result<UserVo> result = null;
         try {
-            result = new Result<UserVo>();
+            result = new Result<>();
             UserExample example = new UserExample();
             List<User> users = userDao.selectByExample(example);
             List<UserVo> userVos = new ArrayList<UserVo>();
@@ -127,7 +153,11 @@ public class UserServiceImpl implements UserService{
         }
         return result;
     }
-
+    /**
+     * 根据用户id查询用户的页面操作权限
+     * @param uid
+     * @return
+     */
     @Override
     public Map<String,List> finMenuByUid(Integer uid) {
         Map<String,List> map = null;
@@ -167,6 +197,11 @@ public class UserServiceImpl implements UserService{
         return map;
     }
 
+    /**
+     * 根据用户名删除用户
+     * @param username
+     * @return
+     */
     @Override
     public boolean delByUsername(String username) {
         boolean flag = false;

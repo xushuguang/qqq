@@ -8,6 +8,10 @@
     <result column="keybuffer" property="keybuffer" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="distinctTNandPairTNMap" type="com.qtec.snmp.pojo.dto.KeyBufferDto">
+    <result column="tn_ip" property="tnIp" jdbcType="VARCHAR" />
+    <result column="pair_tn_ip" property="pairTnIp" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -211,5 +215,8 @@
   <select id="distinctPairTNIP" resultType="String">
     SELECT DISTINCT(pair_tn_ip) FROM keybuffer
     WHERE tn_ip = #{TNIP}
+  </select>
+  <select id="distinctTNandPairTN" resultMap="distinctTNandPairTNMap">
+    SELECT DISTINCT tn_ip , pair_tn_ip FROM keybuffer;
   </select>
 </mapper>

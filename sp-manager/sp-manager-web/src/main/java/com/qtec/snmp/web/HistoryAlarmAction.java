@@ -30,7 +30,6 @@ public class HistoryAlarmAction {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private HistoryAlarmService historyAlarmService;
-
     @ResponseBody
     @RequestMapping(value = "/listHistoryAlarms",method = RequestMethod.GET)
     public Result<AlarmVo> listHistoryAlarms(Page page, Order order, AlarmQuery query){

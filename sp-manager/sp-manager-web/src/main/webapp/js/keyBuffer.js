@@ -22,9 +22,8 @@ $('#keyBuffer').highcharts({
                     $.ajax({
                         url : 'getKeyBuffer',
                         type : 'post',
-                        data:{"neName":neName,"pairId":pairId,"time": (new Date().getTime())},
+                        data:{"pairId":pairId,"neName":neName,"time": (new Date().getTime())},
                         success : function(keyBuffer){
-                            console.log(keyBuffer)
                             var x = (new Date().getTime());
                             var y = keyBuffer;
                             series.addPoint([x, y], true, true);

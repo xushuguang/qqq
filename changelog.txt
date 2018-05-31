@@ -11,3 +11,8 @@ Date		Name	Module			Description
 2018-05-21      James   User                    Add delete user function.
 2018-05-21      James   Version                 Change the version.
 2018-05-22      James   KeyBuffer               Change the keybuffer to real-time one-second report graphs and history all line charts.
+2018-05-25      James   Keybuffer and KeyRate   Remove the Keybuffer and KeyRate from the SNMPTrap module.
+2018-05-25      James   Redis                   Redis caching is added for KeyRate and KeyBuffer.
+2018-05-31      James   Login                   Login to enter the user name and password and press enter to log in directly.
+2018-05-31      James   Node                    Fixed a problem with form validation errors but still adding nodes.
+2018-05-31      James   NetElement              Fixed a problem with form validation errors but still adding netElements.

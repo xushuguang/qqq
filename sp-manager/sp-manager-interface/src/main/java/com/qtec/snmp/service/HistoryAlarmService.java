@@ -34,9 +34,8 @@ public interface HistoryAlarmService {
     int historyAlarmUp(List<Long> ids);
 
     /**
-     * 删除历史告警
+     * 列表封装Echarts历史告警环形图所需数据
+     * @return list
      */
-    void deleteHistoryAlarms();
-
     List<EchartsVo> listHistoryAlarmVo();
 }

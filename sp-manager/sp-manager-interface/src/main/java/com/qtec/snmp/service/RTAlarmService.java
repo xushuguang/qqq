@@ -33,5 +33,5 @@ public interface RTAlarmService {
      * 首页实时告警圆环图所需数据
      * @return
      */
-    List<EchartsVo> listRTalarmVo();
+//    List<EchartsVo> listRTalarmVo();
 }

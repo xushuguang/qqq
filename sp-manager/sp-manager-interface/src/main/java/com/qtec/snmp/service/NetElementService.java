@@ -86,9 +86,15 @@ public interface NetElementService {
     /**
      * 根据当前TN name获取对端的所有TN信息
      * @param neName
-     * @return
+     * @return List<NetElement>
      */
     List<NetElement> getTNRelation(String neName);
 
+    /**
+     * 根据网元名和对端网元id获取一对TN详情
+     * @param neName
+     * @param pairId
+     * @return Result<PropertyGrid>
+     */
     Result<PropertyGrid> getTNDetails(String neName, Long pairId);
 }

@@ -27,23 +27,4 @@ public interface SnmpTrapService {
      */
     void stop();
 
-    /**
-     * 获取keyRate
-     * @param qkdId
-     * @return keyRate
-     */
-    double getKeyRate(Long qkdId, Long time);
-
-    /**
-     * 获取keyBufferMap
-     * @param neName
-     * @return
-     */
-    int getKeyBuffer(String neName,Long pairId,Long time);
-
-    void removeKeyRateAndKeyBuffer();
-
-    List<Keyrate> getAllKeyRate(Long qkdId);
-
-    List<Keybuffer> getAllKeyBuffer(String neName, Long pairId);
 }

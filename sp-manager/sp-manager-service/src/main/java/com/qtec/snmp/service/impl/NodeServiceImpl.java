@@ -50,7 +50,6 @@ public class NodeServiceImpl implements NodeService{
      */
     @Override
     public boolean  addNode(NodeDto nodeDto) {
-        System.out.println(new Date()+"------------addNode start------------");
         boolean flag = false;
         try {
             //先根据节点ip查询节点是否已经存在
@@ -77,17 +76,16 @@ public class NodeServiceImpl implements NodeService{
                         Long nid = nodeDao.selectByExample(example1).get(0).getId();
                         nodeDto.setId(nid);
                         //遍历集合并保存节点网元关系
-                        int insert2 = 0;
                         for (Long neid : nodeDto.getIds() ){
                             NodeNE nodeNE = new NodeNE();
                             nodeNE.setNid(nid);
                             nodeNE.setNeid(neid);
-                            insert2 = nodeNEDao.insert(nodeNE);
-                        }
-                        if (insert2>0){
-                            flag = true;
-                            //snmp get当前节点下的网元关系
-                            snmpService.updateNERelationForNode(nodeDto);
+                            int insert2 = nodeNEDao.insert(nodeNE);
+                            if (insert2>0){
+                                flag = true;
+                                //snmp get当前节点下的网元关系
+                                snmpService.updateNERelationForNode(nodeDto);
+                            }
                         }
                     }else {
                         //节点底下没有网元设备
@@ -99,7 +97,6 @@ public class NodeServiceImpl implements NodeService{
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        System.out.println(new Date()+"------------addNode stop------------");
         return flag;
     }
 
@@ -258,6 +255,10 @@ public class NodeServiceImpl implements NodeService{
         return list;
     }
 
+    /**
+     * 查询所有节点信息
+     * @return
+     */
     @Override
     public Result<Node> listNode() {
         Result<Node> result = null;
@@ -272,6 +273,11 @@ public class NodeServiceImpl implements NodeService{
         return result;
     }
 
+    /**
+     * 根据节点id删除节点，可多条删除
+     * @param ids
+     * @return int
+     */
     @Override
     public int removeNodes(List<Long> ids) {
         int result = 0;
@@ -291,6 +297,11 @@ public class NodeServiceImpl implements NodeService{
         return result;
     }
 
+    /**
+     * 根据节点id获取当前节点信息
+     * @param nodeId
+     * @return NodeDto
+     */
     @Override
     public NodeDto getNodeById(Long nodeId) {
         NodeDto nodeDto = null;
@@ -321,9 +332,13 @@ public class NodeServiceImpl implements NodeService{
         return nodeDto;
     }
 
+    /**
+     * 更新节点信息
+     * @param nodeDto
+     * @return boolean
+     */
     @Override
     public boolean updateNodeDto(NodeDto nodeDto) {
-        System.out.println(new Date()+"------------updateNode start------------");
         boolean flag = false;
         try {
             //先根据id和ip查询数据库中ip是否存在
@@ -375,7 +390,6 @@ public class NodeServiceImpl implements NodeService{
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        System.out.println(new Date()+"------------updateNode stop------------");
         return flag;
     }
 }

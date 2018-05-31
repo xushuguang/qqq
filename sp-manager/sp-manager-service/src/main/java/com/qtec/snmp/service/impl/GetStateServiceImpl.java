@@ -9,6 +9,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +27,7 @@ public class GetStateServiceImpl implements GetStateService{
     NetElementMapper netElementDao;
     @Autowired
     private KeybufferMapper keybufferDao;
+    private SimpleDateFormat dateToString = new SimpleDateFormat("HH:mm:ss");
     private static final int TIMEOUT = 3000;
 
     /**
@@ -61,7 +65,11 @@ public class GetStateServiceImpl implements GetStateService{
                 state = 1;
                 //再看是否能获取到keyBuffer
                 KeybufferExample keybufferExample = new KeybufferExample();
-                keybufferExample.createCriteria().andTnIpEqualTo(netElement.getNeIp());
+                Calendar beforeTime = Calendar.getInstance();
+                beforeTime.add(Calendar.MINUTE, -3);// 3分钟之前的时间
+                Date beforeD = beforeTime.getTime();
+                String before = dateToString.format(beforeD);
+                keybufferExample.createCriteria().andTnIpEqualTo(netElement.getNeIp()).andTimeBetween(before,dateToString.format(new Date()));
                 List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
                 if (keybuffers!=null&&keybuffers.size()>0){
                     state = 2;
