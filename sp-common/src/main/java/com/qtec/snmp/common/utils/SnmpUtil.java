@@ -103,7 +103,7 @@ public class SnmpUtil {
     /**
      * snmp Get 多条信息的方法
      * @param oid
-     * @return ArrayList<String>
+     * @return ArrayList
      */
     @SuppressWarnings("rawtypes")
     public ArrayList<String> snmpWalk(String oid) {

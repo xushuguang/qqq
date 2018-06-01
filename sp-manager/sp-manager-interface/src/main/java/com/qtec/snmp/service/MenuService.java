@@ -15,7 +15,7 @@ public interface MenuService {
     /**
      * 查询菜单信息
      * @param parentid
-     * @return List<TreeNode>
+     * @return List
      */
     List<TreeNode> listMenuForTree(Integer parentid);
 }

@@ -52,13 +52,13 @@ public interface NetElementService {
     /**
      * 根据网元id获取网元详情
      * @param id
-     * @return
+     * @return Result
      */
     Result<PropertyGrid> getNEDetails(Long id);
 
     /**
      * 查询所有网元
-     * @return
+     * @return Result
      */
     Result<NetElement> listNetElement();
 
@@ -86,7 +86,7 @@ public interface NetElementService {
     /**
      * 根据当前TN name获取对端的所有TN信息
      * @param neName
-     * @return List<NetElement>
+     * @return List
      */
     List<NetElement> getTNRelation(String neName);
 
@@ -94,7 +94,7 @@ public interface NetElementService {
      * 根据网元名和对端网元id获取一对TN详情
      * @param neName
      * @param pairId
-     * @return Result<PropertyGrid>
+     * @return Result
      */
     Result<PropertyGrid> getTNDetails(String neName, Long pairId);
 }

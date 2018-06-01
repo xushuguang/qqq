@@ -126,6 +126,13 @@ public class KeyBufferServiceImpl implements KeyBufferService{
             e.printStackTrace();
         }
     }
+
+    /**
+     * 从Redis缓存中获取当前一对TN的所有KeyBuffer
+     * @param neName
+     * @param pairId
+     * @return String
+     */
     @Override
     public String getAllKeyBufferFromRedis(String neName, Long pairId){
         String s = null;

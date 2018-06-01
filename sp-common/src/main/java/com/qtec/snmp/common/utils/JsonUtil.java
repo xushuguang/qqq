@@ -19,7 +19,7 @@ public class JsonUtil {
      * <p>Title: pojoToJson</p>
      * <p>Description: </p>
      * @param data
-     * @return
+     * @return String
      */
     public static String objectToJson(Object data) {
     	try {

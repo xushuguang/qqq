@@ -29,8 +29,18 @@ public interface AlarmCustomMapper {
     */
    List<AlarmVo> listHistoryAlarms(Map<String,Object> map);
 
+   /**
+    * 查询实时告警条数
+    * @param alarmServerity
+    * @return int
+    */
    int countRTalarmNum(String alarmServerity);
 
+   /**
+    * 查询历史告警条数
+    * @param alarmServerity
+    * @return int
+    */
    int countHistoryAlarmNum(String alarmServerity);
 
 }

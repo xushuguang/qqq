@@ -16,3 +16,4 @@ Date		Name	Module			Description
 2018-05-31      James   Login                   Login to enter the user name and password and press enter to log in directly.
 2018-05-31      James   Node                    Fixed a problem with form validation errors but still adding nodes.
 2018-05-31      James   NetElement              Fixed a problem with form validation errors but still adding netElements.
+2018-06-01      James   Menu                    Solved the order of the left menu bar.

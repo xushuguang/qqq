@@ -45,7 +45,7 @@ public interface NodeService {
 
     /**
      * 查询所有节点
-     * @return Result<Node>
+     * @return Result
      */
     Result<Node> listNode();
 

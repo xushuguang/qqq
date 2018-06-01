@@ -14,7 +14,7 @@ public interface KeyRateService {
     /**
      * 根据qkd的id从数据库中获取当前qkd所有的KeyRate
      * @param qkdId
-     * @return
+     * @return List
      */
     List<Keyrate> getAllKeyRate(Long qkdId);
 
@@ -31,7 +31,7 @@ public interface KeyRateService {
     /**
      * 从缓存中取当前qkd的所有KeyRate
      * @param qkdId
-     * @return
+     * @return String
      */
     String getAllKeyRateFromRedis(Long qkdId);
 }

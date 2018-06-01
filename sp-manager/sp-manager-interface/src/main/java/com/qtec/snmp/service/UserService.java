@@ -26,7 +26,7 @@ public interface UserService {
     /**
      * 添加用户
      * @param user
-     * @return
+     * @return int
      */
     int insertUser(User user);
 
@@ -41,7 +41,7 @@ public interface UserService {
     /**
      * 根据用户名查询用户的有效时间
      * @param username
-     * @return
+     * @return boolean
      */
     boolean selectTime(String username);
 
@@ -54,14 +54,14 @@ public interface UserService {
     /**
      * 根据用户id查询用户页面操作权限
      * @param uid
-     * @return
+     * @return Map
      */
     Map<String,List> finMenuByUid(Integer uid);
 
     /**
      * 根据用户名删除用户
      * @param username
-     * @return
+     * @return boolean
      */
     boolean delByUsername(String username);
 }

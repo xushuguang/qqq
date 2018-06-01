@@ -16,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: james.xu
@@ -162,7 +159,7 @@ public class UserServiceImpl implements UserService{
     public Map<String,List> finMenuByUid(Integer uid) {
         Map<String,List> map = null;
         try {
-            map = new HashMap<>();
+            map = new LinkedHashMap<>();
             //先根据uid查询到grupid
             Integer groupId = userDao.selectByPrimaryKey(uid).getGroupId();
             //再根据groupid查询到menuid

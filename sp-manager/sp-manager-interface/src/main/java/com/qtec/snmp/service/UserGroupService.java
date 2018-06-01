@@ -30,7 +30,7 @@ public interface UserGroupService {
 
     /**
      * 查询所有组信息
-     * @return
+     * @return Result
      */
     Result<UserGroup> listUserGroup();
 }

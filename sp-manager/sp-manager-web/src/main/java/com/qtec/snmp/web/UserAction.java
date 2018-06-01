@@ -167,6 +167,12 @@ public class UserAction {
         }
         return map;
     }
+
+    /**
+     * 根据用户名删除用户
+     * @param username
+     * @return boolean
+     */
     @ResponseBody
     @RequestMapping(value = "/user/delByUsername",method = RequestMethod.POST)
     public boolean delByUsername(@RequestParam("username")String username){

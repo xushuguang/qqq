@@ -44,7 +44,7 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
      * @param page
      * @param order
      * @param query
-     * @return
+     * @return Result
      */
     @Override
     public Result<AlarmVo> listHistoryAlarms(Page page, Order order, AlarmQuery query) {
@@ -73,7 +73,7 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
     /**
      * 处理历史告警
      * @param ids
-     * @return
+     * @return int
      */
     @Override
     public int historyAlarmUp(List<Long> ids) {

@@ -15,7 +15,7 @@ public interface KeyBufferService {
      * 根据本地网元名和对端网元id获取当前一对TN的所有KeyBuffer
      * @param neName
      * @param pairId
-     * @return
+     * @return List
      */
     List<Keybuffer> getAllKeyBuffer(String neName, Long pairId);
 
@@ -33,7 +33,7 @@ public interface KeyBufferService {
      * 根据neName和pairId从缓存中取KeyBuffer
      * @param neName
      * @param pairId
-     * @return
+     * @return String
      */
     String getAllKeyBufferFromRedis(String neName, Long pairId);
 }

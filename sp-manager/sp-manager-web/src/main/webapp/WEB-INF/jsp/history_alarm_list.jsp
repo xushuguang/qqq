@@ -10,10 +10,10 @@
     <form id="historyAlarmForm">
     <div style="padding: 5px; background-color: #fff;">
         <label>告警网元：</label>
-        <input class="easyui-textbox" type="text" id="qkdIp">
+        <input class="easyui-textbox" type="text" id="hqkdIp">
         &nbsp;&nbsp;
         <label>告警级别：</label>
-        <select id="alarmSeverity" class="easyui-combobox">
+        <select id="halarmSeverity" class="easyui-combobox">
             <option value="" disabled selected>请选择</option>
             <option value="Fatal">Fatal</option>
             <option value="Error">Error</option>
@@ -26,9 +26,9 @@
         到：<input type="text" id="time2" style="width: 195px" editable="false"
                  class="easyui-datetimebox"/>
         &nbsp;&nbsp;
-        <button onclick="searchForm()" type="button" class="easyui-linkbutton">搜索</button>
-        <button onclick="clearForm()" type="button" class="easyui-linkbutton">重置</button>
-        <button onclick="up()" type="button" class="easyui-linkbutton">确定处理</button>
+        <button onclick="hsearchForm()" type="button" class="easyui-linkbutton">搜索</button>
+        <button onclick="hclearForm()" type="button" class="easyui-linkbutton">重置</button>
+        <button onclick="hup()" type="button" class="easyui-linkbutton">确定处理</button>
     </div>
     </form>
 </div>
@@ -36,21 +36,21 @@
 <%--通过js代码来渲染容器--%>
 <script>
     //点击搜索按钮动作
-    function searchForm() {
+    function hsearchForm() {
         $('#dgHistoryAlarms').datagrid('load',{
-            qkdIp:$('#qkdIp').val(),
-            alarmSeverity:$('#alarmSeverity').combobox('getValue'),
+            qkdIp:$('#hqkdIp').val(),
+            alarmSeverity:$('#halarmSeverity').combobox('getValue'),
             time1:$("#time1").datetimebox("getValue"),
             time2:$('#time2').datetimebox("getValue")
         });
     }
     //点击重置按钮动作
-    function clearForm() {
+    function hclearForm() {
         $('#historyAlarmForm').form('clear');
         searchForm();
     }
     //点击确定处理按钮动作
-    function up() {
+    function hup() {
         //取到选中的记录集合
         var rows = $('#dgHistoryAlarms').datagrid('getSelections');
         if (rows.length == 0) {

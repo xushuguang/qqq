@@ -53,6 +53,7 @@ public class GetStateServiceImpl implements GetStateService{
     /**
      * 根据当前设备获取状态
      * @param netElement
+     * @return int
      */
     @Override
     public int getStateForNetElement(NetElement netElement){
