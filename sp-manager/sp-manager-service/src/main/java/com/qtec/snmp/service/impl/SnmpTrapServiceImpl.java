@@ -149,8 +149,15 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
                 if (alarm!=null&&!alarm.getTypeId().equals(1)&&!alarm.getTypeId().equals(14)&&!alarm.getTypeId().equals(222)){
                     //alarm不为空并且类型不是Info
                     alarm.setAlarmAck("RT");
-                    alarm.setAlarmTime(new Date());
-                    alarmDao.insert(alarm);
+                    //先判断实时告警有没有存在，如果有的话，就不存，如果没有的话，就存
+                    AlarmExample alarmExample = new AlarmExample();
+                    alarmExample.createCriteria().andTypeIdEqualTo(alarm.getTypeId()).andQkdIpEqualTo(alarm.getQkdIp())
+                            .andAlarmAckEqualTo("RT");
+                    List<Alarm> alarms = alarmDao.selectByExample(alarmExample);
+                    if (alarms.isEmpty()||alarms.size()==0){
+                        alarm.setAlarmTime(new Date());
+                        alarmDao.insert(alarm);
+                    }
                 }
             }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")){
                 //trap信息是关于QKD keyRate的

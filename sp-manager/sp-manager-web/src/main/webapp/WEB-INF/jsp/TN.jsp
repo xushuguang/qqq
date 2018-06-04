@@ -19,7 +19,6 @@
         url: 'listNetElementVo',
         dataType: "json",
         success : function (data) {
-            console.log(data)
             // 绘制图表。
             TNCharts.setOption({
                //标题
@@ -59,12 +58,22 @@
                             },
                             linkStyle: {
                                 normal: {
-                                    color: 'source',
-                                    curveness: 0,
-                                    type: "solid"
+                                    color: 'red',
+                                    curveness: 1,
+                                    type: "solid",
                                 }
                             }
                         },
+                        emphasis: {
+                            label: {
+                                show: false
+                                // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
+                            },
+                            nodeStyle: {
+                                //r: 30
+                            },
+                            linkStyle: {}
+                        }
 
                     },
                     force:{

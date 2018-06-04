@@ -80,6 +80,7 @@
         },
         //列属性
         columns: [[
+            {field: 'id', title: '告警id'},
             {field: 'alarmType', title: '告警类型'},
             {field: 'alarmSeverity', title: '告警级别'},
             {field: 'alarmTime', title: '发生时间',formatter: function (value, rows, index) {

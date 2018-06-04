@@ -43,7 +43,7 @@
       <include refid="Alarm_Where_Clause"/>
     </where>
     ORDER BY a.id DESC
-    limit 50)
+    limit 20)
     ORDER BY id ASC
   </select>
   <select id="countHistoryAlarms" resultType="_long">
@@ -85,4 +85,8 @@
       and t.alarm_severity = #{alarmSeverity}
     </where>
   </select>
+  <delete id="deleteHistoryAlarms">
+      delete from alarm where exists
+      (select * from (select id from alarm limit 1,10000) as a where a.id=alarm.id);
+  </delete>
 </mapper>

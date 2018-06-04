@@ -123,4 +123,16 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
         }
         return list;
     }
+    @Override
+    @Scheduled(fixedRate = 1000 * 60 * 60)
+    public void deleteHistoryAlarms(){
+        AlarmExample alarmExample = new AlarmExample();
+        alarmExample.createCriteria().andAlarmAckNotEqualTo("RT");
+        int count = alarmDao.countByExample(alarmExample);
+        while (count>800000){
+            alarmCustomDao.deleteHistoryAlarms();
+            count = count - 10000;
+        }
+    }
+
 }

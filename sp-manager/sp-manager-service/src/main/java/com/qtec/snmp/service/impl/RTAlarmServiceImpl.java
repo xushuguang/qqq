@@ -75,36 +75,42 @@ public class RTAlarmServiceImpl implements RTAlarmService{
     @Scheduled(fixedRate = 1000*60)
     public void removeRTAlarms() {
         try {
-           //先查询到所有的实时告警信息
+            //把实时告警信息变成历史告警
             AlarmExample alarmExample = new AlarmExample();
             alarmExample.createCriteria().andAlarmAckEqualTo("RT");
-            List<Alarm> alarms = alarmDao.selectByExample(alarmExample);
-            if (alarms!=null&&alarms.size()>0){
-                //遍历
-                for (Alarm alarm : alarms){
-                    //再查询历史告警里面是否有此条告警信息
-                    AlarmExample alarmExample1 = new AlarmExample();
-                    alarmExample1.createCriteria().andTypeIdEqualTo(alarm.getTypeId())
-                            .andQkdIpEqualTo(alarm.getQkdIp()).andAlarmAckEqualTo("N");
-                    List<Alarm> alarms1 = alarmDao.selectByExample(alarmExample1);
-                    if (alarms1!=null&&alarms1.size()>0){
-                        //历史告警信息里已存在，直接删除这条实时告警信息并且把存在的历史告警信息时间更新
-                        //删除这条实时告警信息
-                        int i = alarmDao.deleteByPrimaryKey(alarm.getId());
-                        if (i>0){
-                            //把存在的历史告警信息时间更新
-                            Alarm alarm1 = new Alarm();
-                            alarm1.setId(alarms1.get(0).getId());
-                            alarm1.setAlarmTime(alarm.getAlarmTime());
-                            alarmDao.updateByPrimaryKeySelective(alarm1);
-                        }
-                    }else {
-                        //历史告警信息里不存在，则把状态RT变成N，再更新
-                        alarm.setAlarmAck("N");
-                        alarmDao.updateByPrimaryKey(alarm);
-                    }
-                }
-            }
+            Alarm alarm = new Alarm();
+            alarm.setAlarmAck("N");
+            alarmDao.updateByExampleSelective(alarm,alarmExample);
+//           //先查询到所有的实时告警信息
+//            AlarmExample alarmExample = new AlarmExample();
+//            alarmExample.createCriteria().andAlarmAckEqualTo("RT");
+//            List<Alarm> alarms = alarmDao.selectByExample(alarmExample);
+//            if (alarms!=null&&alarms.size()>0){
+//                //遍历
+//                for (Alarm alarm : alarms){
+//                    //再查询历史告警里面是否有此条告警信息
+//                    AlarmExample alarmExample1 = new AlarmExample();
+//                    alarmExample1.createCriteria().andTypeIdEqualTo(alarm.getTypeId())
+//                            .andQkdIpEqualTo(alarm.getQkdIp()).andAlarmAckEqualTo("N");
+//                    List<Alarm> alarms1 = alarmDao.selectByExample(alarmExample1);
+//                    if (alarms1!=null&&alarms1.size()>0){
+//                        //历史告警信息里已存在，直接删除这条实时告警信息并且把存在的历史告警信息时间更新
+//                        //删除这条实时告警信息
+//                        int i = alarmDao.deleteByPrimaryKey(alarm.getId());
+//                        if (i>0){
+//                            //把存在的历史告警信息时间更新
+//                            Alarm alarm1 = new Alarm();
+//                            alarm1.setId(alarms1.get(0).getId());
+//                            alarm1.setAlarmTime(alarm.getAlarmTime());
+//                            alarmDao.updateByPrimaryKeySelective(alarm1);
+//                        }
+//                    }else {
+//                        //历史告警信息里不存在，则把状态RT变成N，再更新
+//                        alarm.setAlarmAck("N");
+//                        alarmDao.updateByPrimaryKey(alarm);
+//                    }
+//                }
+//            }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();

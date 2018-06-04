@@ -38,7 +38,7 @@
             <tr>
                 <td style="width:20px"></td>
                 <td>用户名:</td>
-                <td><input type="text"class="easyui-textbox" id="useername" name="username"/></td>
+                <td><input type="text"class="easyui-textbox" id="useername" name="username" onkeypress="if(event.keyCode==13) focusNextInput(this);"/></td>
                 <td><span id="spanName" style="color:red"></span></td>
             </tr>
             <tr style="height:10px"></tr>
@@ -46,7 +46,7 @@
             <tr>
                 <td style="width:20px"></td>
                 <td>密 码:</td>
-                <td><input type="password"class="easyui-textbox"id="password" name="password"></td>
+                <td><input type="password"class="easyui-textbox"id="password" name="password" onkeypress="if(event.keyCode==13) focusNextInput(this);"></td>
                 <td><span id="spanPwd" style="color:red"></span></td>
             </tr>
             <tr style="height:10px"></tr>
@@ -60,9 +60,6 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-        console.log(sessionStorage.getItem('user'))
-    });
     function keyLogin(){
         if (event.keyCode==13)  //回车键的键值为13
             document.getElementById("btnOk").onclick(); //调用登录按钮的登录事件

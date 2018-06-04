@@ -17,3 +17,5 @@ Date		Name	Module			Description
 2018-05-31      James   Node                    Fixed a problem with form validation errors but still adding nodes.
 2018-05-31      James   NetElement              Fixed a problem with form validation errors but still adding netElements.
 2018-06-01      James   Menu                    Solved the order of the left menu bar.
+2018-06-04      James   HistoryAlarm            HistoryAlarm are not filtered and saved.
+2018-06-04      James   RTAlarm                 RTAlarm filter before saving.

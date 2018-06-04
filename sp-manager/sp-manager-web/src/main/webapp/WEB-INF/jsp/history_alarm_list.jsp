@@ -47,7 +47,7 @@
     //点击重置按钮动作
     function hclearForm() {
         $('#historyAlarmForm').form('clear');
-        searchForm();
+        hsearchForm();
     }
     //点击确定处理按钮动作
     function hup() {

@@ -1,5 +1,6 @@
 package com.qtec.snmp.dao;
 
+import com.qtec.snmp.pojo.po.Alarm;
 import com.qtec.snmp.pojo.vo.AlarmVo;
 
 import java.util.List;
@@ -42,5 +43,10 @@ public interface AlarmCustomMapper {
     * @return int
     */
    int countHistoryAlarmNum(String alarmServerity);
+
+   /**
+    * 删除历史告警信息
+    */
+   void deleteHistoryAlarms();
 
 }

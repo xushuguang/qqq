@@ -38,4 +38,9 @@ public interface HistoryAlarmService {
      * @return list
      */
     List<EchartsVo> listHistoryAlarmVo();
+
+    /**
+     * 定时清除历史告警信息
+     */
+    void deleteHistoryAlarms();
 }
