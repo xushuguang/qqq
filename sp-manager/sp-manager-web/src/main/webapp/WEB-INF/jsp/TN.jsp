@@ -19,6 +19,7 @@
         url: 'listNetElementVo',
         dataType: "json",
         success : function (data) {
+            console.log(data)
             // 绘制图表。
             TNCharts.setOption({
                //标题
@@ -103,11 +104,12 @@
     TNCharts.on("click", function (param){
         setTimeout(function(){
             if(param.dataType == "node"){//点中节点
-                var neName=param.data.name;//当前选中节点数据
-                sessionStorage.setItem("neName",neName);
+                var neName = sessionStorage.getItem("neName");
+                var neName1=param.data.name;//当前选中节点数据
+                sessionStorage.setItem("neName",neName1);
                 //跳转到TN详情页
-                snmp.closeTabs("TN详情");
-                snmp.addTabs("TN详情","TN_details");
+                snmp.closeTabs(neName+"详情");
+                snmp.addTabs(neName1+"详情","TN_details");
             }
         },500);
     });

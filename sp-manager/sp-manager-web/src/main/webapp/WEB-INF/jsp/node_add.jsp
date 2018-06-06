@@ -66,17 +66,16 @@
     });
     //表单提交动作
     function submitForm() {
-        if ($('#name').validatebox('isValid')&&$('#nodeIp').validatebox('isValid')&&$('#ids').validatebox('isValid')) {
+        console.log($('#ids').val())
+        if ($('#name').validatebox('isValid')&&$('#nodeIp').validatebox('isValid')) {
             $('#nodeAddForm').form('submit', {
                 //表单提交后交给谁处理
                 url: 'addNode',
                 //表单提交之前被触发，如果返回false终止提交
-                onSubmit: function () {
-                },
+                onSubmit: function () {},
                 //表单提交成功后触发
                 success: function (data) {
                     data = JSON.parse(data);
-                    console.log(data)
                     if (data.success) {
                         $.messager.alert('消息', data.message, 'info');
                         snmp.closeTabs('添加节点');

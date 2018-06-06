@@ -343,6 +343,76 @@ public class NERelationExample {
             addCriterion("distance not between", value1, value2, "distance");
             return (Criteria) this;
         }
+
+        public Criteria andLinkTypeIsNull() {
+            addCriterion("link_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeIsNotNull() {
+            addCriterion("link_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeEqualTo(String value) {
+            addCriterion("link_type =", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeNotEqualTo(String value) {
+            addCriterion("link_type <>", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeGreaterThan(String value) {
+            addCriterion("link_type >", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("link_type >=", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeLessThan(String value) {
+            addCriterion("link_type <", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeLessThanOrEqualTo(String value) {
+            addCriterion("link_type <=", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeLike(String value) {
+            addCriterion("link_type like", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeNotLike(String value) {
+            addCriterion("link_type not like", value, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeIn(List<String> values) {
+            addCriterion("link_type in", values, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeNotIn(List<String> values) {
+            addCriterion("link_type not in", values, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeBetween(String value1, String value2) {
+            addCriterion("link_type between", value1, value2, "linkType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkTypeNotBetween(String value1, String value2) {
+            addCriterion("link_type not between", value1, value2, "linkType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

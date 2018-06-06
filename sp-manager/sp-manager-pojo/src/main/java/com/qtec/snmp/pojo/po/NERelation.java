@@ -9,6 +9,8 @@ public class NERelation {
 
     private Long distance;
 
+    private String linkType;
+
     public Long getNeid() {
         return neid;
     }
@@ -39,5 +41,13 @@ public class NERelation {
 
     public void setDistance(Long distance) {
         this.distance = distance;
+    }
+
+    public String getLinkType() {
+        return linkType;
+    }
+
+    public void setLinkType(String linkType) {
+        this.linkType = linkType == null ? null : linkType.trim();
     }
 }

@@ -7,10 +7,7 @@ import com.qtec.snmp.dao.NodeMapper;
 import com.qtec.snmp.dao.NodeNEMapper;
 import com.qtec.snmp.pojo.dto.NodeDto;
 import com.qtec.snmp.pojo.po.*;
-import com.qtec.snmp.pojo.vo.ItemStyle;
-import com.qtec.snmp.pojo.vo.LinkVo;
-import com.qtec.snmp.pojo.vo.NodeVo;
-import com.qtec.snmp.pojo.vo.Normal;
+import com.qtec.snmp.pojo.vo.*;
 import com.qtec.snmp.service.NodeService;
 import com.qtec.snmp.service.SnmpService;
 import org.slf4j.Logger;
@@ -153,6 +150,42 @@ public class NodeServiceImpl implements NodeService{
         }
         return list;
     }
+    public void getLinkVo(List<LinkVo> list,ItemStyle itemStyle,List<NERelation> neRelations){
+        if (neRelations!=null&&neRelations.size()>0){
+            for (NERelation neRelation : neRelations) {
+                //查询source
+                NodeNEExample nodeNEExample1 = new NodeNEExample();
+                nodeNEExample1.createCriteria().andNeidEqualTo(neRelation.getNeid());
+                List<NodeNE> nodeNES1 = nodeNEDao.selectByExample(nodeNEExample1);
+                if (nodeNES1 != null && nodeNES1.size() > 0) {
+                    //获取节点id
+                    Long nid1 = nodeNES1.get(0).getNid();
+                    //根据节点id查询到节点名
+                    String source = nodeDao.selectByPrimaryKey(nid1).getNodeName();
+                    //查询target
+                    //如果存在pairingId
+                    if (neRelation.getPairingId() != null) {
+                        NodeNEExample nodeNEExample2 = new NodeNEExample();
+                        nodeNEExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
+                        List<NodeNE> nodeNES2 = nodeNEDao.selectByExample(nodeNEExample2);
+                        if (nodeNES2 != null && nodeNES2.size() > 0) {
+                            //获取节点id
+                            Long nid2 = nodeNES2.get(0).getNid();
+                            //根据节点id查询到节点名
+                            String target = nodeDao.selectByPrimaryKey(nid2).getNodeName();
+                            //封装进linkVo对象
+                            LinkVo linkVo = new LinkVo();
+                            linkVo.setSource(source);
+                            linkVo.setTarget(target);
+                            linkVo.setLineStyle(itemStyle);
+                            //存入list
+                            list.add(linkVo);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * 查询拓扑图中的link数据
@@ -163,51 +196,29 @@ public class NodeServiceImpl implements NodeService{
         List<LinkVo> list = null;
         try {
             list = new ArrayList<>();
-            //先查询ne_relation表中的数据
-            List<NERelation> neRelations = neRelationDao.selectByExample(new NERelationExample());
-            if (neRelations!=null&&neRelations.size()>0){
-                for (NERelation neRelation : neRelations) {
-                    //查询source
-                    NodeNEExample nodeNEExample1 = new NodeNEExample();
-                    nodeNEExample1.createCriteria().andNeidEqualTo(neRelation.getNeid());
-                    List<NodeNE> nodeNES1 = nodeNEDao.selectByExample(nodeNEExample1);
-                    if (nodeNES1 != null && nodeNES1.size() > 0) {
-                        //获取节点id
-                        Long nid1 = nodeNES1.get(0).getNid();
-                        //根据节点id查询到节点名
-                        NodeExample nodeExample1 = new NodeExample();
-                        nodeExample1.createCriteria().andIdEqualTo(nid1);
-                        List<Node> nodes1 = nodeDao.selectByExample(nodeExample1);
-                        if (nodes1 != null && nodes1.size() > 0) {
-                            String source = nodes1.get(0).getNodeName();
-                            //查询target
-                            //如果存在pairingId
-                            if (neRelation.getPairingId() != null) {
-                                NodeNEExample nodeNEExample2 = new NodeNEExample();
-                                nodeNEExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
-                                List<NodeNE> nodeNES2 = nodeNEDao.selectByExample(nodeNEExample2);
-                                if (nodeNES2 != null && nodeNES2.size() > 0) {
-                                    //获取节点id
-                                    Long nid2 = nodeNES2.get(0).getNid();
-                                    //根据节点id查询到节点名
-                                    NodeExample nodeExample2 = new NodeExample();
-                                    nodeExample2.createCriteria().andIdEqualTo(nid2);
-                                    List<Node> nodes2 = nodeDao.selectByExample(nodeExample2);
-                                    if (nodes2 != null && nodes2.size() > 0) {
-                                        String target = nodes2.get(0).getNodeName();
-                                        //封装进linkVo对象
-                                        LinkVo linkVo = new LinkVo();
-                                        linkVo.setSource(source);
-                                        linkVo.setTarget(target);
-                                        //存入list
-                                        list.add(linkVo);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //先查询ne_relation表中的数据,QKD版本的。
+            NERelationExample neRelationExample1 = new NERelationExample();
+            neRelationExample1.createCriteria().andLinkTypeEqualTo("1");
+            List<NERelation> neRelations1 = neRelationDao.selectByExample(neRelationExample1);
+            Normal normal = new Normal();
+            normal.setColor("black");
+            normal.setType("solid");
+            normal.setWidth(1);
+            ItemStyle itemStyle = new ItemStyle();
+            itemStyle.setNormal(normal);
+            getLinkVo(list,itemStyle,neRelations1);
+            //再查询QNC版本的
+            NERelationExample neRelationExample2 = new NERelationExample();
+            neRelationExample2.createCriteria().andLinkTypeEqualTo("2");
+            List<NERelation> neRelations2 = neRelationDao.selectByExample(neRelationExample2);
+            Normal normal1 = new Normal();
+            normal1.setColor("lime");
+            normal1.setType("dotted");
+            normal1.setWidth(2);
+            ItemStyle itemStyle1 = new ItemStyle();
+            itemStyle1.setNormal(normal1);
+            getLinkVo(list,itemStyle1,neRelations2);
+
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

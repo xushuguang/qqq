@@ -3,7 +3,6 @@
   Date: 2018/1/16
   Time: 10:45
 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> <!--输出,条件,迭代标签库-->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -280,6 +279,7 @@
         url: 'listNodeVo',
         dataType: "json",
         success : function (data) {
+            console.log(data)
             // 绘制图表。
             equipmentCharts.setOption({
                 title: {
@@ -300,6 +300,7 @@
                     backgroundColor:'rgba(192,192,192,1.0)',//通过设置rgba调节背景颜色与透明度
                     formatter: function (params,ticket,callback) {
                         if (params.dataType=='node'){//选择的是节点
+                            console.log(params)
                             var nodeName=params.data.name;//当前选中节点数据
                             $.ajax({
                                 async : true,//设置异、同步加载
@@ -331,21 +332,21 @@
                             });
                             return 'Loading';
                         }else if (params.dataType=='edge'){//选择的是连线
+                            console.log(params)
                         }
                     }
                 },
                 series: [{
                     itemStyle: {
                         normal: {
-                            lineWidth: 200,
-                            textColor: '#333',
+                            lineWidth: 500,
                             textFont: 'bold 15px verdana',
                             textPosition: 'inside',
                             label: {
                                 position: 'top',
                                 show: true,
                                 textStyle: {
-                                    color: '#333'
+                                    color: '#000000'
                                 }
                             },
                         }

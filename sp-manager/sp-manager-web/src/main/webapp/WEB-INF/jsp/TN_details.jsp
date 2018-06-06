@@ -36,7 +36,7 @@
         dataType : "json",
         url : 'getNEChildren',
         success : function(data) { //请求成功后处理函数。
-            var res = "<table bgcolor='#a9a9a9'><caption align='top'>QKD设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='50px'>操作</td></tr>";
+            var res = "<table bgcolor='#a9a9a9'><caption align='top'>本地QKD设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='50px'>操作</td></tr>";
             for (var i =0;i<data.length;i++){
                 var id = data[i].id;
                 res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
@@ -71,7 +71,7 @@
         dataType : "json",
         url : 'getTNRelation',
         success : function(data) { //请求成功后处理函数。
-            var res = "<table bgcolor='#a9a9a9'><caption align='top'>TN关系</caption><tr><td width='100px'>对端TN名</td><td width='150px'>对端TNIP</td><td width='100px'>对端TN状态</td><td width='50px'>操作</td></tr>";
+            var res = "<table bgcolor='#a9a9a9'><caption align='top'>对端TN设备</caption><tr><td width='100px'>对端TN名</td><td width='150px'>对端TNIP</td><td width='100px'>对端TN状态</td><td width='50px'>操作</td></tr>";
             for (var i =0;i<data.length;i++){
                 res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
                 if(data[i].state==0){

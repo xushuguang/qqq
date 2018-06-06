@@ -119,6 +119,7 @@ public class SnmpServiceImpl implements SnmpService{
                                 neRelation.setPairingId(pairQkdId);
                                 neRelation.setParentId(netElement.getId());
                                 neRelation.setDistance(Long.valueOf(distance));
+                                neRelation.setLinkType("1");
                                 //添加
                                 neRelationDao.insert(neRelation);
                                 //再更新QKD的状态

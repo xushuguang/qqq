@@ -6,6 +6,7 @@
     <result column="pairing_id" property="pairingId" jdbcType="BIGINT" />
     <result column="parent_id" property="parentId" jdbcType="BIGINT" />
     <result column="distance" property="distance" jdbcType="BIGINT" />
+    <result column="link_type" property="linkType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    neid, pairing_id, parent_id, distance
+    neid, pairing_id, parent_id, distance, link_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qtec.snmp.pojo.po.NERelationExample" >
     select
@@ -90,9 +91,9 @@
   </delete>
   <insert id="insert" parameterType="com.qtec.snmp.pojo.po.NERelation" >
     insert into ne_relation (neid, pairing_id, parent_id, 
-      distance)
+      distance, link_type)
     values (#{neid,jdbcType=BIGINT}, #{pairingId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, 
-      #{distance,jdbcType=BIGINT})
+      #{distance,jdbcType=BIGINT}, #{linkType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.qtec.snmp.pojo.po.NERelation" >
     insert into ne_relation
@@ -109,6 +110,9 @@
       <if test="distance != null" >
         distance,
       </if>
+      <if test="linkType != null" >
+        link_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="neid != null" >
@@ -122,6 +126,9 @@
       </if>
       <if test="distance != null" >
         #{distance,jdbcType=BIGINT},
+      </if>
+      <if test="linkType != null" >
+        #{linkType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -146,6 +153,9 @@
       <if test="record.distance != null" >
         distance = #{record.distance,jdbcType=BIGINT},
       </if>
+      <if test="record.linkType != null" >
+        link_type = #{record.linkType,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -156,7 +166,8 @@
     set neid = #{record.neid,jdbcType=BIGINT},
       pairing_id = #{record.pairingId,jdbcType=BIGINT},
       parent_id = #{record.parentId,jdbcType=BIGINT},
-      distance = #{record.distance,jdbcType=BIGINT}
+      distance = #{record.distance,jdbcType=BIGINT},
+      link_type = #{record.linkType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

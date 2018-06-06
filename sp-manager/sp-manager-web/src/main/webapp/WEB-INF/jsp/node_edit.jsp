@@ -11,15 +11,15 @@
     <table>
         <tr>
             <td>节点名:</td>
-            <td><input name="name" id="name" type="text" data-options="required:true"></input></td>
+            <td><input name="name" id="name" type="text" data-options="required:true"></td>
         </tr>
         <tr>
             <td>节点ip:</td>
-            <td><input name="nodeIp" id="nodeIp" type="text" data-options="required:true"></input></td>
+            <td><input name="nodeIp" id="nodeIp" type="text" data-options="required:true"></td>
         </tr>
         <tr>
             <td>拥有设备:</td>
-            <td><input id="ids" name="ids"  prompt="请选择设备" data-options="required:true"></input></td>
+            <td><input id="ids" name="ids"  prompt="请选择设备" data-options="required:true"></td>
         </tr>
         <tr>
         <tr>

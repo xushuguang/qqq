@@ -150,8 +150,10 @@ public class NetElementServiceImpl implements NetElementService {
         List<LinkVo> list = null;
         try {
             list = new ArrayList<LinkVo>();
-            //先查询ne_relation表中的数据
-            List<NERelation> neRelations = neRelationDao.selectByExample(new NERelationExample());
+            //先查询ne_relation表中的数据,有QKD的TN
+            NERelationExample neRelationExample = new NERelationExample();
+            neRelationExample.createCriteria().andLinkTypeEqualTo("1");
+            List<NERelation> neRelations = neRelationDao.selectByExample(neRelationExample);
             if (neRelations!=null&&neRelations.size()>0){
                 for (NERelation neRelation : neRelations){
                     //查询source
@@ -162,36 +164,56 @@ public class NetElementServiceImpl implements NetElementService {
                         //获取节点id
                         Long parentId1 = neRelations1.get(0).getParentId();
                         //根据节点id查询到节点名
-                        NetElementExample netElementExample1 = new NetElementExample();
-                        netElementExample1.createCriteria().andIdEqualTo(parentId1);
-                        List<NetElement> netElements1 = netElementDao.selectByExample(netElementExample1);
-                        if (netElements1!=null&&neRelations1.size()>0){
-                            String source = netElements1.get(0).getNeName();
-                            //查询target
-                            //如果存在pairingId
-                            if(neRelation.getPairingId()!=null){
-                                NERelationExample neRelationExample2 = new NERelationExample();
-                                neRelationExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
-                                List<NERelation> neRelations2 = neRelationDao.selectByExample(neRelationExample2);
-                                if (neRelations2!=null&&neRelations2.size()>0){
-                                    //获取节点id
-                                    Long parentId2 = neRelations2.get(0).getParentId();
-                                    //根据节点id查询到节点名
-                                    NetElementExample netElementExample2 = new NetElementExample();
-                                    netElementExample2.createCriteria().andIdEqualTo(parentId2);
-                                    List<NetElement> netElements2 = netElementDao.selectByExample(netElementExample2);
-                                    if (netElements2!=null&&neRelations2.size()>0){
-                                        String target = netElements2.get(0).getNeName();
-                                        //封装进linkVo对象
-                                        LinkVo linkVo = new LinkVo();
-                                        linkVo.setSource(source);
-                                        linkVo.setTarget(target);
-                                        //存入list
-                                        list.add(linkVo);
-                                    }
-                                }
+                        String source = netElementDao.selectByPrimaryKey(parentId1).getNeName();
+                        //查询target
+                        //如果存在pairingId
+                        if(neRelation.getPairingId()!=null){
+                            NERelationExample neRelationExample2 = new NERelationExample();
+                            neRelationExample2.createCriteria().andNeidEqualTo(neRelation.getPairingId());
+                            List<NERelation> neRelations2 = neRelationDao.selectByExample(neRelationExample2);
+                            if (neRelations2!=null&&neRelations2.size()>0){
+                                //获取节点id
+                                Long parentId2 = neRelations2.get(0).getParentId();
+                                //根据节点id查询到节点名
+                                String target = netElementDao.selectByPrimaryKey(parentId2).getNeName();
+                                //封装进linkVo对象
+                                Normal normal = new Normal();
+                                normal.setColor("black");
+                                normal.setType("solid");
+                                normal.setWidth(1);
+                                ItemStyle itemStyle = new ItemStyle();
+                                itemStyle.setNormal(normal);
+                                LinkVo linkVo = new LinkVo();
+                                linkVo.setSource(source);
+                                linkVo.setTarget(target);
+                                linkVo.setLineStyle(itemStyle);
+                                //存入list
+                                list.add(linkVo);
                             }
                         }
+                    }
+                }
+            }
+            NERelationExample neRelationExample1 = new NERelationExample();
+            neRelationExample1.createCriteria().andLinkTypeEqualTo("2");
+            List<NERelation> neRelations1 = neRelationDao.selectByExample(neRelationExample1);
+            if (neRelations1!=null&&neRelations1.size()>0){
+                for (NERelation neRelation : neRelations1){
+                    String source = netElementDao.selectByPrimaryKey(neRelation.getNeid()).getNeName();
+                    if (neRelation.getPairingId()!=null){
+                        String target = netElementDao.selectByPrimaryKey(neRelation.getPairingId()).getNeName();
+                        Normal normal = new Normal();
+                        normal.setColor("lime");
+                        normal.setType("dotted");
+                        normal.setWidth(2);
+                        ItemStyle itemStyle = new ItemStyle();
+                        itemStyle.setNormal(normal);
+                        LinkVo linkVo = new LinkVo();
+                        linkVo.setSource(source);
+                        linkVo.setTarget(target);
+                        linkVo.setLineStyle(itemStyle);
+                        //存入list
+                        list.add(linkVo);
                     }
                 }
             }

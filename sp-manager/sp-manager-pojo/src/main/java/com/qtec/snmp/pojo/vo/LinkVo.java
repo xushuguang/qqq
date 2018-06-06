@@ -1,5 +1,7 @@
 package com.qtec.snmp.pojo.vo;
 
+import javax.sound.sampled.Line;
+
 /**
  * User: james.xu
  * Date: 2018/3/6
@@ -9,7 +11,7 @@ package com.qtec.snmp.pojo.vo;
 public class LinkVo {
     private String source;
     private String target;
-    private String name;
+    private ItemStyle lineStyle;
     public String getSource() {
         return source;
     }
@@ -26,11 +28,11 @@ public class LinkVo {
         this.target = target;
     }
 
-    public String getName() {
-        return name;
+    public ItemStyle getLineStyle() {
+        return lineStyle;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLineStyle(ItemStyle lineStyle) {
+        this.lineStyle = lineStyle;
     }
 }
