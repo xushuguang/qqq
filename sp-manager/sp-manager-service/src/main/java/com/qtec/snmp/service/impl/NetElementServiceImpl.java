@@ -35,6 +35,38 @@ public class NetElementServiceImpl implements NetElementService {
     private GetStateService getStateService;
     @Autowired
     private KeybufferMapper keyBufferDao;
+
+    /**
+     * 验证IP和Name是否存在
+     * @param netElement
+     * @return int
+     */
+    public int verifyNEByNameAndIp(NetElement netElement){
+        int i = 0;
+        try {
+            //先根据ip查询设备是否已经存在
+            NetElementExample example = new NetElementExample();
+            example.createCriteria().andNeIpEqualTo(netElement.getNeIp());
+            List<NetElement> netElements = netElementDao.selectByExample(example);
+            if (netElements.isEmpty()||netElements.size()==0) {
+                //再根据名字查询设备是否已经存在
+                NetElementExample example1 = new NetElementExample();
+                example1.createCriteria().andNeNameEqualTo(netElement.getNeName());
+                List<NetElement> netElementList = netElementDao.selectByExample(example1);
+                if (netElementList.isEmpty() || netElementList.size() == 0) {
+                   i = 0;
+                }else {
+                    i = -2;
+                }
+            }else {
+                i = -1;
+            }
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
     /**
      *保存网元设备
      * @param netElement
@@ -44,22 +76,8 @@ public class NetElementServiceImpl implements NetElementService {
     public int saveNetElement(NetElement netElement) {
         int insert = 0;
         try {
-            //先根据ip查询设备是否已经存在
-            NetElementExample example = new NetElementExample();
-            example.createCriteria().andNeIpEqualTo(netElement.getNeIp());
-            List<NetElement> netElements = netElementDao.selectByExample(example);
-            if (netElements != null && netElements.size()>0) {
-                //设备已存在，不可以添加
-                insert = 0;
-            }else {
-                //设备不存在，可以添加
-               //给设备添加状态
-                if (netElement.getType().equals("TN")){
-                    netElement.setState(getStateService.getStateForNetElement(netElement));
-                }else {
-                    netElement.setState(2);
-                }
-                //添加设备
+            insert = verifyNEByNameAndIp(netElement);
+            if (insert==0){
                 insert = netElementDao.insert(netElement);
             }
         }catch (Exception e) {
@@ -395,10 +413,12 @@ public class NetElementServiceImpl implements NetElementService {
     public int updateNetElement(NetElement netElement) {
         int i = 0;
         try {
-
-            NetElementExample example = new NetElementExample();
-            example.createCriteria().andIdEqualTo(netElement.getId());
-            i = netElementDao.updateByExampleSelective(netElement, example);
+            i = verifyNEByNameAndIp(netElement);
+            if (i==0){
+                NetElementExample example = new NetElementExample();
+                example.createCriteria().andIdEqualTo(netElement.getId());
+                i = netElementDao.updateByExampleSelective(netElement, example);
+            }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

@@ -7,20 +7,26 @@
          pageEncoding="UTF-8" %>
 <div class="easyui-panel" title="网元详情" data-options="fit:true">
 <form id="neEditForm" name="neEditForm" class="neEditForm" method="post">
-    <input name="id"  id="id" type="hidden"></input>
-    <table>
+    <input name="id"  id="eid" type="hidden"></input>
+    <table style="width:600px;">
         <tr>
-            <td>网元名:</td>
-            <td><input name="neName"  type="text" id="neName" data-options="required:true"></input></td>
-        </tr>
-        <tr>
-            <td>网元ip:</td>
-            <td><input name="neIp"  type="text" id="neIp" data-options="required:true"></input></td>
-        </tr>
-        <tr>
-            <td>网元类型:</td>
+            <td class="label">网元名：</td>
             <td>
-                <select id="type" class="easyui-combobox" name="type" data-options="required:true" style="width:200px;">
+                <input class="easyui-validatebox" type="text" id="eneName" name="neName"
+                       data-options="required:true" style="width:100%">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">网元ip：</td>
+            <td>
+                <input class="easyui-validatebox" type="text" id="eneIp" name="neIp"
+                       data-options="required:true,validType:'IP'" style="width:100%">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">网元类型：</td>
+            <td>
+                <select id="etype" class="easyui-combobox" name="type" data-options="required:true" style="width:200px;">
                     <option value="TN">TN</option>
                     <option value="QNC">QNC</option>
                     <option value="QKD">QKD</option>
@@ -48,10 +54,10 @@
             //callback,相当于$.ajax中success
             function (data) {
                 if (data!=null){
-                    $('#id').val(data.id);
-                    $('#neName').val(data.neName);
-                    $('#neIp').val(data.neIp);
-                    $('#type').combobox('select',data.type);
+                    $('#eid').val(data.id);
+                    $('#eneName').val(data.neName);
+                    $('#eneIp').val(data.neIp);
+                    $('#etype').combobox('select',data.type);
                 }
             }
         );
@@ -65,13 +71,14 @@
             //表单提交之前被触发，如果返回false终止提交
             onSubmit: function () {},
             success: function (data) {
-                if (data>0){
-                    $.messager.alert('消息', '修改成功！', 'info');
+                data = JSON.parse(data);
+                if (data.success) {
+                    $.messager.alert('消息', data.message, 'info');
                     snmp.closeTabs("网元编辑");
                     snmp.addTabs("网元管理","ne_manage");
-                }else (
-                    $.messager.alert('警告', '修改失败！', 'warning')
-                )
+                }else {
+                    $.messager.alert('警告', data.message, 'warning');
+                }
             }
         });
     }

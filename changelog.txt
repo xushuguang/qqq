@@ -22,3 +22,5 @@ Date		Name	Module			Description
 2018-06-05      James   QRNGTN                  Add the TN display of the QRNG version on the Top Node Topology and TN Topology Pages.
 2018-06-05      James   addNode                 Solve the problem of adding nodes and failing IP authentication will also add success.
 2018-06-05      James   NERelation              The field link_type was added to the database, and the linkType attribute was added to the NERelation class.
+2018-06-06      James   NetElement              Adding NEs and Editing NEs have Added IP and Name Do Not Repeat Authentication.
+2018-06-07      James   Node                   Adding Nodes have Added IP and Name Do Not Repeat Authentication.

@@ -20,9 +20,9 @@ public interface NodeService {
     /**
      * 添加节点
      * @param nodeDto
-     * @return boolean
+     * @return int
      */
-    boolean addNode(NodeDto nodeDto);
+    int addNode(NodeDto nodeDto);
 
     /**
      * 查询nodeVo
@@ -68,5 +68,5 @@ public interface NodeService {
      * @param nodeDto
      * @return int
      */
-    boolean updateNodeDto(NodeDto nodeDto);
+    int updateNodeDto(NodeDto nodeDto);
 }

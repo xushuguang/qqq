@@ -4,21 +4,21 @@
     <form class="neAddForm" id="neAddForm" name="neAddForm" method="post">
         <table style="width:600px;">
             <tr>
-                <td class="label">NE name(网元名)：</td>
+                <td class="label">网元名：</td>
                 <td>
                     <input class="easyui-validatebox" type="text" id="neName" name="neName"
                            data-options="required:true" style="width:100%">
                 </td>
             </tr>
             <tr>
-                <td class="label">NE ip(网元ip)：</td>
+                <td class="label">网元ip：</td>
                 <td>
                     <input class="easyui-validatebox" type="text" id="neIp" name="neIp"
                            data-options="required:true,validType:'IP'" style="width:100%">
                 </td>
             </tr>
             <tr>
-                <td class="label">NE type(类型)：</td>
+                <td class="label">网元类型：</td>
                 <td>
                     <select id="type" class="easyui-combobox" name="type" data-options="required:true" style="width:200px;">
                         <option value="TN">TN</option>
@@ -55,6 +55,8 @@
                         $.messager.alert('消息', data.message, 'info');
                         snmp.closeTabs('添加网元');
                         snmp.addTabs("网元管理","ne_manage");
+                    }else {
+                        $.messager.alert('警告', data.message, 'warning');
                     }
                 }
             });

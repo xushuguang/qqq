@@ -212,7 +212,7 @@
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-                color:['lightseagreen','green'],
+                color:['lightseagreen','green','navy'],
                 calculable : true,
                 series : [
                     {
@@ -353,7 +353,7 @@
                     },
                     force:{
                         initLayout: 'circular',//初始布局
-                        repulsion:600,//斥力大小
+                        repulsion:300,//斥力大小
                     },
                     animation: false,
                     name:"",

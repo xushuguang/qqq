@@ -8,7 +8,7 @@
 <div class="easyui-panel" title="节点详情" data-options="fit:true">
 <form id="nodeEditForm" name="nodeEditForm" method="post">
     <input name="id" id="id" type="hidden"></input>
-    <table>
+    <table style="width:600px;">
         <tr>
             <td>节点名:</td>
             <td><input name="name" id="name" type="text" data-options="required:true"></td>
@@ -87,13 +87,13 @@
             //表单提交之前被触发，如果返回false终止提交
             onSubmit: function () {},
             success: function (data) {
-                console.log(data)
-                if (data=='true'){
-                    $.messager.alert('消息', '修改成功！', 'info');
+                data = JSON.parse(data);
+                if (data.success) {
+                    $.messager.alert('消息', data.message, 'info');
                     snmp.closeTabs("节点编辑");
                     snmp.addTabs("节点管理","node_manage");
-                }else if(data=='false'){
-                    $.messager.alert('警告', '修改失败！', 'warning')
+                } else {
+                    $.messager.alert('警告', data.message, 'warning');
                 }
             }
         });

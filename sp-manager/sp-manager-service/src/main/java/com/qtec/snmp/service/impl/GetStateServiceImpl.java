@@ -28,7 +28,7 @@ public class GetStateServiceImpl implements GetStateService{
     @Autowired
     private KeybufferMapper keybufferDao;
     private SimpleDateFormat dateToString = new SimpleDateFormat("HH:mm:ss");
-    private static final int TIMEOUT = 3000;
+    private static final int TIMEOUT = 1000;
 
     /**
      *通过ping和keyRate,keyBuffer获取状态

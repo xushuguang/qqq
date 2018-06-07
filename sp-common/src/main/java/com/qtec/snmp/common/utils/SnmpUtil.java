@@ -24,7 +24,7 @@ public class SnmpUtil {
     public static final int DEFAULT_VERSION = SnmpConstants.version2c;
     public static final String DEFAULT_PROTOCOL = "udp";
     public static final int DEFAULT_PORT = 161;//agent端的端口号
-    public static final long DEFAULT_TIMEOUT = 1 * 1000L;
+    public static final long DEFAULT_TIMEOUT = 500L;
     public static final int DEFAULT_RETRY = 0;
 
     protected String ip;

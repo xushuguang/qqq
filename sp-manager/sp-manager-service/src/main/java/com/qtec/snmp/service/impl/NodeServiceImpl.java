@@ -40,22 +40,44 @@ public class NodeServiceImpl implements NodeService{
     @Autowired
     private SnmpService snmpService;
 
+    public int verifyNodeByNameAndIp(NodeDto nodeDto){
+        int result = 0;
+        try {
+            //先根据节点ip查询节点是否已经存在
+            NodeExample example = new NodeExample();
+            example.createCriteria().andNodeIpEqualTo(nodeDto.getNodeIp());
+            List<Node> nodes = nodeDao.selectByExample(example);
+            if (nodes.isEmpty()||nodes.size()==0) {
+                //再根据节点名查询节点是否已经存在
+                NodeExample example1 = new NodeExample();
+                example1.createCriteria().andNodeNameEqualTo(nodeDto.getName());
+                List<Node> nodesList = nodeDao.selectByExample(example1);
+                if (nodesList.isEmpty()||nodesList.size()==0){
+                    result = 0;
+                }else {
+                    result = -2;
+                }
+            }else {
+                result = -1;
+            }
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     /**
      * 添加节点
      * @param nodeDto
      * @return boolean
      */
     @Override
-    public boolean  addNode(NodeDto nodeDto) {
-        boolean flag = false;
+    public int  addNode(NodeDto nodeDto) {
+        int result = 0;
         try {
-            //先根据节点ip查询节点是否已经存在
-            NodeExample example = new NodeExample();
-            example.createCriteria().andNodeIpEqualTo(nodeDto.getNodeIp());
-            List<Node> nodes = nodeDao.selectByExample(example);
-            if (nodes != null && nodes.size()>0) {
-                flag = false;
-            }else {
+            result = verifyNodeByNameAndIp(nodeDto);
+            if (result==0){
                 //节点不存在，可以添加
                 //添加设备
                 //先添加节点，
@@ -63,30 +85,29 @@ public class NodeServiceImpl implements NodeService{
                 node.setNodeIp(nodeDto.getNodeIp());
                 node.setNodeName(nodeDto.getName());
                 int insert1 = nodeDao.insert(node);
-                if (insert1>0){
+                if (insert1>0) {
                     //节点添加成功
-                    if (nodeDto.getIds()!=null&&nodeDto.getIds().size()>0){
+                    if (nodeDto.getIds() != null && nodeDto.getIds().size() > 0) {
                         //节点底下有网元设备
                         //再查询节点id
-                        NodeExample example1 = new NodeExample();
-                        example1.createCriteria().andNodeIpEqualTo(node.getNodeIp());
-                        Long nid = nodeDao.selectByExample(example1).get(0).getId();
+                        NodeExample example2 = new NodeExample();
+                        example2.createCriteria().andNodeIpEqualTo(node.getNodeIp());
+                        Long nid = nodeDao.selectByExample(example2).get(0).getId();
                         nodeDto.setId(nid);
                         //遍历集合并保存节点网元关系
-                        for (Long neid : nodeDto.getIds() ){
+                        for (Long neid : nodeDto.getIds()) {
                             NodeNE nodeNE = new NodeNE();
                             nodeNE.setNid(nid);
                             nodeNE.setNeid(neid);
                             int insert2 = nodeNEDao.insert(nodeNE);
-                            if (insert2>0){
-                                flag = true;
+                            if (insert2 > 0) {
                                 //snmp get当前节点下的网元关系
                                 snmpService.updateNERelationForNode(nodeDto);
+                                result = 1;
                             }
                         }
                     }else {
-                        //节点底下没有网元设备
-                        flag = true;
+                        result = 1;
                     }
                 }
             }
@@ -94,7 +115,7 @@ public class NodeServiceImpl implements NodeService{
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return flag;
+        return result;
     }
 
     /**
@@ -349,18 +370,10 @@ public class NodeServiceImpl implements NodeService{
      * @return boolean
      */
     @Override
-    public boolean updateNodeDto(NodeDto nodeDto) {
-        boolean flag = false;
+    public int updateNodeDto(NodeDto nodeDto) {
+        int result = 0;
         try {
-            //先根据id和ip查询数据库中ip是否存在
-            NodeExample nodeExample = new NodeExample();
-            nodeExample.createCriteria().andIdNotEqualTo(nodeDto.getId()).andNodeIpEqualTo(nodeDto.getNodeIp());
-            List<Node> nodes = nodeDao.selectByExample(nodeExample);
-            if (nodes!=null&&nodes.size()>0){
-                //ip存在，不能更新
-                flag = false;
-            }else {
-                //ip不存在，可以更新
+            if (result==0){
                 //先根据id更新node
                 Node node = new Node();
                 node.setId(nodeDto.getId());
@@ -387,13 +400,13 @@ public class NodeServiceImpl implements NodeService{
                             i2 = nodeNEDao.insert(nodeNE);
                         }
                         if (i2>0){
-                            flag = true;
                             //snmp get当前节点下的网元关系
                             snmpService.updateNERelationForNode(nodeDto);
+                            result = 1;
                         }
                     }else {
                         //节点底下没有网元设备
-                        flag = true;
+                        result = 1;
                     }
                 }
             }
@@ -401,6 +414,7 @@ public class NodeServiceImpl implements NodeService{
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return flag;
+        logger.info("结束测试。。。。。。。。。。。。。。。。。");
+        return result;
     }
 }

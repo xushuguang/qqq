@@ -46,9 +46,15 @@ public class NetElementAction {
             if (i > 0){
                 mr.setSuccess(true);
                 mr.setMessage("新增设备成功");
+            }else if (i==-1){
+                mr.setSuccess(false);
+                mr.setMessage("IP已存在，请重新输入");
+            }else if (i==-2){
+                mr.setSuccess(false);
+                mr.setMessage("设备名已存在，请重新输入");
             }else {
                 mr.setSuccess(false);
-                mr.setMessage("该设备已存在");
+                mr.setMessage("新增设备失败");
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -158,15 +164,28 @@ public class NetElementAction {
     }
     @ResponseBody
     @RequestMapping(value = "/netElement/edit", method = RequestMethod.POST)
-    public int editNetElement(NetElement netElement){
-        int i = 0;
+    public MessageResult editNetElement(NetElement netElement){
+        MessageResult mr = new MessageResult();
         try {
-            i = netElementService.updateNetElement(netElement);
+            int i = netElementService.updateNetElement(netElement);
+            if (i > 0){
+                mr.setSuccess(true);
+                mr.setMessage("修改设备成功");
+            }else if (i==-1){
+                mr.setSuccess(false);
+                mr.setMessage("IP已存在，请重新输入");
+            }else if (i==-2){
+                mr.setSuccess(false);
+                mr.setMessage("设备名已存在，请重新输入");
+            }else {
+                mr.setSuccess(false);
+                mr.setMessage("修改设备失败");
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return i;
+        return mr;
     }
     @ResponseBody
     @RequestMapping(value = "/getTNRelation", method = RequestMethod.POST)

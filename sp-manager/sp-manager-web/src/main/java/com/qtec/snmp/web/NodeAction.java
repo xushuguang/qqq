@@ -39,13 +39,19 @@ public class NodeAction {
     public MessageResult addNode(NodeDto nodeDto) {
         MessageResult mr = new MessageResult();
         try {
-            boolean flag = nodeService.addNode(nodeDto);
-            if (flag){
+            int result = nodeService.addNode(nodeDto);
+            if (result==1){
                 mr.setSuccess(true);
                 mr.setMessage("新增节点成功");
+            }else if (result==-1){
+                mr.setSuccess(false);
+                mr.setMessage("IP已存在，请重新输入");
+            }else if (result==-2){
+                mr.setSuccess(false);
+                mr.setMessage("节点名已存在，请重新输入");
             }else {
                 mr.setSuccess(false);
-                mr.setMessage("添加节点失败");
+                mr.setMessage("新增节点失败");
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -121,14 +127,21 @@ public class NodeAction {
     }
     @ResponseBody
     @RequestMapping(value = "/node/edit", method = RequestMethod.POST)
-    public boolean editNode(NodeDto nodeDto){
-        boolean flag = false;
+    public MessageResult editNode(NodeDto nodeDto){
+        MessageResult mr = new MessageResult();
         try {
-            flag = nodeService.updateNodeDto(nodeDto);
+            int result = nodeService.updateNodeDto(nodeDto);
+            if (result==1){
+                mr.setSuccess(true);
+                mr.setMessage("编辑节点成功");
+            }else {
+                mr.setSuccess(false);
+                mr.setMessage("编辑节点失败");
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return flag;
+        return mr;
     }
 }

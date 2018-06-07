@@ -8,13 +8,13 @@ import com.qtec.snmp.dao.NodeNEMapper;
 import com.qtec.snmp.pojo.dto.NodeDto;
 import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.service.SnmpService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +26,7 @@ import java.util.List;
  */
 @Service
 public class SnmpServiceImpl implements SnmpService{
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private NodeMapper nodeDao;
     @Autowired
@@ -78,6 +79,7 @@ public class SnmpServiceImpl implements SnmpService{
      */
     @Override
     public void updateNERelationForNode(NodeDto nodeDto) {
+        logger.info("开始测试增加节点。。。。。。。。。。。。。。。。。。。。");
         //创建snmputil
         SnmpUtil snmpUtil = new SnmpUtil(nodeDto.getNodeIp(), "public");
         List<Long> ids = nodeDto.getIds();
@@ -91,6 +93,7 @@ public class SnmpServiceImpl implements SnmpService{
                 ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
                 ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
                 ArrayList<String> states = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.5");
+                logger.info("结束测试增加节点。。。。。。。。。。。。。。。。。。。。");
                 if (QKDIPs!=null&&QKDIPs.size()>0){
                     //有关系
                     //先删除当前TN下的所有neRelation
