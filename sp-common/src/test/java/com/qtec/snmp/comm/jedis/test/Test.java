@@ -12,10 +12,10 @@ public class Test {
         jedis.close();
     }
     @org.junit.Test
-    public void testJedis2(){
-        JedisPool jedisPool = new JedisPool("192.168.100.21",6379);
+    public void testJedis2() {
+        JedisPool jedisPool = new JedisPool("192.168.100.21", 6379);
         Jedis jedis = jedisPool.getResource();
-        jedis.set("123","1234");
+        jedis.set("123", "1234");
         System.out.println(jedis.get("123"));
         jedis.close();
         jedisPool.close();

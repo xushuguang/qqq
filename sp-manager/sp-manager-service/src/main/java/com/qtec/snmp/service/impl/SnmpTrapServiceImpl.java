@@ -38,7 +38,7 @@ import java.util.*;
  * Version:V1.0
  */
 @Service
-public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
+public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private AlarmMapper alarmDao;
@@ -51,10 +51,11 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
     private Snmp snmp = null;
     private Address listenAddress;
     private ThreadPool threadPool;
+
     /**
      * 初始化snmp
      */
-    public void init(){
+    public void init() {
         try {
             //读取spring-trap配置文件
             ApplicationContext context = new ClassPathXmlApplicationContext("spring/spring-trap.xml");
@@ -62,25 +63,25 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
             String udp = trapXMLVo.getIp();
             String port = trapXMLVo.getPort();
             //初始化
-            threadPool = ThreadPool.create("Trap",2);
-            dispatcher = new MultiThreadedMessageDispatcher(threadPool,new MessageDispatcherImpl());
-            listenAddress = GenericAddress.parse(System.getProperty("snmp4j.listenAddress","udp:"+udp+"/"+port));
+            threadPool = ThreadPool.create("Trap", 2);
+            dispatcher = new MultiThreadedMessageDispatcher(threadPool, new MessageDispatcherImpl());
+            listenAddress = GenericAddress.parse(System.getProperty("snmp4j.listenAddress", "udp:" + udp + "/" + port));
             TransportMapping transport;
             //对TCP与UDP协议进行处理
-            if (listenAddress instanceof UdpAddress){
+            if (listenAddress instanceof UdpAddress) {
                 transport = new DefaultUdpTransportMapping((UdpAddress) listenAddress);
-            }else{
+            } else {
                 transport = new DefaultTcpTransportMapping((TcpAddress) listenAddress);
             }
             //配置监听
-            snmp = new Snmp(dispatcher,transport);
+            snmp = new Snmp(dispatcher, transport);
             snmp.getMessageDispatcher().addMessageProcessingModel(new MPv1());
             snmp.getMessageDispatcher().addMessageProcessingModel(new MPv2c());
             snmp.getMessageDispatcher().addMessageProcessingModel(new MPv3());
-            USM usm = new USM(SecurityProtocols.getInstance(),new OctetString(MPv3.createLocalEngineID()),0);
+            USM usm = new USM(SecurityProtocols.getInstance(), new OctetString(MPv3.createLocalEngineID()), 0);
             SecurityModels.getInstance().addSecurityModel(usm);
             snmp.listen();
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
             logger.error("snmp初始化失败");
@@ -90,12 +91,12 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
     /**
      * 启动trap监听
      */
-    public void run(){
+    public void run() {
         try {
             init();
             snmp.addCommandResponder(this);
             logger.info("start Trap listen !!");
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
@@ -104,11 +105,11 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
     /**
      * 停止trap监听
      */
-    public void stop(){
+    public void stop() {
         try {
             snmp.close();
             logger.info("stop Trap listen !!");
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
@@ -118,6 +119,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
     /**
      * 实现commandResponder的processPdu方法，用于处理传入的请求，PDU等信息
      * 当接收到Trap时，会自动进入这个方法
+     *
      * @param respEvnt
      */
     @Transactional
@@ -130,8 +132,8 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
             //获取当前的trap过来信息的Ip
             String peerAddress = respEvnt.getPeerAddress().toString();
             int enIndex = peerAddress.indexOf("/");
-            String TNIp = peerAddress.substring(0,enIndex);
-            if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.1.0")){
+            String TNIp = peerAddress.substring(0, enIndex);
+            if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.1.0")) {
                 //trap信息是关于alarm
                 //对数据进行处理并存入数据库
                 Alarm alarm = new Alarm();
@@ -146,7 +148,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
                         alarm.setQkdRuntime(variable.toString());
                     }
                 }
-                if (alarm!=null&&!alarm.getTypeId().equals(1)&&!alarm.getTypeId().equals(14)&&!alarm.getTypeId().equals(222)){
+                if (alarm != null && !alarm.getTypeId().equals(1) && !alarm.getTypeId().equals(14) && !alarm.getTypeId().equals(222)) {
                     //alarm不为空并且类型不是Info
                     alarm.setAlarmAck("RT");
                     //先判断实时告警有没有存在，如果有的话，就不存，如果没有的话，就存
@@ -154,15 +156,15 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
                     alarmExample.createCriteria().andTypeIdEqualTo(alarm.getTypeId()).andQkdIpEqualTo(alarm.getQkdIp())
                             .andAlarmAckEqualTo("RT");
                     List<Alarm> alarms = alarmDao.selectByExample(alarmExample);
-                    if (alarms.isEmpty()||alarms.size()==0){
+                    if (alarms.isEmpty() || alarms.size() == 0) {
                         alarm.setAlarmTime(new Date());
                         alarmDao.insert(alarm);
                     }
                 }
-            }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")){
+            } else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")) {
                 //trap信息是关于QKD keyRate的
                 //对keyRate信息进行处理
-               Keyrate keyRate = new Keyrate();
+                Keyrate keyRate = new Keyrate();
                 for (int i = 0; i < reVBs.size(); i++) {
                     OID oid = reVBs.get(i).getOid();
                     Variable variable = reVBs.get(i).getVariable();
@@ -172,31 +174,35 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
                         keyRate.setKeyrate(variable.toString());
                     }
                 }
-               if (keyRate!=null){
-                   keyRate.setTime(dateToString.format(new Date()));
+                if (keyRate != null) {
+                    keyRate.setTime(dateToString.format(new Date()));
                     //先判断keyRate是否存在,存在就不添加，不存在就添加
-                   KeyrateExample keyrateExample = new KeyrateExample();
-                   keyrateExample.createCriteria().andQkdIpEqualTo(keyRate.getQkdIp())
-                           .andTimeEqualTo(keyRate.getTime());
-                   List<Keyrate> keyrates = keyrateDao.selectByExample(keyrateExample);
-                   if (keyrates.isEmpty()||keyrates.size()==0){
-                       keyrateDao.insert(keyRate);
-                   }
-               }
-            }else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")){
+                    KeyrateExample keyrateExample = new KeyrateExample();
+                    keyrateExample.createCriteria().andQkdIpEqualTo(keyRate.getQkdIp())
+                            .andTimeEqualTo(keyRate.getTime());
+                    List<Keyrate> keyrates = keyrateDao.selectByExample(keyrateExample);
+                    if (keyrates.isEmpty() || keyrates.size() == 0) {
+                        keyrateDao.insert(keyRate);
+                    }
+                }
+            } else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")) {
                 //trap信息是关于TN keyBuffer的
                 //对keyBuffer信息进行处理
-               Keybuffer  keyBuffer = new Keybuffer();
+                Keybuffer keyBuffer = new Keybuffer();
                 for (int i = 0; i < reVBs.size(); i++) {
                     OID oid = reVBs.get(i).getOid();
                     Variable variable = reVBs.get(i).getVariable();
                     if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")) {
                         keyBuffer.setPairTnIp(variable.toString());
                     } else if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.7.0")) {
-                        keyBuffer.setKeybuffer(variable.toString());
+                        if (variable.toInt()>100){
+                            keyBuffer.setKeybuffer("100");
+                        }else {
+                            keyBuffer.setKeybuffer(variable.toString());
+                        }
                     }
                 }
-                if (keyBuffer!=null){
+                if (keyBuffer != null) {
                     //存入数据库
                     keyBuffer.setTnIp(TNIp);
                     keyBuffer.setTime(dateToString.format(new Date()));
@@ -206,7 +212,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder{
                             .andPairTnIpEqualTo(keyBuffer.getPairTnIp())
                             .andTimeEqualTo(keyBuffer.getKeybuffer());
                     List<Keybuffer> keybuffers = keybufferDao.selectByExample(keybufferExample);
-                    if (keybuffers.isEmpty()||keybuffers.size()==0){
+                    if (keybuffers.isEmpty() || keybuffers.size() == 0) {
                         //不存在，存
                         keybufferDao.insert(keyBuffer);
                     }

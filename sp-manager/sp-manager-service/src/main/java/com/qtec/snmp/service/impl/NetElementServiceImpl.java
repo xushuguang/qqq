@@ -78,6 +78,9 @@ public class NetElementServiceImpl implements NetElementService {
         try {
             insert = verifyNEByNameAndIp(netElement);
             if (insert==0){
+                //获取设备状态
+                int state = getStateService.getStateForNetElement(netElement);
+                netElement.setState(state);
                 insert = netElementDao.insert(netElement);
             }
         }catch (Exception e) {

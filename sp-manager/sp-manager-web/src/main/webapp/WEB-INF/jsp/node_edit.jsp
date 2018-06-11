@@ -7,24 +7,24 @@
          pageEncoding="UTF-8" %>
 <div class="easyui-panel" title="节点详情" data-options="fit:true">
 <form id="nodeEditForm" name="nodeEditForm" method="post">
-    <input name="id" id="id" type="hidden"></input>
+    <input name="id" id="eid" type="hidden"></input>
     <table style="width:600px;">
         <tr>
             <td>节点名:</td>
-            <td><input name="name" id="name" type="text" data-options="required:true"></td>
+            <td><input name="name" class="easyui-validatebox" id="ename" type="text" data-options="required:true" style="width:100%"></td>
         </tr>
         <tr>
             <td>节点ip:</td>
-            <td><input name="nodeIp" id="nodeIp" type="text" data-options="required:true"></td>
+            <td><input name="nodeIp" class="easyui-validatebox" id="enodeIp" type="text" data-options="required:true" style="width:100%"></td>
         </tr>
         <tr>
             <td>拥有设备:</td>
-            <td><input id="ids" name="ids"  prompt="请选择设备" data-options="required:true"></td>
+            <td><input id="eids" name="ids"  prompt="请选择设备" data-options="required:true" style="width:100%"></td>
         </tr>
         <tr>
         <tr>
             <td colspan="2" align="center">
-                <button onclick="submitForm()" class="easyui-linkbutton" type="button"
+                <button onclick="esubmitForm()" class="easyui-linkbutton" type="button"
                         data-options="iconCls:'icon-ok'">保存
                 </button>
             </td>
@@ -35,7 +35,7 @@
 </div>
 <script>
     //添加设备下拉列表动态生成
-    $('#ids').combogrid({
+    $('#eids').combogrid({
         panelWidth:450,
         multiple:true,
         mode:'remote',
@@ -71,16 +71,16 @@
             //callback,相当于$.ajax中success
             function (data) {
                 if (data!=null){
-                    $('#id').val(data.id);
-                    $('#name').val(data.name);
-                    $('#nodeIp').val(data.nodeIp);
-                    $('#ids').combogrid('setValue',data.ids);
+                    $('#eid').val(data.id);
+                    $('#ename').val(data.name);
+                    $('#enodeIp').val(data.nodeIp);
+                    $('#eids').combogrid('setValue',data.ids);
                 }
             }
         );
     });
     //表单提交动作
-    function submitForm() {
+    function esubmitForm() {
         $('#nodeEditForm').form('submit', {
             //表单提交后交给谁处理
             url: 'node/edit',

@@ -129,7 +129,7 @@ public class HistoryAlarmServiceImpl implements HistoryAlarmService{
         AlarmExample alarmExample = new AlarmExample();
         alarmExample.createCriteria().andAlarmAckNotEqualTo("RT");
         int count = alarmDao.countByExample(alarmExample);
-        while (count>800000){
+        while (count>500000){
             alarmCustomDao.deleteHistoryAlarms();
             count = count - 10000;
         }

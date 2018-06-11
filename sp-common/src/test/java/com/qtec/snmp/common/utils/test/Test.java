@@ -24,7 +24,7 @@ public class Test {
     @org.junit.Test
     public void test(){
         System.out.println(new Date()+"------------start------------");
-        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.117","public");
+        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.122","public");
         ArrayList<String> QKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
         ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
         ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
@@ -54,8 +54,6 @@ public class Test {
     }
     @org.junit.Test
     public void test2(){
-        String pwd = "idqqtec";
-        String aaa = MD5Util.MD5(pwd);
-        System.out.print(aaa);
+
     }
 }
