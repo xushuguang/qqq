@@ -25,6 +25,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.9" level="project" />
     <orderEntry type="module" module-name="sp-manager-service" />
     <orderEntry type="module" module-name="sp-manager-dao" />
     <orderEntry type="module" module-name="sp-manager-pojo" />
