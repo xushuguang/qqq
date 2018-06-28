@@ -101,7 +101,6 @@
                 }else if (state==2){
                     res += "<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div>";
                 }
-                console.log(res)
                 return res;
             }}
         ]]

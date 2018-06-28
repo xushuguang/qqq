@@ -46,6 +46,10 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
     private KeybufferMapper keybufferDao;
     @Autowired
     private KeyrateMapper keyrateDao;
+    @Autowired
+    private QncRateMapper qncRateDao;
+    @Autowired
+    private NetElementMapper netElementDao;
     private MultiThreadedMessageDispatcher dispatcher;
     private SimpleDateFormat dateToString = new SimpleDateFormat("HH:mm:ss");
     private Snmp snmp = null;
@@ -164,27 +168,46 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
             } else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")) {
                 //trap信息是关于QKD keyRate的
                 //对keyRate信息进行处理
-                Keyrate keyRate = new Keyrate();
-                for (int i = 0; i < reVBs.size(); i++) {
-                    OID oid = reVBs.get(i).getOid();
-                    Variable variable = reVBs.get(i).getVariable();
-                    if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")) {
-                        keyRate.setQkdIp(variable.toString());
-                    } else if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.5.0")) {
-                        keyRate.setKeyrate(variable.toString());
+
+                String neIP = reVBs.get(2).getVariable().toString();
+                //从数据库中查当前的ip所属的网元类型
+                NetElementExample netElementExample = new NetElementExample();
+                netElementExample.createCriteria().andNeIpEqualTo(neIP);
+                List<NetElement> netElementList = netElementDao.selectByExample(netElementExample);
+                if (netElementList!=null&&netElementList.size()>0){
+                    String type = netElementList.get(0).getType();
+                    if (type.equals("QKD")){//是属于QKD
+                        Keyrate keyRate = new Keyrate();
+                        keyRate.setQkdIp(reVBs.get(2).getVariable().toString());
+                        keyRate.setKeyrate(reVBs.get(3).getVariable().toString());
+                        keyRate.setTime(dateToString.format(new Date()));
+                        //先判断keyRate是否存在,存在就不添加，不存在就添加
+                        KeyrateExample keyrateExample = new KeyrateExample();
+                        keyrateExample.createCriteria().andQkdIpEqualTo(keyRate.getQkdIp())
+                                .andTimeEqualTo(keyRate.getTime());
+                        List<Keyrate> keyrates = keyrateDao.selectByExample(keyrateExample);
+                        if (keyrates.isEmpty() || keyrates.size() == 0) {
+                            keyrateDao.insert(keyRate);
+                        }
+                    }else if (type.equals("QTN")){//是属于QTN
+                        QncRate qncRate = new QncRate();
+                        qncRate.setLocalIp(TNIp);
+                        qncRate.setPairIp(reVBs.get(2).getVariable().toString());
+                        qncRate.setKeyrate(reVBs.get(3).getVariable().toString());
+                        qncRate.setTime(dateToString.format(new Date()));
+                        //先判断keyRate是否存在,存在就不添加，不存在就添加
+                       QncRateExample qncRateExample = new QncRateExample();
+                        qncRateExample.createCriteria().andLocalIpEqualTo(qncRate.getLocalIp())
+                                .andPairIpEqualTo(qncRate.getPairIp())
+                                .andTimeEqualTo(qncRate.getTime())
+                                .andKeyrateEqualTo(qncRate.getKeyrate());
+                        List<QncRate> qncRates = qncRateDao.selectByExample(qncRateExample);
+                        if (qncRates.isEmpty() || qncRates.size() == 0) {
+                            qncRateDao.insert(qncRate);
+                        }
                     }
                 }
-                if (keyRate != null) {
-                    keyRate.setTime(dateToString.format(new Date()));
-                    //先判断keyRate是否存在,存在就不添加，不存在就添加
-                    KeyrateExample keyrateExample = new KeyrateExample();
-                    keyrateExample.createCriteria().andQkdIpEqualTo(keyRate.getQkdIp())
-                            .andTimeEqualTo(keyRate.getTime());
-                    List<Keyrate> keyrates = keyrateDao.selectByExample(keyrateExample);
-                    if (keyrates.isEmpty() || keyrates.size() == 0) {
-                        keyrateDao.insert(keyRate);
-                    }
-                }
+
             } else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")) {
                 //trap信息是关于TN keyBuffer的
                 //对keyBuffer信息进行处理

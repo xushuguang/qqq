@@ -78,7 +78,6 @@ public class NetElementServiceImpl implements NetElementService {
         try {
             insert = verifyNEByNameAndIp(netElement);
             if (insert==0){
-                //获取设备状态
                 int state = getStateService.getStateForNetElement(netElement);
                 netElement.setState(state);
                 insert = netElementDao.insert(netElement);
@@ -270,7 +269,9 @@ public class NetElementServiceImpl implements NetElementService {
                         Long neid = neRelation.getNeid();
                         //根据neid查询netElement
                         NetElement netElement = netElementDao.selectByPrimaryKey(neid);
-                        list.add(netElement);
+                        if (netElement.getType().equals("QKD")){
+                            list.add(netElement);
+                        }
                     }
                 }
             }
@@ -472,7 +473,7 @@ public class NetElementServiceImpl implements NetElementService {
      * @return
      */
     @Override
-    public Result<PropertyGrid> getTNDetails(String neName, Long pairId) {
+    public Result<PropertyGrid> getTNDetails(String neName, Long pairId) {//问题;如何去判断不同的设备是TN还是QTN
         Result<PropertyGrid> result = null;
         try {
             //先根据neName查询到TN信息

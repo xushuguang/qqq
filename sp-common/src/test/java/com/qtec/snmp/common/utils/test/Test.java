@@ -29,10 +29,12 @@ public class Test {
         ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
         ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
         ArrayList<String> states = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.5");
+        ArrayList<String> linkType = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.6");
         String str1 = "QKDIP";
         String str2 = "pairQKDIP";
         String str3 = "distances";
         String str4 = "states";
+        String str5 = "linkType";
         for (int i = 0 ;i<QKDIPs.size();i++){
             str1 += "|"+QKDIPs.get(i);
             str2 += "|"+pairQKDIPs.get(i);
@@ -43,6 +45,13 @@ public class Test {
             else {
                 str4 += "|"+"无states";
             }
+            if (linkType!=null&&linkType.size()>0){
+                str5 += "|"+linkType.get(i);
+            }
+            else {
+                str5 += "|"+"无LinkType";
+            }
+
         }
 
 
@@ -50,6 +59,7 @@ public class Test {
         System.out.println(str2);
         System.out.println(str3);
         System.out.println(str4);
+        System.out.println(str5);
         System.out.println(new Date()+"--------------stop------------");
     }
     @org.junit.Test

@@ -79,7 +79,7 @@
                     },
                     force:{
                         initLayout: 'circular',//初始布局
-                        repulsion:300,//斥力大小
+                        repulsion:600,//斥力大小
                     },
 
                     animation: false,

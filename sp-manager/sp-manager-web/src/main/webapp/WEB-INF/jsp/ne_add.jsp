@@ -22,6 +22,9 @@
                 <td>
                     <select id="type" class="easyui-combobox" name="type" data-options="required:true" style="width:200px;">
                         <option value="TN">TN</option>
+
+                        <option value="QTN">QTN</option>
+
                         <option value="QKD">QKD</option>
                     </select>
                 </td>

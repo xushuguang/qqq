@@ -26,3 +26,7 @@ Date		Name	Module			Description
 2018-06-07      James   Node                    Add Nodes have Added IP and Name Do Not Repeat Authentication.
 2018-06-07      James   QNCRate                 Add QNCRate's real-time curve and history line display.
 2018-06-11      James   Version                 Version for QKD NMS_Server_18.05.R04.S01.
+2018-06-28      James   QNCRate                 Add QNCRate from SNMPTrap.
+2018-06-28      James   Alarm                   Add QNCAlarm from SNMPTrap.
+2018-06-28      James   NERelation              Add QTNRelation from SNMPGet.
+
