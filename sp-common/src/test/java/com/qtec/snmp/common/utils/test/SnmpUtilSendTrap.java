@@ -51,17 +51,18 @@ public class SnmpUtilSendTrap {
 
         // 创建 PDU
         PDU pdu = new PDU();
-        pdu.add(new VariableBinding(new OID(".1.3.6.1.4.1.8072.9999.9999.1.11.8.0"),
-                new OctetString("192.168.100.250")));
-        pdu.add(new VariableBinding(new OID(".1.3.6.1.4.1.8072.9999.9999.1.11.9.0"),
-                new OctetString("192.168.100.251")));
-        pdu.add(new VariableBinding(new OID(".1.3.6.1.4.1.8072.9999.9999.1.11.10.0"),
-                new OctetString("1536")));
+        pdu.add(new VariableBinding(new OID(".1.3.6.1.2.1.1.3.0"),
+                new OctetString("4 days, 0:48:28.53")));
+        pdu.add(new VariableBinding(new OID(".1.3.6.1.6.3.1.1.4.1.0"),
+                new OctetString("1.3.6.1.4.1.8072.9999.9999.1.2.1.1")));
+        pdu.add(new VariableBinding(new OID(".1.3.6.1.4.1.8072.9999.9999.1.11.6.0"),
+                new OctetString("192.168.100.119")));
+        pdu.add(new VariableBinding(new OID(".1.3.6.1.4.1.8072.9999.9999.1.11.7.0"),
+                new OctetString("97")));
         pdu.setType(PDU.TRAP);
 
         // 向Agent发送PDU，并接收Response
         ResponseEvent respEvnt = snmp.send(pdu, target);
-
         // 解析Response
         if (respEvnt != null && respEvnt.getResponse() != null) {
             Vector<VariableBinding> recVBs = (Vector<VariableBinding>) respEvnt.getResponse()
@@ -73,7 +74,7 @@ public class SnmpUtilSendTrap {
         }
     }
     public static void main(String[] args) {
-       RunnableTrap runnableTrap = new RunnableTrap();
+        RunnableTrap runnableTrap = new RunnableTrap();
         Thread t1 = new Thread(runnableTrap);
         t1.start();
     }
@@ -94,9 +95,6 @@ class RunnableTrap implements Runnable{
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        while (true){
-
         }
     }
 }

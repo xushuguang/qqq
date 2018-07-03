@@ -9,6 +9,7 @@ import com.qtec.snmp.service.QncRateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,11 +24,6 @@ public class QncRateServiceImpl implements QncRateService {
     private QncRateMapper qncRateDao;
     private JedisClientPool jedisClientPool;
     private SimpleDateFormat dateToString = new SimpleDateFormat("HH:mm:ss");
-    @Override
-    public String getAllQncRateFromRedis(String neName, Long pairId) {
-        return null;
-    }
-
     @Override
     public List<QncRate> getAllQncRate(String neName, Long pairId) {
         List<QncRate> list = null;
@@ -71,5 +67,28 @@ public class QncRateServiceImpl implements QncRateService {
             e.printStackTrace();
         }
         return result;
+    }
+    /**
+     * 定时删除KeyRate,每天00点删除
+     */
+    @Override
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void deleteAllQncRate(){
+        try{
+            qncRateDao.deleteByExample(new QncRateExample());
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setAllQncRateToRedis() {
+
+    }
+
+    @Override
+    public String getAllQncRateFromRedis(String neName, Long pairId) {
+        return null;
     }
 }

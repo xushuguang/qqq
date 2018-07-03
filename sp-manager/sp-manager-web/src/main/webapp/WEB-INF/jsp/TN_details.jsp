@@ -29,11 +29,7 @@
 <script>
     $(document).ready(function(){
         getTNDetails();
-        if(neName.indexOf("TN")==0){
-            getTNRelation();
-        }else if(neName.indexOf("QTN")==0){
-            getQTNRelation();
-        }
+        getTNRelation();
     });
     function getTNDetails() {
         //设备详情数据表格
@@ -86,7 +82,11 @@
                     }else if(data[i].state==2){
                         res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td>";
                     }
-                    res += "<td><button onclick='tnDetails("+data[i].id+")'>详情</button></td>";
+                    if(data[i].neName.indexOf("TN")==0){
+                        res += "<td><button onclick='tnDetails("+data[i].id+")'>详情</button></td>";
+                    }else if(data[i].neName.indexOf("QTN")==0){
+                        res += "<td><button onclick='qncRate("+data[i].id+")'>详情</button></td>";
+                    }
                 }
                 res += '</table>';
                 $('#TNRelation').html(res);
@@ -111,11 +111,13 @@
         sessionStorage.setItem("pairId",pairId);
         sessionStorage.setItem("neName",neName);
         snmp.closeTabs("KeyBuffer详情");
+        snmp.closeTabs("QncRate详情");
         snmp.addTabs("KeyBuffer详情","keybuffer");
     }
-    function qncRate() {
-        sessionStorage.setItem("pairId",'2')
+    function qncRate(pairId) {
+        sessionStorage.setItem("pairId",pairId);
         sessionStorage.setItem("neName",neName);
+        snmp.closeTabs("KeyBuffer详情");
         snmp.closeTabs("QncRate详情");
         snmp.addTabs("QncRate详情","qncRate");
     }

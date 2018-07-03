@@ -77,7 +77,7 @@ public class KeyRateServiceImpl implements KeyRateService{
         return keyRates;
     }
     /**
-     * 定时删除KeyRate和KeyBuffer,每天00点删除
+     * 定时删除KeyRate,每天00点删除
      */
     @Override
     @Scheduled(cron = "0 0 0 * * ?")

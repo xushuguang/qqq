@@ -5,6 +5,7 @@ import com.qtec.snmp.common.dto.Result;
 import com.qtec.snmp.dao.KeybufferMapper;
 import com.qtec.snmp.dao.NERelationMapper;
 import com.qtec.snmp.dao.NetElementMapper;
+import com.qtec.snmp.dao.QncRateMapper;
 import com.qtec.snmp.pojo.po.*;
 import com.qtec.snmp.pojo.vo.*;
 import com.qtec.snmp.service.GetStateService;
@@ -35,6 +36,8 @@ public class NetElementServiceImpl implements NetElementService {
     private GetStateService getStateService;
     @Autowired
     private KeybufferMapper keyBufferDao;
+    @Autowired
+    private QncRateMapper qncRateDao;
 
     /**
      * 验证IP和Name是否存在
@@ -446,16 +449,26 @@ public class NetElementServiceImpl implements NetElementService {
             if (netElements!=null&&netElements.size()>0){
                 list = new ArrayList<>();
                 String tnIp = netElements.get(0).getNeIp();
-                //再根据id查询到所有对端的tnIp
-                List<String> strings = keyBufferDao.distinctPairTNIP(tnIp);
-                if (strings!=null&&strings.size()>0){
-                    for (String pairTnIp : strings){
+                //再根据ip查询到所有对端的tnIp
+                List<String> TNIPs = keyBufferDao.distinctPairTNIP(tnIp);
+                if (TNIPs!=null&&TNIPs.size()>0){
+                    for (String pairTnIp : TNIPs){
                         NetElementExample netElementExample1 = new NetElementExample();
                         netElementExample1.createCriteria().andNeIpEqualTo(pairTnIp);
                         List<NetElement> netElements1 = netElementDao.selectByExample(netElementExample1);
                         if (netElements1!=null&&netElements1.size()>0){
                             list.add(netElements1.get(0));
                         }
+                    }
+                }
+                //如果是QTN，再查询QTN之间的关系
+                List<String> QTNIPs = qncRateDao.distinctPairQTNIP(tnIp);
+                for (String pairQtnIp : QTNIPs){
+                    NetElementExample netElementExample2 = new NetElementExample();
+                    netElementExample2.createCriteria().andNeIpEqualTo(pairQtnIp);
+                    List<NetElement> netElements2 = netElementDao.selectByExample(netElementExample2);
+                    if (netElements2!=null&&netElements2.size()>0){
+                        list.add(netElements2.get(0));
                     }
                 }
             }

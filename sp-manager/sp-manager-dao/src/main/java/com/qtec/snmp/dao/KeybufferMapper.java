@@ -3,6 +3,7 @@ package com.qtec.snmp.dao;
 import com.qtec.snmp.pojo.dto.KeyBufferDto;
 import com.qtec.snmp.pojo.po.Keybuffer;
 import com.qtec.snmp.pojo.po.KeybufferExample;
+import com.qtec.snmp.pojo.po.QncRate;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -32,4 +33,5 @@ public interface KeybufferMapper {
     List<String> distinctPairTNIP(@Param("TNIP")String TNIP);
 
     List<KeyBufferDto> distinctTNandPairTN();
+
 }

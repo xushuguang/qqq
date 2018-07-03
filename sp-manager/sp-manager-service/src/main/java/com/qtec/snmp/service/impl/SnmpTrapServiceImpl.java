@@ -166,7 +166,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
                     }
                 }
             } else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.4.0")) {
-                //trap信息是关于QKD keyRate的
+                //trap信息是关于keyRate的
                 //对keyRate信息进行处理
 
                 String neIP = reVBs.get(2).getVariable().toString();
@@ -195,16 +195,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
                         qncRate.setPairIp(reVBs.get(2).getVariable().toString());
                         qncRate.setKeyrate(reVBs.get(3).getVariable().toString());
                         qncRate.setTime(dateToString.format(new Date()));
-                        //先判断keyRate是否存在,存在就不添加，不存在就添加
-                       QncRateExample qncRateExample = new QncRateExample();
-                        qncRateExample.createCriteria().andLocalIpEqualTo(qncRate.getLocalIp())
-                                .andPairIpEqualTo(qncRate.getPairIp())
-                                .andTimeEqualTo(qncRate.getTime())
-                                .andKeyrateEqualTo(qncRate.getKeyrate());
-                        List<QncRate> qncRates = qncRateDao.selectByExample(qncRateExample);
-                        if (qncRates.isEmpty() || qncRates.size() == 0) {
-                            qncRateDao.insert(qncRate);
-                        }
+                        qncRateDao.insert(qncRate);
                     }
                 }
 
@@ -218,16 +209,17 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
                     if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")) {
                         keyBuffer.setPairTnIp(variable.toString());
                     } else if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.7.0")) {
-                        if (variable.toInt()>100){
-                            keyBuffer.setKeybuffer("100");
-                        }else {
-                            keyBuffer.setKeybuffer(variable.toString());
-                        }
+                        keyBuffer.setKeybuffer(variable.toString());
+//                        if (variable.toInt()>100){
+//                            keyBuffer.setKeybuffer("100");
+//                        }else {
+//                            keyBuffer.setKeybuffer(variable.toString());
+//                        }
                     }
                 }
                 if (keyBuffer != null) {
                     //存入数据库
-                    keyBuffer.setTnIp(TNIp);
+                    keyBuffer.setTnIp("192.168.100.117");
                     keyBuffer.setTime(dateToString.format(new Date()));
                     //先判断keyBuffer是否存在，如果存在就不添加，不存在就添加
                     KeybufferExample keybufferExample = new KeybufferExample();

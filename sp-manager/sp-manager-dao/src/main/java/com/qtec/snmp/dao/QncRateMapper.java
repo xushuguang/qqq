@@ -28,4 +28,8 @@ public interface QncRateMapper {
     int updateByPrimaryKeySelective(QncRate record);
 
     int updateByPrimaryKey(QncRate record);
+
+    List<QncRate> distinctQNTandPairQTN();
+
+    List<String> distinctPairQTNIP(@Param("QTNIP")String QTNIP);
 }

@@ -212,9 +212,7 @@
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-                color:[
-//                    'lightseagreen',
-                    'green','navy'],
+                color:['lightseagreen', 'green','navy'],
                 calculable : true,
                 series : [
                     {

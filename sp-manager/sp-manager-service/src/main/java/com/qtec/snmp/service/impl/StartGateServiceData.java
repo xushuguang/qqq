@@ -30,6 +30,7 @@ public class StartGateServiceData implements ApplicationListener<ContextRefreshe
     private KeyRateService keyRateService;
     @Autowired
     private KeyBufferService keyBufferService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
