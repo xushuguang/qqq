@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idqqtec.nms.dao.AlarmCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.idqqtec.nms.pojo.vo.AlarmVo" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="qkd_ip" property="qkdIp" jdbcType="VARCHAR" />
+    <result column="alarm_time" property="alarmTime" jdbcType="TIMESTAMP" />
+    <result column="alarm_type" property="alarmType" jdbcType="VARCHAR" />
+    <result column="alarm_severity" property="alarmSeverity" jdbcType="VARCHAR" />
+    <result column="alarm_ack" property="alarmAck" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    a.id,a.qkd_ip, a.alarm_time,a.alarm_ack, t.alarm_type, t.alarm_severity
+  </sql>
+  <sql id="Alarm_Where_Clause">
+      <if test="query != null and query.qkdIp != null and query.qkdIp != '' ">
+        and a.qkd_ip = #{query.qkdIp}
+      </if>
+      <if test="query != null and query.alarmSeverity != null and query.alarmSeverity != '' ">
+        and t.alarm_severity = #{query.alarmSeverity}
+      </if>
+      <if test="query != null and query.time1 != null and query.time1 != '' and query.time2 != null and query.time2 != ''">
+        and a.alarm_time BETWEEN STR_TO_DATE(#{query.time1},'%Y-%m-%d %H:%i:%s') and STR_TO_DATE(#{query.time2},'%Y-%m-%d %H:%i:%s')
+      </if>
+  </sql>
+  <select id="countAlarms" resultType="_long">
+    select count(1) from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack = 'RT'
+      <include refid="Alarm_Where_Clause"/>
+    </where>
+  </select>
+  <select id="listAlarms" resultMap="BaseResultMap">
+    (select
+    <include refid="Base_Column_List"/>
+    from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack = 'RT'
+      <include refid="Alarm_Where_Clause"/>
+    </where>
+    ORDER BY a.id DESC
+    limit 20)
+    ORDER BY id ASC
+  </select>
+  <select id="countHistoryAlarms" resultType="_long">
+    select count(1) from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack != 'RT'
+      <include refid="Alarm_Where_Clause"/>
+    </where>
+  </select>
+  <select id="listHistoryAlarms" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack != 'RT'
+      <include refid="Alarm_Where_Clause"/>
+    </where>
+    limit #{page.offset},#{page.rows}
+  </select>
+  <select id="countRTalarmNum" resultType="_int">
+    select count(1) from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack = 'RT'
+      and t.alarm_severity = #{alarmSeverity}
+    </where>
+  </select>
+  <select id="countHistoryAlarmNum" resultType="_int">
+    select count(1) from alarm a
+    LEFT JOIN alarm_type t
+    ON a.type_id = t.type_id
+    <where>
+      a.alarm_ack != 'RT'
+      and t.alarm_severity = #{alarmSeverity}
+    </where>
+  </select>
+  <delete id="deleteHistoryAlarms">
+      delete from alarm where exists
+      (select * from (select id from alarm limit 1,10000) as a where a.id=alarm.id);
+  </delete>
+</mapper>

@@ -6,6 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="idqqtec-common" />
+        <module name="idqqtec-nms-dao" />
+        <module name="idqqtec-nms-interface" />
+        <module name="idqqtec-nms-pojo" />
+        <module name="idqqtec-nms-service" />
+        <module name="idqqtec-nms-web" />
         <module name="sp-common" />
         <module name="sp-manager-dao" />
         <module name="sp-manager-interface" />
@@ -16,6 +22,14 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
+      <module name="idqqtec-common" target="1.8" />
+      <module name="idqqtec-nms" target="1.8" />
+      <module name="idqqtec-nms-dao" target="1.8" />
+      <module name="idqqtec-nms-interface" target="1.8" />
+      <module name="idqqtec-nms-pojo" target="1.8" />
+      <module name="idqqtec-nms-service" target="1.8" />
+      <module name="idqqtec-nms-web" target="1.8" />
+      <module name="idqqtec-parent" target="1.8" />
       <module name="sp-common" target="1.8" />
       <module name="sp-manager" target="1.8" />
       <module name="sp-manager-dao" target="1.8" />

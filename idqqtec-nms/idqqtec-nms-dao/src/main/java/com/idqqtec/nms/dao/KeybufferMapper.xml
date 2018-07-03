@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idqqtec.nms.dao.KeybufferMapper" >
+  <resultMap id="BaseResultMap" type="com.idqqtec.nms.pojo.po.Keybuffer" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="tn_ip" property="tnIp" jdbcType="VARCHAR" />
+    <result column="pair_tn_ip" property="pairTnIp" jdbcType="VARCHAR" />
+    <result column="keybuffer" property="keybuffer" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="distinctTNandPairTNMap" type="com.idqqtec.nms.pojo.dto.KeyBufferDto">
+    <result column="tn_ip" property="tnIp" jdbcType="VARCHAR" />
+    <result column="pair_tn_ip" property="pairTnIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, tn_ip, pair_tn_ip, keybuffer, time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.idqqtec.nms.pojo.po.KeybufferExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from keybuffer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from keybuffer
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from keybuffer
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.idqqtec.nms.pojo.po.KeybufferExample" >
+    delete from keybuffer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.idqqtec.nms.pojo.po.Keybuffer" >
+    insert into keybuffer (id, tn_ip, pair_tn_ip, 
+      keybuffer, time)
+    values (#{id,jdbcType=BIGINT}, #{tnIp,jdbcType=VARCHAR}, #{pairTnIp,jdbcType=VARCHAR}, 
+      #{keybuffer,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.idqqtec.nms.pojo.po.Keybuffer" >
+    insert into keybuffer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tnIp != null" >
+        tn_ip,
+      </if>
+      <if test="pairTnIp != null" >
+        pair_tn_ip,
+      </if>
+      <if test="keybuffer != null" >
+        keybuffer,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="tnIp != null" >
+        #{tnIp,jdbcType=VARCHAR},
+      </if>
+      <if test="pairTnIp != null" >
+        #{pairTnIp,jdbcType=VARCHAR},
+      </if>
+      <if test="keybuffer != null" >
+        #{keybuffer,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.idqqtec.nms.pojo.po.KeybufferExample" resultType="java.lang.Integer" >
+    select count(*) from keybuffer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update keybuffer
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.tnIp != null" >
+        tn_ip = #{record.tnIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pairTnIp != null" >
+        pair_tn_ip = #{record.pairTnIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keybuffer != null" >
+        keybuffer = #{record.keybuffer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update keybuffer
+    set id = #{record.id,jdbcType=BIGINT},
+      tn_ip = #{record.tnIp,jdbcType=VARCHAR},
+      pair_tn_ip = #{record.pairTnIp,jdbcType=VARCHAR},
+      keybuffer = #{record.keybuffer,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.idqqtec.nms.pojo.po.Keybuffer" >
+    update keybuffer
+    <set >
+      <if test="tnIp != null" >
+        tn_ip = #{tnIp,jdbcType=VARCHAR},
+      </if>
+      <if test="pairTnIp != null" >
+        pair_tn_ip = #{pairTnIp,jdbcType=VARCHAR},
+      </if>
+      <if test="keybuffer != null" >
+        keybuffer = #{keybuffer,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.idqqtec.nms.pojo.po.Keybuffer" >
+    update keybuffer
+    set tn_ip = #{tnIp,jdbcType=VARCHAR},
+      pair_tn_ip = #{pairTnIp,jdbcType=VARCHAR},
+      keybuffer = #{keybuffer,jdbcType=VARCHAR},
+      time = #{time,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="distinctPairTNIP" resultType="String">
+    SELECT DISTINCT(pair_tn_ip) FROM keybuffer
+    WHERE tn_ip = #{TNIP}
+  </select>
+  <select id="distinctTNandPairTN" resultMap="distinctTNandPairTNMap">
+    SELECT DISTINCT tn_ip , pair_tn_ip FROM keybuffer;
+  </select>
+</mapper>

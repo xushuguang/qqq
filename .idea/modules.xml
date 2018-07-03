@@ -2,14 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/sp-common/sp-common.iml" filepath="$PROJECT_DIR$/sp-common/sp-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-dao/sp-manager-dao.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-dao/sp-manager-dao.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-interface/sp-manager-interface.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-interface/sp-manager-interface.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-pojo/sp-manager-pojo.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-pojo/sp-manager-pojo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-service/sp-manager-service.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-service/sp-manager-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sp-manager/sp-manager-web/sp-manager-web.iml" filepath="$PROJECT_DIR$/sp-manager/sp-manager-web/sp-manager-web.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sp-parent/sp-parent.iml" filepath="$PROJECT_DIR$/sp-parent/sp-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-common/idqqtec-common.iml" filepath="$PROJECT_DIR$/idqqtec-common/idqqtec-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-dao/idqqtec-nms-dao.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-dao/idqqtec-nms-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-interface/idqqtec-nms-interface.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-interface/idqqtec-nms-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-pojo/idqqtec-nms-pojo.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-pojo/idqqtec-nms-pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-service/idqqtec-nms-service.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-service/idqqtec-nms-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-web/idqqtec-nms-web.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-web/idqqtec-nms-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-parent/idqqtec-parent.iml" filepath="$PROJECT_DIR$/idqqtec-parent/idqqtec-parent.iml" />
     </modules>
   </component>
 </project>

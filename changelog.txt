@@ -30,4 +30,5 @@ Date		Name	Module			Description
 2018-06-28      James   Alarm                   Add QNCAlarm from SNMPTrap.
 2018-06-28      James   NERelation              Add QTNRelation from SNMPGet.
 2018-07-03      James   SnmpTrap                Some logic judgment code parts have been modified.
+2018-07-03      James   NMS                     Uniformly modified package name, project name, path
 
