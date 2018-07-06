@@ -1,19 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>idqqtec-nms</artifactId>
+        <artifactId>idqqtec-dess</artifactId>
         <groupId>com.idqqtec</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>idqqtec-nms-web</artifactId>
     <packaging>war</packaging>
-    <name>idqqtec-nms-web Maven Webapp</name>
+    <artifactId>idqqtec-dess-web</artifactId>
+
+    <name>idqqtec-dess-web Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
     <dependencies>
         <dependency>
             <groupId>com.idqqtec</groupId>
-            <artifactId>idqqtec-nms-service</artifactId>
+            <artifactId>idqqtec-dess-service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!--JSP相关jar-->
@@ -65,14 +69,14 @@
 
     </dependencies>
     <build>
-        <finalName>idqqtec-nms-web</finalName>
+        <finalName>idqqtec-dess-web</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
-                    <port>8088</port>
-                    <path>/nms</path>
+                    <port>8087</port>
+                    <path>/dess</path>
                     <uriEncoding>UTF-8</uriEncoding>
                 </configuration>
             </plugin>

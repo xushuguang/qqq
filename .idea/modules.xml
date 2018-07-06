@@ -3,6 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/idqqtec-common/idqqtec-common.iml" filepath="$PROJECT_DIR$/idqqtec-common/idqqtec-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-dess/idqqtec-dess.iml" filepath="$PROJECT_DIR$/idqqtec-dess/idqqtec-dess.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-dao/idqqtec-dess-dao.iml" filepath="$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-dao/idqqtec-dess-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-interface/idqqtec-dess-interface.iml" filepath="$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-interface/idqqtec-dess-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-pojo/idqqtec-dess-pojo.iml" filepath="$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-pojo/idqqtec-dess-pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-service/idqqtec-dess-service.iml" filepath="$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-service/idqqtec-dess-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-web/idqqtec-dess-web.iml" filepath="$PROJECT_DIR$/idqqtec-dess/idqqtec-dess-web/idqqtec-dess-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms.iml" />
       <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-dao/idqqtec-nms-dao.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-dao/idqqtec-nms-dao.iml" />
       <module fileurl="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-interface/idqqtec-nms-interface.iml" filepath="$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-interface/idqqtec-nms-interface.iml" />

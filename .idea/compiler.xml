@@ -7,11 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="idqqtec-common" />
+        <module name="idqqtec-dess-dao" />
+        <module name="idqqtec-dess-interface" />
+        <module name="idqqtec-dess-pojo" />
+        <module name="idqqtec-dess-service" />
+        <module name="idqqtec-dess-web" />
         <module name="idqqtec-nms-dao" />
         <module name="idqqtec-nms-interface" />
         <module name="idqqtec-nms-pojo" />
         <module name="idqqtec-nms-service" />
         <module name="idqqtec-nms-web" />
+        <module name="idqqtec-qnms-web" />
         <module name="sp-common" />
         <module name="sp-manager-dao" />
         <module name="sp-manager-interface" />
@@ -23,6 +29,12 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="idqqtec-common" target="1.8" />
+      <module name="idqqtec-dess" target="1.8" />
+      <module name="idqqtec-dess-dao" target="1.8" />
+      <module name="idqqtec-dess-interface" target="1.8" />
+      <module name="idqqtec-dess-pojo" target="1.8" />
+      <module name="idqqtec-dess-service" target="1.8" />
+      <module name="idqqtec-dess-web" target="1.8" />
       <module name="idqqtec-nms" target="1.8" />
       <module name="idqqtec-nms-dao" target="1.8" />
       <module name="idqqtec-nms-interface" target="1.8" />
@@ -30,6 +42,8 @@
       <module name="idqqtec-nms-service" target="1.8" />
       <module name="idqqtec-nms-web" target="1.8" />
       <module name="idqqtec-parent" target="1.8" />
+      <module name="idqqtec-qnms" target="1.8" />
+      <module name="idqqtec-qnms-web" target="1.8" />
       <module name="sp-common" target="1.8" />
       <module name="sp-manager" target="1.8" />
       <module name="sp-manager-dao" target="1.8" />

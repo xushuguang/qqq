@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/idqqtec-dess" />
     <file type="web" url="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-web" />
     <file type="web" url="file://$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-web" />
   </component>
@@ -39,6 +40,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/idqqtec-qnms/pom.xml" />
         <option value="$PROJECT_DIR$/sp-manager/sp-manager-interceptor/pom.xml" />
         <option value="$PROJECT_DIR$/sp-manager/sp-manager-trap/pom.xml" />
         <option value="$PROJECT_DIR$/sp-snmptrap/pom.xml" />

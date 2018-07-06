@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="war" name="sp-manager-web:war">
-    <output-path>$PROJECT_DIR$/sp-manager/sp-manager-web/target</output-path>
+    <output-path>$PROJECT_DIR$/idqqtec-nms/idqqtec-nms-web/target</output-path>
     <root id="archive" name="sp-manager-web.war">
       <element id="artifact" artifact-name="sp-manager-web:war exploded" />
     </root>

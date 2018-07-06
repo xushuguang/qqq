@@ -30,5 +30,8 @@ Date		Name	Module			Description
 2018-06-28      James   Alarm                   Add QNCAlarm from SNMPTrap.
 2018-06-28      James   NERelation              Add QTNRelation from SNMPGet.
 2018-07-03      James   SnmpTrap                Some logic judgment code parts have been modified.
-2018-07-03      James   NMS                     Uniformly modified package name, project name, path
+2018-07-03      James   NMS                     Uniformly modified package name, project name, path.
+2018-07-04      James   Module                  Created a new module named idqqtec-dess.
+2018-07-06      James   SSD                     Added method for obtaining basic memory information of SSD.
+2018-07-06      James   Mysql                   Added method to get basic information of Mysql.
 

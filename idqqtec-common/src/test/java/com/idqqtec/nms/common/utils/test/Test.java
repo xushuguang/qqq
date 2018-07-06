@@ -2,6 +2,7 @@ package com.idqqtec.nms.common.utils.test;
 
 import com.idqqtec.nms.common.utils.SnmpUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,7 +16,7 @@ public class Test {
     @org.junit.Test
     public void test(){
         System.out.println(new Date()+"------------start------------");
-        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.122","public");
+        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.117","public");
         ArrayList<String> QKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
         ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
         ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
@@ -55,6 +56,43 @@ public class Test {
     }
     @org.junit.Test
     public void test2(){
-
+        System.out.println(new Date()+"------------start------------");
+        SnmpUtil snmpUtil = new SnmpUtil("192.168.100.107","public");
+//        try {
+//            String s = snmpUtil.snmpGet(".1.3.6.1.4.1.2021.9.1.7");
+//            System.out.println(s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        ArrayList<String> strings1 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.6");
+        ArrayList<String> strings2 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.7");
+        ArrayList<String> strings3 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.8");
+        ArrayList<String> strings4 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.9");
+        ArrayList<String> strings5 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.10");
+        ArrayList<String> strings6 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.100.1");
+        try {
+            String s = snmpUtil.snmpGet(".1.3.6.1.4.1.2021.9.1.100.1");
+            System.out.println(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (String str: strings1){
+            System.out.println("磁盘总大小"+str);
+        }
+        for (String str: strings2){
+            System.out.println("可用空间"+str);
+        }
+        for (String str: strings3){
+            System.out.println("使用空间"+str);
+        }
+        for (String str: strings4){
+            System.out.println("使用的空间百分比"+str);
+        }
+        for (String str: strings5){
+            System.out.println("inode百分比"+str);
+        }
+        for (String str: strings6){
+            System.out.println("告警信息"+str);
+        }
     }
 }
