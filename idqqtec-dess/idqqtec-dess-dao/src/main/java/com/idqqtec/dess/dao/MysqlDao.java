@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用于监控mysql性能
+ * 通过jdbc对Mysql性能进行监控
  */
 @Component
 public class MysqlDao {
@@ -65,7 +65,7 @@ public class MysqlDao {
      */
     public  List selectMysql(String url, String username, String password,String sql){
         Connection conn = getConnection(url, username, password);
-        PreparedStatement pstmt;
+        PreparedStatement pstmt = null;
         ResultSet rs=null;
         List list = null;
         try {
@@ -76,8 +76,9 @@ public class MysqlDao {
             e.printStackTrace();
         }finally {
             try {
-                rs.close();
-                conn.close();
+                    rs.close();
+                    pstmt.close();
+                    conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -86,10 +87,10 @@ public class MysqlDao {
     }
     public static void main(String[] args){
         MysqlDao mysqlDao = new MysqlDao();
-        String url = "jdbc:mysql://192.168.100.107:3306/test?useSSL=false&serverTimezone=UTC";
-        String username = "root";
-        String password = "Pa55w0rd!";
-        String sql = "select round(sum(DATA_LENGTH/1024/1024),2) as data from information_schema.TABLES";
+        String url = "jdbc:mysql://192.168.100.107:3306/?useSSL=true&serverTimezone=UTC&verifyServerCertificate=false";
+        String username = "dess";
+        String password = "mor@JX2018";
+        String sql = "select table_name,truncate(data_length/1024/1024, 2) as data_size from information_schema.tables where table_schema = 'test'";
         List list = mysqlDao.selectMysql(url, username, password, sql);
         String s = JsonUtil.objectToJson(list);
         System.out.println(s);

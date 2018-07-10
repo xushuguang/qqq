@@ -328,7 +328,6 @@
                                 error : function() {//请求失败处理函数
                                     $.messager.alert('警告', '请求失败！', 'warning');
                                 }
-
                             });
                             return 'Loading';
                         }else if (params.dataType=='edge'){//选择的是连线

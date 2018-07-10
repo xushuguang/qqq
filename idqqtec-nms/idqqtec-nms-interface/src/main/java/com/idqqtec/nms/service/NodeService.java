@@ -2,8 +2,8 @@ package com.idqqtec.nms.service;
 
 import com.idqqtec.nms.common.dto.Result;
 import com.idqqtec.nms.pojo.dto.NodeDto;
-import com.idqqtec.nms.pojo.vo.LinkVo;
-import com.idqqtec.nms.pojo.vo.NodeVo;
+import com.idqqtec.nms.common.vo.LinkVo;
+import com.idqqtec.nms.common.vo.NodeVo;
 import com.idqqtec.nms.pojo.po.NetElement;
 import com.idqqtec.nms.pojo.po.Node;
 

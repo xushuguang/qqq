@@ -4,8 +4,8 @@ import com.idqqtec.nms.common.dto.PropertyGrid;
 import com.idqqtec.nms.common.dto.Result;
 import com.idqqtec.nms.pojo.po.NetElement;
 import com.idqqtec.nms.pojo.vo.EchartsVo;
-import com.idqqtec.nms.pojo.vo.LinkVo;
-import com.idqqtec.nms.pojo.vo.NodeVo;
+import com.idqqtec.nms.common.vo.LinkVo;
+import com.idqqtec.nms.common.vo.NodeVo;
 
 import java.util.List;
 

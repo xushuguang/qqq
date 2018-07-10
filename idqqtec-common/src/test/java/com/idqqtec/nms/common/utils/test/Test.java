@@ -70,9 +70,12 @@ public class Test {
         ArrayList<String> strings4 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.9");
         ArrayList<String> strings5 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.10");
         ArrayList<String> strings6 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.100.1");
+        ArrayList<String> strings7= snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.11.1.1");
         try {
             String s = snmpUtil.snmpGet(".1.3.6.1.4.1.2021.9.1.100.1");
+            String s1 = snmpUtil.snmpGet(".1.3.6.1.4.1.8072.11.1.1");
             System.out.println(s);
+            System.out.println(s1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,6 +96,9 @@ public class Test {
         }
         for (String str: strings6){
             System.out.println("告警信息"+str);
+        }
+        for (String str: strings7){
+            System.out.println("数量"+str);
         }
     }
 }

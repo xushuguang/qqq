@@ -1,9 +1,9 @@
 package com.idqqtec.dess.service;
 
-import com.idqqtec.dess.pojo.vo.PieChartVo;
+import com.idqqtec.dess.pojo.vo.BaseVo;
 
 import java.util.List;
 
 public interface MysqlService {
-    List<PieChartVo> getMysqlInformation();
+    List<BaseVo> getMysqlInformation(String tnIP);
 }

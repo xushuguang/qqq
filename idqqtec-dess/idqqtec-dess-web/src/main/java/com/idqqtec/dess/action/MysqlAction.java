@@ -16,8 +16,8 @@ public class MysqlAction {
     private MysqlService mysqlService;
     @ResponseBody
     @RequestMapping(value = "mysql/getMysqlInformation",method = RequestMethod.POST)
-    public String getMysqlInformation(){
-        List list = mysqlService.getMysqlInformation();
+    public String getMysqlInformation(String tnIP){
+        List list = mysqlService.getMysqlInformation(tnIP);
         String s = JsonUtil.objectToJson(list);
         System.out.println(s);
         return s;

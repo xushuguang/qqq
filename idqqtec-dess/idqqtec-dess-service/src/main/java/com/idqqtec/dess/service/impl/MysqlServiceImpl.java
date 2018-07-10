@@ -1,7 +1,7 @@
 package com.idqqtec.dess.service.impl;
 
 import com.idqqtec.dess.dao.MysqlDao;
-import com.idqqtec.dess.pojo.vo.PieChartVo;
+import com.idqqtec.dess.pojo.vo.BaseVo;
 import com.idqqtec.dess.service.MysqlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,18 +13,19 @@ import java.util.Map;
 
 @Service
 public class MysqlServiceImpl implements MysqlService{
-    private static final String url = "jdbc:mysql://192.168.100.107:3306/test?useSSL=false&serverTimezone=UTC";
-    private static final String username = "root";
-    private static final String password = "Pa55w0rd!";
+    private static String url;
+    private static final String username = "dess";
+    private static final String password = "mor@JX2018";
 
     @Autowired
     private MysqlDao mysqlDao;
 
     @Override
-    public List<PieChartVo> getMysqlInformation() {
-        List<PieChartVo> pieChartVos = null;
+    public List<BaseVo> getMysqlInformation(String tnIP) {
+        url = "jdbc:mysql://"+tnIP+":3306/test?useSSL=true&serverTimezone=UTC&verifyServerCertificate=false";
+        List<BaseVo> baseVos = null;
         try{
-            pieChartVos = new ArrayList<>();
+            baseVos = new ArrayList<>();
             //先查询整个数据库大小
             String sql = "select round(sum(DATA_LENGTH/1024/1024),2) as data from information_schema.TABLES";
             List list = mysqlDao.selectMysql(url, username, password, sql);
@@ -35,27 +36,27 @@ public class MysqlServiceImpl implements MysqlService{
             String sql1 = "select table_name,truncate(data_length/1024/1024, 2) as data_size from information_schema.tables where table_schema = 'test'";
             List list1 = mysqlDao.selectMysql(url, username, password, sql1);
             for (int i=0;i<list1.size();i++){
-                PieChartVo pieChartVo = new PieChartVo();
+                BaseVo baseVo = new BaseVo();
                 Map<String,Object> map1 = (Map<String, Object>) list1.get(i);
                 String name = (String) map1.get("TABLE_NAME");
                 Double tbSize = ((BigDecimal) map1.get("data_size")).doubleValue();
-                pieChartVo.setName(name);
-                pieChartVo.setValue(tbSize);
-                pieChartVos.add(pieChartVo);
+                baseVo.setName(name);
+                baseVo.setValue(tbSize);
+                baseVos.add(baseVo);
 
             }
             //其它
             Double otherSize = mysqlSize;
-            for (PieChartVo pieChartVo1 : pieChartVos){
-                otherSize -= pieChartVo1.getValue();
+            for (BaseVo baseVo1 : baseVos){
+                otherSize -= baseVo1.getValue();
             }
-            PieChartVo pieChartVo2 = new PieChartVo();
-            pieChartVo2.setName("Others");
-            pieChartVo2.setValue(otherSize);
-            pieChartVos.add(pieChartVo2);
+            BaseVo baseVo2 = new BaseVo();
+            baseVo2.setName("Others");
+            baseVo2.setValue(otherSize);
+            baseVos.add(baseVo2);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return pieChartVos;
+        return baseVos;
     }
 }

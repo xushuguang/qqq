@@ -1,4 +1,4 @@
-package com.idqqtec.nms.pojo.vo;
+package com.idqqtec.nms.common.vo;
 
 /**
  * User: james.xu

@@ -1,7 +1,7 @@
 package com.idqqtec.dess.service.impl;
 
 import com.idqqtec.dess.dao.MysqlDao;
-import com.idqqtec.dess.pojo.vo.PieChartVo;
+import com.idqqtec.dess.pojo.vo.BaseVo;
 import com.idqqtec.dess.service.SSDService;
 import com.idqqtec.nms.common.utils.SnmpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +15,20 @@ import java.util.Map;
 
 @Service
 public class SSDServiceImpl implements SSDService {
-    private static final String url = "jdbc:mysql://192.168.100.107:3306/test?useSSL=false&serverTimezone=UTC";
-    private static final String username = "root";
-    private static final String password = "Pa55w0rd!";
-    private static SnmpUtil snmpUtil = new SnmpUtil("192.168.100.107","public");
+    private static String url;
+    private static final String username = "dess";
+    private static final String password = "mor@JX2018";
+    private static SnmpUtil snmpUtil;
     @Autowired
     private MysqlDao mysqlDao;
     @Override
-    public List<PieChartVo> getSSDInformation(){
+    public List<BaseVo> getSSDInformation(String tnIP){
+        url = "jdbc:mysql://"+tnIP+":3306/test?useSSL=true&serverTimezone=UTC&verifyServerCertificate=false";
+        snmpUtil = new SnmpUtil(tnIP,"public");
         DecimalFormat df = new DecimalFormat("#0.00");
-        List<PieChartVo> pieChartVos = null;
+        List<BaseVo> baseVos = null;
         try{
-            pieChartVos = new ArrayList<>();
+            baseVos = new ArrayList<>();
             //获取整个SSD的大小
             Double SSDSize = (Double.parseDouble(snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.6").get(0)))/1024/1024;
             //获取SSD可用容量
@@ -35,39 +37,39 @@ public class SSDServiceImpl implements SSDService {
             Double alarm = (Double.parseDouble(snmpUtil.snmpGet(".1.3.6.1.4.1.2021.9.1.100.1")));
             //计算封装进实体类,并存入list集合
             String name = "Available size";
-            PieChartVo pieChartVo = new PieChartVo();
-            pieChartVo.setName(name);
-            pieChartVo.setValue(SSDAvaSize);
-            pieChartVos.add(pieChartVo);
-            PieChartVo pieChartVo0 = new PieChartVo();
-            pieChartVo0.setName("alarm");
-            pieChartVo0.setValue(alarm);
-            pieChartVos.add(pieChartVo0);
+            BaseVo baseVo = new BaseVo();
+            baseVo.setName(name);
+            baseVo.setValue(SSDAvaSize);
+            baseVos.add(baseVo);
+            BaseVo baseVo0 = new BaseVo();
+            baseVo0.setName("alarm");
+            baseVo0.setValue(alarm);
+            baseVos.add(baseVo0);
             //获取mysql各个表的数据
             String sql = "select table_name,truncate(data_length/1024/1024/1024, 2) as data_size from information_schema.tables where table_schema = 'test'";
             List list = mysqlDao.selectMysql(url, username, password, sql);
             for (int i=0;i<list.size();i++){
-                PieChartVo pieChartVo1 = new PieChartVo();
+                BaseVo baseVo1 = new BaseVo();
                 Map<String,Object> map = (Map<String, Object>) list.get(i);
                 String name1 = (String) map.get("TABLE_NAME");
                 Double tbSize = ((BigDecimal) map.get("data_size")).doubleValue();
-                pieChartVo1.setName(name1);
-                pieChartVo1.setValue(tbSize);
-                pieChartVos.add(pieChartVo1);
+                baseVo1.setName(name1);
+                baseVo1.setValue(tbSize);
+                baseVos.add(baseVo1);
 
             }
             //其它
             Double otherSize = SSDSize;
-            for (PieChartVo pieChartVo2 : pieChartVos){
-                otherSize -= pieChartVo2.getValue();
+            for (BaseVo baseVo2 : baseVos){
+                otherSize -= baseVo2.getValue();
             }
-            PieChartVo pieChartVo3 = new PieChartVo();
-            pieChartVo3.setName("Others");
-            pieChartVo3.setValue(otherSize);
-            pieChartVos.add(pieChartVo3);
+            BaseVo baseVo3 = new BaseVo();
+            baseVo3.setName("Others");
+            baseVo3.setValue(otherSize);
+            baseVos.add(baseVo3);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return pieChartVos;
+        return baseVos;
     }
 }

@@ -1,6 +1,6 @@
 package com.idqqtec.dess.pojo.vo;
 
-public class PieChartVo {
+public class BaseVo {
     private String name;
     private Double value;
 

@@ -34,4 +34,9 @@ Date		Name	Module			Description
 2018-07-04      James   Module                  Created a new module named idqqtec-dess.
 2018-07-06      James   SSD                     Added method for obtaining basic memory information of SSD.
 2018-07-06      James   Mysql                   Added method to get basic information of Mysql.
+2018-07-09      James   SSD                     Added a pop-up alarm when the remaining size of the SSD disk capacity is less than 20%.
+2018-07-09      James   Topology                Added topology on the index page.
+2018-07-10      James   Alarms                  Added alarm module.
+2018-07-10      James   Others                  Added others modules that contain Security Memory.
+
 
