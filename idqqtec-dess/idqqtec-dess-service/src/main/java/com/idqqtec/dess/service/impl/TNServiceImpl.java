@@ -1,6 +1,6 @@
 package com.idqqtec.dess.service.impl;
 
-import com.idqqtec.dess.action.TNService;
+import com.idqqtec.dess.service.TNService;
 import com.idqqtec.dess.dao.TNRelationMapper;
 import com.idqqtec.dess.dao.TrustNodeMapper;
 import com.idqqtec.dess.pojo.po.TNRelation;

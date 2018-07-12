@@ -96,28 +96,28 @@
                                 <img src="images/security.png">
                                 <br>
                                 <h4>Security Memory</h4>
-                                <h4>10</h4>
+                                <h4 id="securityMemory"></h4>
                             </div>
                             <div class="col-md-3 four-grid" style="width: 10%"></div>
                             <div class="col-md-3 four-grid" style="background-color: aqua; width: 15%">
                                 <img src="images/rate.png">
                                 <br>
                                 <h4>QRNG KeyRate</h4>
-                                <h4>1.5(kb/s)</h4>
+                                <h4 id="qrngKeyRate"></h4>
                             </div>
                             <div class="col-md-3 four-grid" style="width: 10%"></div>
                             <div class="col-md-3 four-grid" style="background-color: darkturquoise; width: 15%">
                                 <img src="images/database.png">
                                 <br>
                                 <h4>Mysql Size</h4>
-                                <h4>205MB</h4>
+                                <h4 id="mysqlSize"></h4>
                             </div>
                             <div class="col-md-3 four-grid" style="width: 10%"></div>
                             <div class="col-md-3 four-grid" style="background-color: yellow; width: 15%">
                                 <img src="images/ssd.png">
                                 <br>
                                 <h4>SSD Size</h4>
-                                <h4>25.3GB</h4>
+                                <h4 id="ssdSize"></h4>
                             </div>
                         </div>
                     </div>
@@ -155,10 +155,11 @@
         </div>
     </div>
 </div>
-<script src="js/highcharts/ssdPie.js"></script>
-<script src="js/highcharts/mysql.js"></script>
+<script src="js/ssdPie.js"></script>
+<script src="js/mysql.js"></script>
 <script src="js/echarts.js"></script>
 <script src="js/alert.js"></script>
+<script src="js/others.js"></script>
 <script>
     $(document).ready(function(){
         showIndex();

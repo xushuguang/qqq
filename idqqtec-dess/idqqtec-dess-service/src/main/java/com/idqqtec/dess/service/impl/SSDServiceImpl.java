@@ -61,7 +61,7 @@ public class SSDServiceImpl implements SSDService {
             //其它
             Double otherSize = SSDSize;
             for (BaseVo baseVo2 : baseVos){
-                otherSize -= baseVo2.getValue();
+                otherSize -= Double.parseDouble(baseVo2.getValue().toString());
             }
             BaseVo baseVo3 = new BaseVo();
             baseVo3.setName("Others");

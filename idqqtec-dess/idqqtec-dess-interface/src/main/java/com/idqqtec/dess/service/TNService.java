@@ -1,4 +1,4 @@
-package com.idqqtec.dess.action;
+package com.idqqtec.dess.service;
 
 import com.idqqtec.dess.pojo.po.TrustNode;
 

@@ -38,5 +38,6 @@ Date		Name	Module			Description
 2018-07-09      James   Topology                Added topology on the index page.
 2018-07-10      James   Alarms                  Added alarm module.
 2018-07-10      James   Others                  Added others modules that contain Security Memory.
+2018-07-11      James   Debug                   Modified some bugs.
 
 

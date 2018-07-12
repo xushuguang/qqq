@@ -38,9 +38,9 @@ public class MysqlServiceImpl implements MysqlService{
             for (int i=0;i<list1.size();i++){
                 BaseVo baseVo = new BaseVo();
                 Map<String,Object> map1 = (Map<String, Object>) list1.get(i);
-                String name = (String) map1.get("TABLE_NAME");
+                String tbName = (String) map1.get("TABLE_NAME");
                 Double tbSize = ((BigDecimal) map1.get("data_size")).doubleValue();
-                baseVo.setName(name);
+                baseVo.setName(tbName);
                 baseVo.setValue(tbSize);
                 baseVos.add(baseVo);
 
@@ -48,7 +48,7 @@ public class MysqlServiceImpl implements MysqlService{
             //其它
             Double otherSize = mysqlSize;
             for (BaseVo baseVo1 : baseVos){
-                otherSize -= baseVo1.getValue();
+                otherSize -= Double.parseDouble(baseVo1.getValue().toString());
             }
             BaseVo baseVo2 = new BaseVo();
             baseVo2.setName("Others");

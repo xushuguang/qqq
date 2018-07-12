@@ -1,6 +1,6 @@
 package com.idqqtec.dess.action;
 
-import com.idqqtec.dess.pojo.po.TrustNode;
+import com.idqqtec.dess.service.TNService;
 import com.idqqtec.nms.common.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

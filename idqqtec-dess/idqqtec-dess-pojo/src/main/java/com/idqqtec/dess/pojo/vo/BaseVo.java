@@ -2,7 +2,7 @@ package com.idqqtec.dess.pojo.vo;
 
 public class BaseVo {
     private String name;
-    private Double value;
+    private Object value;
 
     public String getName() {
         return name;
@@ -12,11 +12,11 @@ public class BaseVo {
         this.name = name;
     }
 
-    public Double getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 }

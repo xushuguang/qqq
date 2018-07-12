@@ -71,6 +71,7 @@ public class Test {
         ArrayList<String> strings5 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.10");
         ArrayList<String> strings6 = snmpUtil.snmpWalk(".1.3.6.1.4.1.2021.9.1.100.1");
         ArrayList<String> strings7= snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.11.1.1");
+        ArrayList<String> strings8= snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.11.1.2");
         try {
             String s = snmpUtil.snmpGet(".1.3.6.1.4.1.2021.9.1.100.1");
             String s1 = snmpUtil.snmpGet(".1.3.6.1.4.1.8072.11.1.1");
@@ -99,6 +100,9 @@ public class Test {
         }
         for (String str: strings7){
             System.out.println("数量"+str);
+        }
+        for (String str: strings8){
+            System.out.println("KeyRate"+str);
         }
     }
 }
