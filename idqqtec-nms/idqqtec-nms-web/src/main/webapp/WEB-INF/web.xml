@@ -34,6 +34,13 @@
   <listener>
     <listener-class>com.idqqtec.nms.web.listener.WebContextListener</listener-class>
   </listener>
+  <context-param>
+    <param-name>log4j</param-name>
+    <param-value>classpath:log4j.properties</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
   <servlet>
     <servlet-name>snmpweb</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

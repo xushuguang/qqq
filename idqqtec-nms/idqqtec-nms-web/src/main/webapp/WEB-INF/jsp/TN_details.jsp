@@ -8,17 +8,23 @@
 <style>
     #TNDetails{
         position: absolute;
-        width: 40%;
-        height: 50%;
+        width: 100%;
+        height: 45%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
         left:0;
         top:10%;
     }
     #TNRelation{
         position: absolute;
-        width: 40%;
-        height: 40%;
+        width: 100%;
+        height: 45%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
         left:0%;
-        top:60%;
+        top:55%;
     }
 </style>
 <div id="TNDetails"></div>
@@ -41,20 +47,21 @@
             dataType : "json",
             url : 'getNEChildren',
             success : function(data) { //请求成功后处理函数。
-                var res = "<table bgcolor='#a9a9a9'><caption align='top'>本地QKD设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='50px'>操作</td></tr>";
+                //var res = "<table bgcolor='#a9a9a9'><caption align='top'>对端TN设备</caption><tr><td width='100px'>对端TN名</td><td width='150px'>对端TNIP</td><td width='100px'>对端TN状态</td><td width='50px'>操作</td></tr>";
+                var res = "";
                 for (var i =0;i<data.length;i++){
-                    var id = data[i].id;
-                    res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
+                    res+="<div style='border-radius: 10px;width:15%;height:45%;background-color: cadetblue;color: white'><table style='width: 100%;height: 100%'><tr><td style='width: 40%;height: 25%;'>设备名：</td><td style='width: 60%;height: 25%'>"+data[i].neName+"</td><tr><tr><td>设备IP：</td><td>"+data[i].neIp+"</td></tr><tr><td>设备状态：</td>";
+                    //res+="<tr><td style='width: 40%;height: 25%;'>设备名：</td><td style='width: 60%;height: 25%'>"+data[i].neName+"</td></tr><tr><td>设备IP：</td><td>"+data[i].neIp+"</td></tr>"
                     if(data[i].state==0){
-                        res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td>";
+                        res +="<td><div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td></tr>";
                     }else if(data[i].state==1){
-                        res +="<div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td>";
+                        res +="<td><div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td></tr>";
                     }else if(data[i].state==2){
-                        res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td>";
+                        res +="<td><div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td></tr>";
                     }
-                    res += "<td><button onclick='neDetails("+data[i].id+")'>详情</button></td>";
+                    res += "<tr><td>操作：</td><td><button style='border-radius: 5px' onclick='neDetails("+data[i].id+")'>keyRate</button></td></tr></table></div>";
                 }
-                res += '</table>';
+                //res += '</table></div>';
                 $('#TNDetails').html(res);
             },
             error : function() {//请求失败处理函数
@@ -72,23 +79,25 @@
             dataType : "json",
             url : 'getTNRelation',
             success : function(data) { //请求成功后处理函数。
-                var res = "<table bgcolor='#a9a9a9'><caption align='top'>对端设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='50px'>操作</td></tr>";
+                var res="";
+//                var res = "<table bgcolor='#a9a9a9'><caption align='top'>对端设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='150px'>操作</td></tr>";
                 for (var i =0;i<data.length;i++){
-                    res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
+                    res+="<div style='border-radius: 10px;width:15%;height:45%;background-color: cadetblue;color: white'><table style='width: 100%;height: 100%'><tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
+                    //res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
                     if(data[i].state==0){
-                        res +="<div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td>";
+                        res +="<tr><td><div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td></tr>";
                     }else if(data[i].state==1){
-                        res +="<div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td>";
+                        res +="<tr><td><div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td></tr>";
                     }else if(data[i].state==2){
-                        res +="<div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td>";
+                        res +="<tr><td><div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td></tr>";
                     }
                     if(data[i].neName.indexOf("TN")==0){
-                        res += "<td><button onclick='tnDetails("+data[i].id+")'>详情</button></td>";
+                        res += "<tr><td><button onclick='tnDetails("+data[i].id+")'>keybuffer详情</button></td></tr></table></div>";
                     }else if(data[i].neName.indexOf("QTN")==0){
-                        res += "<td><button onclick='qncRate("+data[i].id+")'>详情</button></td>";
+                        res += "<tr><td><button onclick='tnDetails("+data[i].id+")'>keybuffer</button><button onclick='qncRate("+data[i].id+")'>qncRate</button></td></tr></table></div>";
                     }
                 }
-                res += '</table>';
+//                res += '</table>';
                 $('#TNRelation').html(res);
             },
             error : function() {//请求失败处理函数

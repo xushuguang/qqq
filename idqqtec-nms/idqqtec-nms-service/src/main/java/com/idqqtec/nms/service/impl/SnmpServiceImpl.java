@@ -86,19 +86,19 @@ public class SnmpServiceImpl implements SnmpService{
             //根据id查询当前设备
             NetElement netElement = netElementDao.selectByPrimaryKey(id);
             //如果设备类型是TN
-            if (netElement.getType().equals("TN")) {
+            if (netElement.getType().equals("TN") || netElement.getType().equals("QTN")) {
                 //获取当前TN下的所有snmpGet信息
                 ArrayList<String> IPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
                 ArrayList<String> pairIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
                 ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
                 ArrayList<String> states = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.5");
                 ArrayList<String> linkTypes = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.6");
+                //先删除当前TN下的所有neRelation
+                NERelationExample neRelationExample = new NERelationExample();
+                neRelationExample.createCriteria().andParentIdEqualTo(netElement.getId());
+                neRelationDao.deleteByExample(neRelationExample);
                 if (IPs!=null&&IPs.size()>0){
                     //有关系
-                    //先删除当前TN下的所有neRelation
-                    NERelationExample neRelationExample = new NERelationExample();
-                    neRelationExample.createCriteria().andParentIdEqualTo(netElement.getId());
-                    neRelationDao.deleteByExample(neRelationExample);
                     for (int i = 0; i < IPs.size(); i++) {
                         String Ip = IPs.get(i);
                         String pairIp = pairIPs.get(i);

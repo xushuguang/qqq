@@ -17,11 +17,14 @@ public class Test {
     public void test(){
         System.out.println(new Date()+"------------start------------");
         SnmpUtil snmpUtil = new SnmpUtil("192.168.100.117","public");
+        ArrayList<String> localIps = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.1");
+        System.out.println(localIps);
         ArrayList<String> QKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.2");
         ArrayList<String> pairQKDIPs = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.3");
         ArrayList<String> distances = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.4");
         ArrayList<String> states = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.5");
         ArrayList<String> linkType = snmpUtil.snmpWalk(".1.3.6.1.4.1.8072.9999.9999.1.1.4.1.6");
+
         String str1 = "QKDIP";
         String str2 = "pairQKDIP";
         String str3 = "distances";

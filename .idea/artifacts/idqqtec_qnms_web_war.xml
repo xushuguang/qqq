@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="idqqtec-qnms-web:war">
+    <output-path>$PROJECT_DIR$/idqqtec-qnms/idqqtec-qnms-web/target</output-path>
+    <root id="archive" name="idqqtec-qnms-web.war">
+      <element id="artifact" artifact-name="idqqtec-qnms-web:war exploded" />
+    </root>
+  </artifact>
+</component>

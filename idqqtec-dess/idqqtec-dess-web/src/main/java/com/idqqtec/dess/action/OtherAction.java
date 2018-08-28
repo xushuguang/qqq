@@ -25,23 +25,6 @@ public class OtherAction {
         String str = null;
         try{
             List<BaseVo> list = otherService.getOtherInformation(tnIP);
-//            List<BaseVo> list = new ArrayList();
-//            BaseVo baseVo = new BaseVo();
-//            baseVo.setName("Security Memory");
-//            baseVo.setValue(10);
-//            BaseVo baseVo1 = new BaseVo();
-//            baseVo1.setName("QRNG KeyRate");
-//            baseVo1.setValue("2.5 kb/s");
-//            BaseVo baseVo2 = new BaseVo();
-//            baseVo2.setName("Mysql Size");
-//            baseVo2.setValue("205.7 MB");
-//            BaseVo baseVo3 = new BaseVo();
-//            baseVo3.setName("SSD Size");
-//            baseVo3.setValue("25.3 GB");
-//            list.add(baseVo);
-//            list.add(baseVo1);
-//            list.add(baseVo2);
-//            list.add(baseVo3);
             str = JsonUtil.objectToJson(list);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

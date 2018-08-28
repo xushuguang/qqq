@@ -186,7 +186,7 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
                         if (keyrates.isEmpty() || keyrates.size() == 0) {
                             keyrateDao.insert(keyRate);
                         }
-                    }else if (type.equals("QTN")){//是属于QTN
+                    }else if (type.equals("TN")){//是属于QTN
                         QncRate qncRate = new QncRate();
                         qncRate.setLocalIp(TNIp);
                         qncRate.setPairIp(reVBs.get(2).getVariable().toString());
@@ -207,11 +207,11 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
                         keyBuffer.setPairTnIp(variable.toString());
                     } else if (oid.toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.7.0")) {
                         keyBuffer.setKeybuffer(variable.toString());
-//                        if (variable.toInt()>100){
-//                            keyBuffer.setKeybuffer("100");
-//                        }else {
-//                            keyBuffer.setKeybuffer(variable.toString());
-//                        }
+                        if (variable.toInt()>100){
+                            keyBuffer.setKeybuffer("100");
+                        }else {
+                            keyBuffer.setKeybuffer(variable.toString());
+                        }
                     }
                 }
                 if (keyBuffer != null) {
