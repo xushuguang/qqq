@@ -39,6 +39,9 @@ Date		Name	Module			Description
 2018-07-10      James   Alarms                  Added alarm module.
 2018-07-10      James   Others                  Added others modules that contain Security Memory.
 2018-07-11      James   Debug                   Modified some bugs.
-2018-08-24      James   Log
+2018-08-24      James   log                     Change logback to log4j.
+2018-08-27      James   DataBase                Added some performance configuration of Druid connection pool.
+2018-09-13      James   TN_deatils              Modified some of the page's display
+2018-09-14      James   Time                    Jsp page acquisition time changed to common server acquisition.
 
 
