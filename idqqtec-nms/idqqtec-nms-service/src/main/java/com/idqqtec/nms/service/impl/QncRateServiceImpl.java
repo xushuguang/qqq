@@ -84,6 +84,7 @@ public class QncRateServiceImpl implements QncRateService {
     }
 
     @Override
+    @Scheduled(fixedRate = 1000*60*5)
     public void setAllQncRateToRedis() {
 
     }

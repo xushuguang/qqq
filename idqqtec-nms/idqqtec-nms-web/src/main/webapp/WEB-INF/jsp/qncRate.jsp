@@ -80,7 +80,7 @@
                         zoomType: 'x'
                     },
                     title: {
-                        text: 'QNCRate历史折线图'
+                        text: '密钥速率历史折线图'
                     },
                     xAxis: {
                         type: 'datetime',

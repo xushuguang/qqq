@@ -82,19 +82,19 @@
                 var res="";
 //                var res = "<table bgcolor='#a9a9a9'><caption align='top'>对端设备</caption><tr><td width='100px'>设备名</td><td width='150px'>设备IP</td><td width='100px'>设备状态</td><td width='150px'>操作</td></tr>";
                 for (var i =0;i<data.length;i++){
-                    res+="<div style='border-radius: 10px;width:15%;height:45%;background-color: cadetblue;color: white'><table style='width: 100%;height: 100%'><tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
+                    res+="<div style='border-radius: 10px;width:15%;height:45%;background-color: cadetblue;color: white'><table style='width: 100%;height: 100%'><tr><td style='width: 40%;height: 25%;'>设备名：</td><td style='width: 60%;height: 25%'>"+data[i].neName+"</td><tr><tr><td>设备IP：</td><td>"+data[i].neIp+"</td></tr><tr><td>设备状态：</td>";
                     //res += "<tr><td>"+data[i].neName+"</td><td>"+data[i].neIp+"</td><td>";
                     if(data[i].state==0){
-                        res +="<tr><td><div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td></tr>";
+                        res +="<td><div style='width: 15px;height: 15px;background-color: red ;border-radius: 50%;'></div></td></tr>";
                     }else if(data[i].state==1){
-                        res +="<tr><td><div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td></tr>";
+                        res +="<td><div style='width: 15px;height: 15px;background-color: yellow   ;border-radius: 50%;'></div></td></tr>";
                     }else if(data[i].state==2){
-                        res +="<tr><td><div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td></tr>";
+                        res +="<td><div style='width: 15px;height: 15px;background-color: green ;border-radius: 50%;'></div></td></tr>";
                     }
                     if(data[i].neName.indexOf("TN")==0){
                         res += "<tr><td><button onclick='tnDetails("+data[i].id+")'>keybuffer详情</button></td></tr></table></div>";
                     }else if(data[i].neName.indexOf("QTN")==0){
-                        res += "<tr><td><button onclick='tnDetails("+data[i].id+")'>keybuffer</button><button onclick='qncRate("+data[i].id+")'>qncRate</button></td></tr></table></div>";
+                        res += "<tr><td>操作：</td><td><button style='border-radius: 5px' onclick='tnDetails("+data[i].id+")'>keybuffer</button><button style='border-radius: 5px' onclick='qncRate("+data[i].id+")'>qncRate</button></td></tr></table></div>";
                     }
                 }
 //                res += '</table>';

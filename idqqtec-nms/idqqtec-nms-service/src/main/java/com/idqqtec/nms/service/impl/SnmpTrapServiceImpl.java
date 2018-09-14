@@ -186,16 +186,16 @@ public class SnmpTrapServiceImpl implements SnmpTrapService, CommandResponder {
                         if (keyrates.isEmpty() || keyrates.size() == 0) {
                             keyrateDao.insert(keyRate);
                         }
-                    }else if (type.equals("TN")){//是属于QTN
+                    }else if (type.equals("QTN")){//是属于QTN
+                        //trap过来的keyrate是个数
                         QncRate qncRate = new QncRate();
                         qncRate.setLocalIp(TNIp);
                         qncRate.setPairIp(reVBs.get(2).getVariable().toString());
-                        qncRate.setKeyrate(reVBs.get(3).getVariable().toString());
+                        qncRate.setKeyrate(String.valueOf(reVBs.get(3).getVariable().toInt()*32*8));
                         qncRate.setTime(dateToString.format(new Date()));
                         qncRateDao.insert(qncRate);
                     }
                 }
-
             } else if (reVBs.get(2).getOid().toString().equals("1.3.6.1.4.1.8072.9999.9999.1.11.6.0")) {
                 //trap信息是关于TN keyBuffer的
                 //对keyBuffer信息进行处理

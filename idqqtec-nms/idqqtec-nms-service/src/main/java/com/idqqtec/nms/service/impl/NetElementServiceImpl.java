@@ -468,16 +468,6 @@ public class NetElementServiceImpl implements NetElementService {
                         }
                     }
                 }
-                //如果是QTN，再查询QTN之间的关系
-                List<String> QTNIPs = qncRateDao.distinctPairQTNIP(tnIp);
-                for (String pairQtnIp : QTNIPs){
-                    NetElementExample netElementExample2 = new NetElementExample();
-                    netElementExample2.createCriteria().andNeIpEqualTo(pairQtnIp);
-                    List<NetElement> netElements2 = netElementDao.selectByExample(netElementExample2);
-                    if (netElements2!=null&&netElements2.size()>0){
-                        list.add(netElements2.get(0));
-                    }
-                }
             }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
